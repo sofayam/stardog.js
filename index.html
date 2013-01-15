@@ -68,6 +68,20 @@ You'll also need <a href="https://npmjs.org">npm</a> to run the test cases and i
 
 <p>All tests should pass.</p>
 
+<h2>Quick Example</h2>
+
+<pre><code>var stardog = require("stardog");
+
+var conn = new stardog.Connection();
+
+conn.setEndpoint("http://myserver:myport/");
+conn.setCredentials("username", "password");
+
+conn.query("db-name", "select distinct * where { ?s ?p ?o } limit 5", null, 5, 0, function (data) {
+    console.log(data.results.bindings);
+})
+</code></pre>
+
 <h2>NOTE</h2>
 
 <p>This framework is in continuous development, please check the <a href="https://github.com/clarkparsia/stardog.js/issues">issues</a> page. You're welcome to contribute.</p>
