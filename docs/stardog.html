@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>stardog.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <img src="http://stardog.com/_/img/sdog.png">
+                  <h1>stardog.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <pre><code>Stardog.js 0.0.4</code></pre>
+<p>Copyright 2012 Clark &amp; Parsia LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<pre><code>http://www.apache.org/licenses/LICENSE-2.0</code></pre>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="keyword">function</span>() {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2>Initial Setup</h2>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Save a reference to the global object (&#39;window&#39; in the browser, &#39;global&#39;
+on the server).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> root = <span class="keyword">this</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Save the previous value of the &#39;Stardog&#39; variable, so that it can be 
+restored later on, if &#39;noConflict&#39; is used.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> previousStardog = root.Stardog;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Create top-level namespace</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> Stardog = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Export the Underscore object for <strong>Node.js</strong>, with
+backwards-compatibility for the old <code>require()</code> API. If we&#39;re in
+the browser, add <code>_</code> as a global object via a string identifier,
+for Closure Compiler &quot;advanced&quot; mode.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">if</span> (<span class="keyword">typeof</span> exports !== <span class="string">'undefined'</span>) {
+		<span class="keyword">if</span> (<span class="keyword">typeof</span> module !== <span class="string">'undefined'</span> &amp;&amp; module.exports) {
+			exports = module.exports = Stardog;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>exports.Stardog = Stardog;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	} <span class="keyword">else</span> {
+		root[<span class="string">'Stardog'</span>] = Stardog;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Current version of the library. Keep in sync with &#39;package.json&#39;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Stardog.VERSION = <span class="string">'0.0.4'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Require jsonld, if we&#39;re on the server, and it&#39;s not already present</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> jsonld = root.jsonld;
+	<span class="keyword">if</span> (!jsonld &amp;&amp; (<span class="keyword">typeof</span> require !== <span class="string">'undefined'</span>)) jsonld = require(<span class="string">'jsonld'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Require request, if we&#39;re on the server, and it&#39;s not already present</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> request = root.request;
+	<span class="keyword">if</span> (!request &amp;&amp; (<span class="keyword">typeof</span> require !== <span class="string">'undefined'</span>)) request = require(<span class="string">'request'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Require querystring, if we&#39;re on the server, and it&#39;s not already present</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> qs = root.qs;
+	<span class="keyword">if</span> (!qs &amp;&amp; (<span class="keyword">typeof</span> require !== <span class="string">'undefined'</span>)) qs = require(<span class="string">'querystring'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>For AJAX&#39;s purposes, jQuery owns the <code>$</code> variable.
+jQuery is only required when using the library in the browser.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h2>Define LinkedJson Object</h2>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>LinkedJson is an abstraction of a JSON-LD Object. This is just a placeholder for a 
+better implementation of the JSON-LD spec. Currently it is used for query results when 
+the result format is a JSON-LD from Stardog.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> LinkedJson = Stardog.LinkedJson = <span class="function"><span class="keyword">function</span> <span class="params">(jsonldValues)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Attributes contains the original JSON object with the map of 
+all the attributes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">this</span>.attributes = jsonldValues;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Gets a property from the LinkedJson object.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	LinkedJson.prototype.get = <span class="function"><span class="keyword">function</span> <span class="params">(key)</span> {</span>
+		<span class="keyword">return</span> <span class="keyword">this</span>.attributes[key];
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Sets a property in the LinkedJson object.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	LinkedJson.prototype.set = <span class="function"><span class="keyword">function</span> <span class="params">(key, value)</span> {</span>
+		<span class="keyword">this</span>.attributes[key] = value;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Get the raw JSON object of the LinkedJson object.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	LinkedJson.prototype.rawJSON = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+		<span class="keyword">return</span> <span class="keyword">this</span>.attributes;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Returns a String representation of the LinkedJson object.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	LinkedJson.prototype.toString = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+		<span class="keyword">return</span> JSON.stringify(<span class="keyword">this</span>.attributes);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <h2>Stardog Connection</h2>
+<p>Defines the HTTP connection to Stardog as well as all the API calls 
+available to this protocol. The API calls defined in this element are
+referenced in <a href="http://stardog.com/docs/network/">Stardog Network documentation</a>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> Connection = Stardog.Connection = <span class="function"><span class="keyword">function</span> <span class="params">()</span>	{</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>By default (for testing)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">this</span>.endpoint = <span class="string">'http://localhost:5822/nodeDB/'</span>;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Set the Stardog HTTP endpoint, usually running in port <code>5822</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.setEndpoint = <span class="function"><span class="keyword">function</span> <span class="params">(endpoint)</span> {</span>
+		<span class="keyword">if</span> (endpoint.charAt(endpoint.length-<span class="number">1</span>) != <span class="string">'/'</span>) {
+			<span class="keyword">this</span>.endpoint = endpoint + <span class="string">'/'</span>;
+		} <span class="keyword">else</span> {
+			<span class="keyword">this</span>.endpoint = endpoint;
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Retrieve the configured Stardog HTTP endpoint.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getEndpoint = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+		<span class="keyword">return</span> <span class="keyword">this</span>.endpoint;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Set the Stardog Credentials - <code>username</code> and <code>password</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.setCredentials = <span class="keyword">function</span>(username, password) {
+		<span class="keyword">this</span>.credentials = <span class="keyword">new</span> Object();
+		<span class="keyword">this</span>.credentials.username = username;
+		<span class="keyword">this</span>.credentials.password = password;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Retrieve the configured Stardog Credentials. Credentials are returned in a JSON 
+containing <code>{ &quot;username&quot;: &quot;...&quot;, &quot;password&quot;: &quot;...&quot; }</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getCredentials = <span class="keyword">function</span>() {
+		<span class="keyword">return</span> <span class="keyword">this</span>.credentials;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Sets the reasoning level of the connection when performing SPARQL queries &amp;
+function calls involving reasoning. Allowed values are documented in 
+<a href="http://stardog.com/docs/owl2/">Stardog Reasoning docs</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.setReasoning = <span class="keyword">function</span>(reasoning) {
+		<span class="keyword">return</span> <span class="keyword">this</span>.reasoning = reasoning;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Retrieves the configured reasoning level for the Stardog Connection.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getReasoning = <span class="keyword">function</span>() {
+		<span class="keyword">return</span> <span class="keyword">this</span>.reasoning;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Check if we&#39;re in node or in the browser.
+Execute a query to the endpoint provided with the 
+resource specified and the parameters.
+Needs a callback to process results in a function receiving a 
+JSONLD object.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">if</span> (<span class="keyword">typeof</span> exports !== <span class="string">'undefined'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Node.js implementation of the HTTP request using <code>request</code> npm module.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		Connection.prototype._httpRequest = <span class="keyword">function</span>(theMethod, 
+			resource, acceptH, params, callback, msgBody, isJsonBody, contentType, multipart) {
+
+			<span class="keyword">var</span> req_url = <span class="keyword">this</span>.endpoint + resource,
+				strParams = qs.stringify(params);
+
+			<span class="keyword">if</span> (strParams &amp;&amp; strParams.length &gt; <span class="number">0</span>)
+				req_url += <span class="string">"?"</span> + strParams;
+
+			<span class="keyword">var</span> fnResponseHandler = <span class="function"><span class="keyword">function</span> <span class="params">(error, response, body)</span> {</span>
+				<span class="keyword">if</span> (!error) {
+					<span class="keyword">var</span> jsonData;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Try to parse response to JSON, which is expected in most 
+cases</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="keyword">try</span> {
+						jsonData = JSON.parse(body);
+
+						<span class="keyword">if</span> (jsonData <span class="keyword">instanceof</span> Array) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>console.log(jsonData);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							<span class="keyword">var</span> arrLinkedJson = []
+							<span class="keyword">for</span> (<span class="keyword">var</span> iElem=<span class="number">0</span>; iElem &lt; jsonData.length; iElem++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Check if the JSON object is JSON-LD</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>								<span class="keyword">if</span> (jsonData[iElem].hasOwnProperty(<span class="string">'@id'</span>) || 
+                                    jsonData[iElem].hasOwnProperty(<span class="string">'@context'</span>)) {
+								
+                                    arrLinkedJson.push( <span class="keyword">new</span> LinkedJson(jsonData[iElem]) );
+								}
+							}
+							jsonData = arrLinkedJson;
+						}
+						<span class="keyword">else</span> <span class="keyword">if</span> (jsonData.hasOwnProperty(<span class="string">'@id'</span>) ||
+                            jsonData.hasOwnProperty(<span class="string">'@context'</span>)) {
+                            
+                            jsonData = <span class="keyword">new</span> LinkedJson(jsonData);
+						}
+					}
+					<span class="keyword">catch</span> (err) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>If parsing throws an error just leave it as is.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                        jsonData = body;
+					}
+
+					callback(jsonData, response);
+				}
+				<span class="keyword">else</span> {
+					console.log(<span class="string">'Error found!'</span>);
+					console.log(error);
+				}
+			};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>build request object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="keyword">var</span> reqJSON = { 
+				url : req_url,
+				method : theMethod,
+				headers : {
+					<span class="string">"Accept"</span> : acceptH
+				}
+			};
+
+			<span class="keyword">if</span> (msgBody &amp;&amp; msgBody != <span class="literal">null</span>) {
+				<span class="keyword">if</span> (isJsonBody) {
+					reqJSON[<span class="string">"json"</span>] = msgBody;
+				}
+				<span class="keyword">else</span> {
+					reqJSON[<span class="string">"body"</span>] = msgBody;
+					reqJSON[<span class="string">"headers"</span>][<span class="string">"Content-Type"</span>] = contentType;
+				}
+			}
+
+			<span class="keyword">if</span> (<span class="keyword">this</span>.credentials) {
+				<span class="keyword">var</span> authHeaderVal = <span class="string">"Basic "</span> + <span class="keyword">new</span> Buffer(<span class="keyword">this</span>.credentials.username + <span class="string">":"</span> + 
+					<span class="keyword">this</span>.credentials.password).toString(<span class="string">"base64"</span>);
+
+				reqJSON[<span class="string">"headers"</span>][<span class="string">"Authorization"</span>] = authHeaderVal;
+			}
+
+			<span class="keyword">if</span> (multipart &amp;&amp; multipart != <span class="literal">null</span>) {
+				reqJSON[<span class="string">"multipart"</span>] = multipart;
+			}
+
+			<span class="keyword">if</span> (<span class="keyword">this</span>.reasoning &amp;&amp; <span class="keyword">this</span>.reasoning != <span class="literal">null</span>) {
+				reqJSON[<span class="string">'headers'</span>][<span class="string">'SD-Connection-String'</span>] = <span class="string">'reasoning='</span> + <span class="keyword">this</span>.reasoning;
+			}
+
+			request(reqJSON, 
+				fnResponseHandler	
+			);
+		};
+	}
+	<span class="keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>Browser implementation using jQuery&#39;s AJAX
+In case of cross-domain requests, a pre-flight OPTIONS http request is sent by the browser and
+the response is scanned for CORS headers. As per the CORS spec, no authentication information should
+be included in the pre-flight request and the original request should only be sent if the pre-flight request
+succeeded and the required CORS headers are received.</p>
+<p>Unfortunately Stardog (up to 1.1.3) does enforce authentication on the pre-flight request,
+causing it to fail in all browsers (401). Webkit-based browsers ignore 401 on the pre-flight request
+and continue with sending the original request, if the correct CORS headers were received.</p>
+<p>It seems that jQuery doesn&#39;t send the HTTP Basic authentication information, when simply pass as
+parameter to the jQuery.ajax call. Here, we can manually inject the HTTP Authorization header, which seems
+to work for Chrome, Safari, Firefox(*)</p>
+<p>(*) Only if the pre-flight request succeeds.</p>
+<p>IE7-9 does not provide a native btoa (Base64 encoding) function
+One can fall back to a JS implementation, e.g. <a href="http://www.webtoolkit.info/javascript-base64.html">http://www.webtoolkit.info/javascript-base64.html</a>
+jQuery does not natively provide support for IE&#39;s XDomainRequest object, although jQuery plugins exist that
+provide this extension and are reported to work.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		Connection.prototype._base64Encode = <span class="keyword">typeof</span>(btoa) == <span class="string">"function"</span> ? <span class="keyword">function</span>(x){<span class="keyword">return</span> btoa(x)} : <span class="literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>Low level HTTP request method to use in the Browser, using an AJAX implementation.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		Connection.prototype._httpRequest = <span class="keyword">function</span>(theMethod, resource, acceptH, params, callback) {
+			<span class="keyword">var</span> req_url = <span class="keyword">this</span>.endpoint + resource,
+				headers = {},
+				username, password;
+
+			<span class="keyword">if</span> (<span class="keyword">this</span>.reasoning &amp;&amp; <span class="keyword">this</span>.reasoning != <span class="literal">null</span>) {
+				headers[<span class="string">'SD-Connection-String'</span>] = <span class="string">'reasoning='</span> + <span class="keyword">this</span>.reasoning;
+			}
+			headers[<span class="string">'Accept'</span>] = acceptH || <span class="string">"application/sparql-results+json"</span>;
+
+			<span class="keyword">if</span> (<span class="keyword">this</span>.credentials) {
+				username = <span class="keyword">this</span>.credentials.username;
+				password = <span class="keyword">this</span>.credentials.password;
+				<span class="keyword">if</span> (<span class="keyword">this</span>._base64Encode) {
+					<span class="keyword">var</span> userPassBase64 = <span class="keyword">this</span>._base64Encode(username.concat(<span class="string">":"</span>,password));
+				} <span class="keyword">else</span> {
+					<span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Your browser does not support btoa() natively.\n"</span> +
+						<span class="string">" Please provide a javascript implementation for Connection.prototype._base64Encode"</span>)
+				}
+				headers[<span class="string">"Authorization"</span>] = <span class="string">"Basic "</span>.concat(userPassBase64);
+			}
+
+			$.ajax({
+				type: theMethod,
+				url: req_url,
+				dataType: <span class="string">'json'</span>,
+				data: params,
+				headers: headers,
+
+				success: <span class="keyword">function</span>(data) {
+					<span class="keyword">var</span> return_obj;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>check if the returned object is a JSONLD object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="keyword">if</span> (data.hasOwnProperty(<span class="string">'@id'</span>) || data.hasOwnProperty(<span class="string">'@context'</span>)) {
+						return_obj = Connection._convertToLinkedJson(data);
+					}
+					<span class="keyword">else</span> {
+						return_obj = data;
+					}
+
+					callback(return_obj);
+				},
+				error: <span class="keyword">function</span>(jqXHR, textStatus, errorThrown) {
+					callback({
+						<span class="string">'status'</span>: jqXHR.status,
+						<span class="string">'statusText'</span> : jqXHR.statusCode,
+						<span class="string">'error'</span>: jqXHR.responseText});
+				}
+			});
+		};
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p><code>Connection.getProperty</code> retrieves the values for a specific property of a URI individual in a 
+Stardog DB. This function is a direct access to provide easy out-of-the-box functionality
+for retrieving common properties such as rdfs:label, etc</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getProperty = <span class="keyword">function</span>(database, uri, property, callback) {
+		<span class="keyword">var</span> strQuery = <span class="string">'select ?val where { '</span>+ uri +<span class="string">' '</span>+ property +<span class="string">' ?val }'</span> ;
+		<span class="keyword">var</span> val = uri;
+
+		<span class="keyword">this</span>.query(database, strQuery, <span class="function"><span class="keyword">function</span> <span class="params">(jsonRes)</span> {</span>
+
+			<span class="keyword">if</span> (jsonRes.results &amp;&amp; jsonRes.results.bindings.length &gt; <span class="number">0</span>) {
+				val = jsonRes.results.bindings[<span class="number">0</span>].val.value;
+			}
+
+			callback(val);
+		});
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>Performs a GET to the root endpoint of the DB <code>database</code></p>
+<p><strong>Parameters</strong>:<br><code>database</code>: the name of the database verify its size.
+<code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getDB = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database, <span class="string">"*/*"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>Retrieve the DB size.
+Returns a single numeric value representing the number of triples in the database.</p>
+<p><strong>Parameters</strong>:<br><code>database</code>: the name of the database verify its size.
+<code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getDBSize = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/size"</span>, <span class="string">"*/*"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
+for the Accept header. This method is designed for <code>select</code> &amp; <code>ask</code> queries, where the result type will 
+be a set of bindings.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.query = <span class="keyword">function</span>(database, query, baseURI, limit, offset, callback, acceptMIME) {
+		<span class="keyword">var</span> acceptH = (acceptMIME) ? acceptMIME : <span class="string">'application/sparql-results+json'</span>;
+		<span class="keyword">var</span> options = {
+			<span class="string">"query"</span> : query
+		};
+
+		<span class="keyword">if</span> (baseURI &amp;&amp; baseURI != <span class="literal">null</span>)
+			options[<span class="string">"baseURI"</span>] = baseURI;
+
+		<span class="keyword">if</span> (limit &amp;&amp; limit != <span class="literal">null</span>)
+			options[<span class="string">"limit"</span>] = limit;
+
+		<span class="keyword">if</span> (offset &amp;&amp; offset != <span class="literal">null</span>)
+			options[<span class="string">"offset"</span>] = offset;
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/query"</span>, acceptH, options, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
+for the Accept header. This method is designed for <code>describe</code> &amp; <code>construct</code> queries, where the result type will 
+be a set of triples.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.queryGraph = <span class="function"><span class="keyword">function</span> <span class="params">(database, query, baseURI, limit, offset, callback, acceptMIME)</span> {</span>
+		<span class="keyword">var</span> acceptH = (acceptMIME) ? acceptMIME : <span class="string">'application/ld+json'</span>;
+		<span class="keyword">var</span> options = {
+			<span class="string">"query"</span> : query
+		};
+
+		<span class="keyword">if</span> (baseURI &amp;&amp; baseURI != <span class="literal">null</span>)
+			options[<span class="string">"baseURI"</span>] = baseURI;
+
+		<span class="keyword">if</span> (limit &amp;&amp; limit != <span class="literal">null</span>)
+			options[<span class="string">"limit"</span>] = limit;
+
+		<span class="keyword">if</span> (offset &amp;&amp; offset != <span class="literal">null</span>)
+			options[<span class="string">"offset"</span>] = offset;
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/query"</span>, acceptH, options, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>Returns the query plan generated by Stardog given a SPARQL query.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.queryExplain = <span class="function"><span class="keyword">function</span> <span class="params">(database, query, baseURI, callback)</span> {</span>
+		<span class="keyword">var</span> options = {
+			<span class="string">"query"</span> : query
+		}
+
+		<span class="keyword">if</span> (baseURI)
+			options[<span class="string">"baseURI"</span>] = baseURI;
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/explain"</span>, <span class="string">"text/plain"</span>, options, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>Start a new transaction in the database.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.begin = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/transaction/begin"</span>, <span class="string">"text/plain"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>Commit the transaction <code>txId</code> in the database. This will remove the transaction and the <code>txId</code> will not 
+be valid anymore. All function calls using a transaction to mutate the contents of a database must call this 
+function in order to make the changes permanent.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.commit = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/transaction/commit/"</span> + txId, <span class="string">"text/plain"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>Perform a rollback given within a trasaction, providing the transaction id <code>txId</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.rollback = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/transaction/rollback/"</span>+ txId, <span class="string">"text/plain"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>Evaluate a SPARQL query using a transaction <code>txId</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.queryInTransaction = 
+		<span class="function"><span class="keyword">function</span> <span class="params">(database, txId, query, baseURI, limit, offset, callback, acceptMIME)</span> {</span>
+		<span class="keyword">var</span> acceptH = (acceptMIME) ? acceptMIME : <span class="string">'application/sparql-results+json'</span>;
+		<span class="keyword">var</span> options = {
+			<span class="string">"query"</span> : query
+		};
+
+		<span class="keyword">if</span> (baseURI &amp;&amp; baseURI != <span class="literal">null</span>)
+			options[<span class="string">"baseURI"</span>] = baseURI;
+
+		<span class="keyword">if</span> (limit &amp;&amp; limit != <span class="literal">null</span>)
+			options[<span class="string">"limit"</span>] = limit;
+
+		<span class="keyword">if</span> (offset &amp;&amp; offset != <span class="literal">null</span>)
+			options[<span class="string">"offset"</span>] = offset;
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/"</span> + txId +<span class="string">"/query"</span>, acceptH, options,	callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>Add a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function 
+to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.addInTransaction = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, body, callback, contentType, graph_uri)</span> {</span>
+		<span class="keyword">var</span> options;
+		<span class="keyword">if</span> (graph_uri &amp;&amp; graph_uri != <span class="literal">null</span>) {
+			options = {
+				<span class="string">"graph-uri"</span> : graph_uri
+			};
+		}
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/"</span> + txId + <span class="string">"/add"</span>, <span class="string">"*/*"</span>, options, callback, body, <span class="literal">false</span>, contentType, <span class="literal">null</span>);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>Remove a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function 
+to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.removeInTransaction = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, body, callback, contentType, graph_uri)</span> {</span>
+		<span class="keyword">var</span> options;
+		<span class="keyword">if</span> (graph_uri) {
+			options = {
+				<span class="string">"graph-uri"</span> : graph_uri
+			};
+		}
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/"</span> + txId + <span class="string">"/remove"</span>, <span class="string">"text/plain"</span>, options, callback, body, <span class="literal">false</span>, contentType, <span class="literal">null</span>);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>Clears the content of the DB.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.clearDB = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, callback, graph_uri)</span> {</span>
+		<span class="keyword">var</span> options;
+		<span class="keyword">if</span> (graph_uri) {
+			options = {
+				<span class="string">"graph-uri"</span> : graph_uri
+			};
+		}
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/"</span> + txId + <span class="string">"/clear"</span>, <span class="string">"text/plain"</span>, options, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <h2>Reasoning API</h2>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>API call to get explanation of the inferences in <code>axioms</code> using a transaction <code>txId</code> with the content type 
+<code>contentType</code> of the axioms.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.reasoningExplain = <span class="function"><span class="keyword">function</span> <span class="params">(database, axioms, callback, contentType, txId)</span> {</span>
+		<span class="keyword">var</span> url = database + <span class="string">"/reasoning"</span>;
+		<span class="keyword">if</span> (txId &amp;&amp; txId != <span class="literal">null</span>) {
+			url = url + <span class="string">"/"</span> + txId;
+		}
+		url + url + <span class="string">"/explain"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>set default content-type to &quot;text/plain&quot; (N-Triples)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">if</span> (!contentType || contentType === <span class="literal">null</span>) {
+			contentType = <span class="string">"text/plain"</span>;
+		}
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, url, <span class="string">"application/x-turtle"</span>, <span class="literal">null</span>, callback, axioms, <span class="literal">false</span>, contentType);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>Checks the logical consistency of database. If using a named graph provide the <code>graph_uri</code> parameter.
+Returns a boolean response as <code>true</code> if the database is consistent. 
+See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-reasoning consistency</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.isConsistent = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback, graph_uri)</span> {</span>
+		<span class="keyword">var</span> options;
+		<span class="keyword">if</span> (graph_uri) {
+			options = {
+				<span class="string">"graph-uri"</span> : graph_uri
+			};
+		}
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/reasoning/consistency"</span>, <span class="string">"text/boolean"</span>, options, callback);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <h3>Integrity Constraint Validation</h3>
+<p>Listing the Integrity Constraints. Returns the integrity constraints for the specified database serialized in any supported RDF format.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getICV = <span class="function"><span class="keyword">function</span> <span class="params">(database, acceptH, callback)</span> {</span>
+		<span class="keyword">var</span> acceptH = (acceptMIME) ? acceptMIME : <span class="string">'text/plain'</span>;
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/icv"</span>, acceptH, <span class="literal">null</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and adds them to the database in an atomic action. 
+200 return code indicates the constraints were added successfully, 500 indicates that the constraints were not valid or unable to be added.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.setICV = <span class="function"><span class="keyword">function</span> <span class="params">(database, icv_axioms, callback, contentType)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>set default content-type to &quot;text/plain&quot; (N-Triples)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">if</span> (!contentType || contentType === <span class="literal">null</span>) {
+			contentType = <span class="string">"text/plain"</span>;
+		}
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/icv/add"</span>, <span class="string">"text/boolean"</span>, <span class="literal">null</span>, callback, icv_axioms, <span class="literal">false</span>, contentType);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and removes them from the database in a single atomic action. 
+200 indicates the constraints were successfully remove; 500 indicates an error.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.removeICV = <span class="function"><span class="keyword">function</span> <span class="params">(database, icv_axioms, callback, contentType)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>set default content-type to &quot;text/plain&quot; (N-Triples)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">if</span> (!contentType || contentType === <span class="literal">null</span>) {
+			contentType = <span class="string">"text/plain"</span>;
+		}
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/icv/remove"</span>, <span class="string">"text/boolean"</span>, <span class="literal">null</span>, callback, icv_axioms, <span class="literal">false</span>, contentType);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <p>Drops ALL integrity constraints for a database. 200 indicates all constraints were successfully dropped; 500 indicates an error.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.clearICV = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/icv/clear"</span>, <span class="string">"text/boolean"</span>, <span class="literal">null</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <p>Only works for one constraint, if more than 1 are provided returns 400 code status. The body of the POST is a single Integrity Constraint, 
+serialized in any supported RDF format, with Content-type set appropriately. Returns either a text/plain result containing a single SPARQL query; 
+or it returns 400 if more than one constraint was included in the input.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.fromICVtoSPARQL = <span class="function"><span class="keyword">function</span> <span class="params">(database, icv_axiom, callback, contentType, graph_uri)</span> {</span>
+		<span class="keyword">var</span> options;
+		<span class="keyword">if</span> (graph_uri) {
+			options = {
+				<span class="string">"graph-uri"</span> : graph_uri
+			};
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <p>set default content-type to &quot;text/plain&quot; (N-Triples)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">if</span> (!contentType || contentType === <span class="literal">null</span>) {
+			contentType = <span class="string">"text/plain"</span>;
+		}
+
+		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/icv/convert"</span>, <span class="string">"text/plain"</span>, options, callback, icv_axiom, <span class="literal">false</span>, contentType);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              <p>Returns a mapping of common prefix-namespace values. In the future this function will be replaced by a function call to the DB service.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getPrefixes = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+		<span class="keyword">var</span> prefixMap = {
+			<span class="string">'http://www.w3.org/2002/07/owl#'</span> : <span class="string">'owl'</span>,
+			<span class="string">'http://www.w3.org/2000/01/rdf-schema#'</span> : <span class="string">'rdfs'</span>,
+			<span class="string">'http://www.w3.org/1999/02/22-rdf-syntax-ns#'</span> : <span class="string">'rdf'</span>,
+			<span class="string">'http://www.w3.org/2001/XMLSchema#'</span> : <span class="string">'xsd'</span>,
+			<span class="string">'http://www.w3.org/2004/02/skos/core#'</span> : <span class="string">'skos'</span>,
+			<span class="string">'http://purl.org/dc/elements/1.1/'</span> : <span class="string">'dc'</span>,
+			<span class="string">'http://xmlns.com/foaf/0.1/'</span> : <span class="string">'foaf'</span>,
+			<span class="string">'http://www.w3.org/ns/sparql-service-description#'</span> : <span class="string">'sd'</span>,
+			<span class="string">'http://rdfs.org/ns/void#'</span> : <span class="string">'void'</span>,
+			<span class="string">'http://www.w3.org/ns/org#'</span> : <span class="string">'org'</span>,
+			<span class="string">'http://clarkparsia.com/annex#'</span> : <span class="string">'annex'</span>
+		};
+
+		<span class="keyword">return</span> prefixMap;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              <h2>Stardog Administrative API</h2>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
+              <p><a href="http://stardog.com/docs/network/#extended-http">Extended HTTP Protocol</a></p>
+<h3>Database operations.</h3>
+<p>These API calls are related to the DBMS core functions for administrating resources in the 
+Stardog Database System, such as: getting a list of databases, add/copy/delete databases. 
+Note that there&#39;s one administrative call missing for creating DBs, this is to limitations 
+on the HTTP multi-part libraries, but support for this is coming soon.</p>
+<h4>List databases (GET)</h4>
+<p>Get a List of the existing databases in the system.</p>
+<p><strong>Parameters</strong>:<br><code>callback</code>: the callback to execute once the request is done. </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listDBs = <span class="function"><span class="keyword">function</span> <span class="params">(callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/databases"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-69">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              <h4>Copy database (PUT)</h4>
+<p>Copy an existing database.</p>
+<p><strong>Parameters</strong>:<br><code>dbsource</code>: the name of the database to copy.<br><code>dbtarget</code>: the name of the new copied database.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.copyDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbsource, dbtarget, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbsource + <span class="string">"/copy"</span>, <span class="string">"application/json"</span>, { <span class="string">"to"</span> : dbtarget }, callback
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <h4>Drop an existing database.</h4>
+<p>Drops an existing database <code>dbname</code> and all the information that it contains.</p>
+<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to drop.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.dropDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"DELETE"</span>, <span class="string">"admin/databases/"</span>+ dbname, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              <h4>Migrate an existing database.</h4>
+<p>Migrates the existing content of a legacy database to new format.</p>
+<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to migrate.
+<code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.migrateDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/migrate"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <h4>Optimize an existing database.</h4>
+<p>Optimize an existing database.</p>
+<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to optimize.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.optimizeDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/optimize"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-73">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-73">&#182;</a>
+              </div>
+              <h4>Set database on-line.</h4>
+<p>Request message to set an existing database <code>dbname</code> on-line.</p>
+<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to set on-line.<br><code>strategyOp</code>: the strategy options, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.onlineDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, strategyOp, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/online"</span>, <span class="string">"application/json"</span>, { <span class="string">"strategy"</span> : strategyOp }, callback
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-74">&#182;</a>
+              </div>
+              <h4>Set database off-line.</h4>
+<p>Request message to set an existing database off-line; 
+receives optionally a JSON input to specify a timeout for the off-line operation. 
+When not specified, defaults to 3 minutes as the timeout; 
+the timeout should be provided in milliseconds. 
+The timeout is the amount of time the database will wait for existing connections to complete before going off-line. 
+This will allow open transaction to commit/rollback, open queries to complete, etc. 
+After the timeout has expired, all remaining open connections are closed and the database goes off-line.</p>
+<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to set off-line.<br><code>strategyOp</code>: the strategy options, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>timeoutMS</code>: timeout in milliseconds.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.offlineDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, strategyOp, timeoutMS, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/offline"</span>, <span class="string">"application/json"</span>, { <span class="string">"strategy"</span> : strategyOp }, callback
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-75">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-75">&#182;</a>
+              </div>
+              <h4>Set option values to an existing database.</h4>
+<p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values. 
+Database options can be found <a href="http://stardog.com/docs/admin/#admin-db">here</a>.</p>
+<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to set the options.<br><code>optionsObj</code>: the options JSON object, indicating the options and values to set, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.setDBOptions = <span class="keyword">function</span>(dbname, optionsObj, callback) {
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"POST"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/options"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, optionsObj, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-76">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-76">&#182;</a>
+              </div>
+              <h4>Get option values from an existing database.</h4>
+<p>Retrieves a set of options passed through a JSON object specification. 
+The JSON input has empty values for each key, but will be filled with the option 
+values in the database when the call returns.</p>
+<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the db to retrieve the option values.<br><code>optionsObj</code>: the options JSON object seed, indicating the options to retrieve, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getDBOptions = <span class="keyword">function</span>(dbname, optionsObj, callback) {
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/options"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, optionsObj, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-77">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-77">&#182;</a>
+              </div>
+              <h3>User operations.</h3>
+<p>Administrative API calls for managing user accounts in Stardog, e.g. creating/modifying/removing 
+user accounts.</p>
+<h4>Create new user</h4>
+<p>Adds a new user to the system; allows a configuration option for superuser as a JSON object. 
+Superuser configuration is set as default to false. The password <strong>must</strong> be provided for the user.</p>
+<p><strong>Parameters</strong>:<br><code>username</code>: the username of the user to create.<br><code>password</code>: the initial password of the newly created user.<br><code>superuser</code>: boolean flag indicating if the created user will have super-user privileges.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.createUser = <span class="function"><span class="keyword">function</span> <span class="params">(username, password, superuser, callback)</span> {</span>
+		<span class="keyword">var</span> options = {
+			<span class="string">"username"</span> : username,
+			<span class="string">"password"</span> : password.split(<span class="string">''</span>)
+		}
+
+		<span class="keyword">if</span> (superuser &amp;&amp; superuser != <span class="literal">null</span>) {
+			options[<span class="string">"superuser"</span>] = superuser;
+		}
+
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"POST"</span>, <span class="string">"admin/users"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, options, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-78">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-78">&#182;</a>
+              </div>
+              <h4>Change user&#39;s password</h4>
+<p>Changes <code>user</code> password in the system. Receives input of new password as a JSON Object.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the user to change the password.<br><code>newPwd</code>: the new password of <code>user</code>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.changePwd = <span class="function"><span class="keyword">function</span> <span class="params">(user, newPwd, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/pwd"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, { <span class="string">"password"</span> : newPwd }, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-79">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-79">&#182;</a>
+              </div>
+              <h4>Check if user is enabled.</h4>
+<p>Verifies if user is enabled in the system.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the user name to verify if enabled.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.isUserEnabled = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/enabled"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-80">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-80">&#182;</a>
+              </div>
+              <h4>Check if user is superuser.</h4>
+<p>Verifies if the user is a superuser.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the user to verify if is superuser.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.isSuperUser = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/superuser"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-81">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-81">&#182;</a>
+              </div>
+              <h4>List user roles.</h4>
+<p>Retrieves the list of the roles assigned to user.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the user used to list roles.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUserRoles = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/roles"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-82">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-82">&#182;</a>
+              </div>
+              <h4>List users (GET)</h4>
+<p>Retrieves a list of users available in the system.</p>
+<p><strong>Parameters</strong>:<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUsers = <span class="function"><span class="keyword">function</span> <span class="params">(callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/users"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-83">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-83">&#182;</a>
+              </div>
+              <h4>Delete user</h4>
+<p><strong>Parameters</strong>:<br><code>user</code>: the name of the user to delete from the system.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.deleteUser = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"DELETE"</span>, <span class="string">"admin/users/"</span>+ user, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-84">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-84">&#182;</a>
+              </div>
+              <h4>Enable users.</h4>
+<p>Enables/Disables an existing user in the system.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the name of the user to set enable.<br><code>enableFlag</code>: boolean flag, if <code>true</code> user is enabled; <code>false</code> to disable it.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.userEnabled = <span class="function"><span class="keyword">function</span> <span class="params">(user, enableFlag, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/enabled"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, { <span class="string">"enabled"</span> : enableFlag }, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-85">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-85">&#182;</a>
+              </div>
+              <h4>Setting user roles.</h4>
+<p>Sets roles for a given user.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the name of the user to set the roles.<br><code>rolesArray</code>: an array containing the roles to assign to the user, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.setUserRoles = <span class="function"><span class="keyword">function</span> <span class="params">(user, rolesArray, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/roles"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, { <span class="string">"roles"</span> : rolesArray }, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-86">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-86">&#182;</a>
+              </div>
+              <h3>Role operations.</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-87">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-87">&#182;</a>
+              </div>
+              <p>Administrative API calls for managing roles in Stardog, which are part of the security model, e.g. creating/modifying/removing 
+roles.</p>
+<h4>Create a new role</h4>
+<p><strong>Parameters</strong>:<br><code>rolename</code>: the name of the role to create.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.createRole = <span class="keyword">function</span>(rolename, callback) {
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"POST"</span>, <span class="string">"admin/roles"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, { <span class="string">"rolename"</span> : rolename }, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-88">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-88">&#182;</a>
+              </div>
+              <h4>List roles (GET)</h4>
+<p>Retrieves the list of roles registered in the system.</p>
+<p><strong>Parameters</strong>:<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listRoles = <span class="function"><span class="keyword">function</span> <span class="params">(callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/roles"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-89">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-89">&#182;</a>
+              </div>
+              <h4>List users with a specified role.</h4>
+<p>Retrieves users that have the role assigned.</p>
+<p><strong>Parameters</strong>:<br><code>role</code>: the role to look for in the set of users defined in Stardog.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listRoleUsers = <span class="function"><span class="keyword">function</span> <span class="params">(role, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/roles/"</span>+ role +<span class="string">"/users"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-90">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-90">&#182;</a>
+              </div>
+              <h4>Delete role</h4>
+<p>Deletes an existing role from the system; the force parameter is a boolean 
+flag which indicates if the delete call for the role must be forced, 
+<a href="http://stardog.com/docs/network/#extended-http">more info</a></p>
+<p><strong>Parameters</strong>:<br><code>role</code>: the role to delete.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.deleteRole = <span class="function"><span class="keyword">function</span> <span class="params">(role, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(<span class="string">"DELETE"</span>, <span class="string">"admin/roles/"</span>+ role, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-91">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-91">&#182;</a>
+              </div>
+              <h3>Permissions operations.</h3>
+<p>Administrative API calls for managing permissions for users &amp; roles in Stardog, 
+which are also part of the security model, e.g. creating/modifying/removing 
+permissions.</p>
+<h4>Assign permission to role.</h4>
+<p>Creates a new permission for a given role over a specified resource.</p>
+<p><strong>Parameters</strong>:<br><code>role</code>: the role to whom the permission will be assigned.<br><code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.assignPermissionToRole = <span class="function"><span class="keyword">function</span> <span class="params">(role, permissionObj, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/permissions/role/"</span>+ role, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, permissionObj, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-92">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-92">&#182;</a>
+              </div>
+              <h4>Assign permission to user.</h4>
+<p>Creates a new permission for a given user over a specified resource.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the user to whom the permission will be assigned.<br><code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.assignPermissionToUser = <span class="function"><span class="keyword">function</span> <span class="params">(user, permissionObj, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"PUT"</span>, <span class="string">"admin/permissions/user/"</span>+ user, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, permissionObj, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-93">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-93">&#182;</a>
+              </div>
+              <h4>Delete permission from role.</h4>
+<p>Deletes a permission for a given role over a specified resource.</p>
+<p><strong>Parameters</strong>:<br><code>role</code>: the role to whom the permission will be removed.<br><code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.deletePermissionFromRole = <span class="function"><span class="keyword">function</span> <span class="params">(role, permissionObj, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"POST"</span>, <span class="string">"admin/permissions/role/"</span>+ role + <span class="string">"/delete"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, permissionObj, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-94">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-94">&#182;</a>
+              </div>
+              <h4>Delete permission from user.</h4>
+<p>Deletes a permission for a given user over a specified resource.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the user to whom the permission will be removed.<br><code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.deletePermissionFromUser = <span class="function"><span class="keyword">function</span> <span class="params">(user, permissionObj, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"POST"</span>, <span class="string">"admin/permissions/user/"</span>+ user + <span class="string">"/delete"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, permissionObj, <span class="literal">true</span>
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-95">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-95">&#182;</a>
+              </div>
+              <h4>List role permissions.</h4>
+<p>Retrieves permissions assigned to the role.</p>
+<p><strong>Parameters</strong>:<br><code>role</code>: the role to check for its permissions.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listRolePermissions = <span class="function"><span class="keyword">function</span> <span class="params">(role, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"GET"</span>, <span class="string">"admin/permissions/role/"</span>+ role, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-96">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-96">&#182;</a>
+              </div>
+              <h4>List user permissions.</h4>
+<p>Retrieves permissions assigned to the user.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the user to check for its permissions.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUserPermissions = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"GET"</span>, <span class="string">"admin/permissions/user/"</span>+ user, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
+		);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-97">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-97">&#182;</a>
+              </div>
+              <h4>List user effective permissions.</h4>
+<p>Retrieves effective permissions assigned to the user.</p>
+<p><strong>Parameters</strong>:<br><code>user</code>: the user to check for its effective permissions.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUserEffPermissions = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"GET"</span>, <span class="string">"admin/permissions/effective/user/"</span>+ user, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
+			);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-98">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-98">&#182;</a>
+              </div>
+              <h3>Shutdown server.</h3>
+<p>Shuts down the Stardog Server. If successful, returns a 202 to indicate that the 
+request was received and that the server will be shut down shortly.</p>
+<p><strong>Parameters</strong>:<br><code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.shutdownServer = <span class="function"><span class="keyword">function</span> <span class="params">(callback)</span> {</span>
+		<span class="keyword">this</span>._httpRequest(
+			<span class="string">"POST"</span>, <span class="string">"admin/shutdown"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
+			);
+	};
+
+}).call(<span class="keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
