@@ -30,7 +30,7 @@
         <section id="main-content">
           <h1>Stardog.js</h1>
 
-<p>Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a><br><em>Current Version <strong>0.0.2</strong></em> </p>
+<p>Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a><br><em>Current Version <strong>0.0.4</strong></em> </p>
 
 <p>Stardog.js JavaScript Framework for Node.js to develop apps with the <a href="http://stardog.com">Stardog RDF Database</a>.  </p>
 
@@ -70,6 +70,8 @@ You'll also need <a href="https://npmjs.org">npm</a> to run the test cases and i
 
 <h2>Quick Example</h2>
 
+<h3>Node.js</h3>
+
 <pre><code>var stardog = require("stardog");
 
 var conn = new stardog.Connection();
@@ -80,6 +82,18 @@ conn.setCredentials("username", "password");
 conn.query("db-name", "select distinct * where { ?s ?p ?o } limit 5", null, 5, 0, function (data) {
     console.log(data.results.bindings);
 })
+</code></pre>
+
+<h3>Browser</h3>
+
+<pre><code>&lt;script src="js/stardog.js" type="text/javascript"&gt;&lt;/script&gt;
+…
+&lt;script type="text/javascript"&gt;
+    var conn = new Stardog.Connection();
+    conn.setEndpoint("/stardog/endpoint/");
+    conn.setReasoning("RDFS");
+    conn.setCredentials("browser", "secret");
+&lt;/script&gt;
 </code></pre>
 
 <h2>NOTE</h2>
