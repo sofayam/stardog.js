@@ -105,12 +105,14 @@ conn.query("db-name", "select distinct * where { ?s ?p ?o } limit 5", null, 5, 0
 
 <h3>Browser</h3>
 
+<p><strong>NOTE</strong>: the Endpoint is a proxy to the Stardog HTTP interface in order to avoid CORS issues.</p>
+
 <pre><code>&lt;script src="js/stardog.js" type="text/javascript"&gt;&lt;/script&gt;
 …
 &lt;script type="text/javascript"&gt;
     var conn = new Stardog.Connection();
-    conn.setEndpoint("/stardog/endpoint/");
-    conn.setReasoning("RDFS");
+    conn.setEndpoint("/stardog");
+    conn.setReasoning("QL");
     conn.setCredentials("browser", "secret");
 &lt;/script&gt;
 </code></pre>
