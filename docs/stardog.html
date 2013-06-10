@@ -28,7 +28,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <pre><code>Stardog.js 0.0.4</code></pre>
+              <pre><code>Stardog.js 0.0.5</code></pre>
 <p>Copyright 2012 Clark &amp; Parsia LLC</p>
 <p>Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
 you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ limitations under the License.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="keyword">function</span>() {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>(<span class="keyword">function</span>(factory) {</pre></div></div>
             
         </li>
         
@@ -99,11 +99,17 @@ restored later on, if &#39;noConflict&#39; is used.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Create top-level namespace</p>
+              <p>Export the Underscore object for <strong>Node.js</strong>, with
+backward compatibility for the old <code>require()</code> API. If we&#39;re in
+the browser, add <code>_</code> as a global object via a string identifier,
+for Closure Compiler &quot;advanced&quot; mode.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> Stardog = {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">if</span> (<span class="keyword">typeof</span> exports !== <span class="string">'undefined'</span> &amp;&amp; <span class="keyword">typeof</span> module !== <span class="string">'undefined'</span> &amp;&amp; module.exports) {
+		exports = module.exports = factory(root);
+	}
+	<span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> define === <span class="string">'function'</span> &amp;&amp; define.amd) {</pre></div></div>
             
         </li>
         
@@ -114,17 +120,11 @@ restored later on, if &#39;noConflict&#39; is used.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Export the Underscore object for <strong>Node.js</strong>, with
-backwards-compatibility for the old <code>require()</code> API. If we&#39;re in
-the browser, add <code>_</code> as a global object via a string identifier,
-for Closure Compiler &quot;advanced&quot; mode.</p>
+              <p>load Stardog via AMD</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="keyword">if</span> (<span class="keyword">typeof</span> exports !== <span class="string">'undefined'</span>) {
-		<span class="keyword">if</span> (<span class="keyword">typeof</span> module !== <span class="string">'undefined'</span> &amp;&amp; module.exports) {
-			exports = module.exports = Stardog;
-		}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		define([<span class="string">'stardog'</span>], <span class="keyword">function</span>() {</pre></div></div>
             
         </li>
         
@@ -135,13 +135,15 @@ for Closure Compiler &quot;advanced&quot; mode.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>exports.Stardog = Stardog;</p>
+              <p>Export to global for backward compatibility</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	} <span class="keyword">else</span> {
-		root[<span class="string">'Stardog'</span>] = Stardog;
-	}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			root[<span class="string">'Stardog'</span>] = factory(root);
+			<span class="keyword">return</span> root.Stardog;
+		});
+	}
+	<span class="keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -152,11 +154,13 @@ for Closure Compiler &quot;advanced&quot; mode.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Current version of the library. Keep in sync with &#39;package.json&#39;</p>
+              <p>Browser global</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Stardog.VERSION = <span class="string">'0.0.4'</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		root[<span class="string">'Stardog'</span>] = factory(root);
+	}
+}).call(<span class="keyword">this</span>, <span class="keyword">function</span>(root) {</pre></div></div>
             
         </li>
         
@@ -167,12 +171,11 @@ for Closure Compiler &quot;advanced&quot; mode.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Require jsonld, if we&#39;re on the server, and it&#39;s not already present</p>
+              <p>Create top-level namespace</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> jsonld = root.jsonld;
-	<span class="keyword">if</span> (!jsonld &amp;&amp; (<span class="keyword">typeof</span> require !== <span class="string">'undefined'</span>)) jsonld = require(<span class="string">'jsonld'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> Stardog = {};</pre></div></div>
             
         </li>
         
@@ -183,12 +186,13 @@ for Closure Compiler &quot;advanced&quot; mode.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Require request, if we&#39;re on the server, and it&#39;s not already present</p>
+              <p>Current version of the library. Keep in sync with &#39;package.json&#39;</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> request = root.request;
-	<span class="keyword">if</span> (!request &amp;&amp; (<span class="keyword">typeof</span> require !== <span class="string">'undefined'</span>)) request = require(<span class="string">'request'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	Stardog.VERSION = <span class="string">'0.0.5'</span>;
+
+	<span class="keyword">if</span> (<span class="keyword">typeof</span> exports !== <span class="string">'undefined'</span>) {</pre></div></div>
             
         </li>
         
@@ -199,12 +203,12 @@ for Closure Compiler &quot;advanced&quot; mode.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Require querystring, if we&#39;re on the server, and it&#39;s not already present</p>
+              <p>Require request, if we&#39;re on the server, and it&#39;s not already present</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="keyword">var</span> qs = root.qs;
-	<span class="keyword">if</span> (!qs &amp;&amp; (<span class="keyword">typeof</span> require !== <span class="string">'undefined'</span>)) qs = require(<span class="string">'querystring'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">var</span> request = root.request;
+		<span class="keyword">if</span> (!request &amp;&amp; (<span class="keyword">typeof</span> require !== <span class="string">'undefined'</span>)) request = require(<span class="string">'request'</span>);</pre></div></div>
             
         </li>
         
@@ -215,10 +219,16 @@ for Closure Compiler &quot;advanced&quot; mode.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>For AJAX&#39;s purposes, jQuery owns the <code>$</code> variable.
-jQuery is only required when using the library in the browser.</p>
+              <p>Require querystring, if we&#39;re on the server, and it&#39;s not already present</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">var</span> qs = root.qs;
+		<span class="keyword">if</span> (!qs &amp;&amp; (<span class="keyword">typeof</span> require !== <span class="string">'undefined'</span>)) qs = require(<span class="string">'querystring'</span>);
+	}
+
+	<span class="keyword">var</span> _ = root._;
+	<span class="keyword">if</span> (!_ &amp;&amp; (<span class="keyword">typeof</span> require !== <span class="string">'undefined'</span>)) _ = require(<span class="string">'underscore'</span>);</pre></div></div>
             
         </li>
         
@@ -226,11 +236,11 @@ jQuery is only required when using the library in the browser.</p>
         <li id="section-13">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <h2>Define LinkedJson Object</h2>
-<hr>
+              <p>For AJAX&#39;s purposes, jQuery owns the <code>$</code> variable.
+jQuery is only required when using the library in the browser.</p>
 
             </div>
             
@@ -240,8 +250,22 @@ jQuery is only required when using the library in the browser.</p>
         <li id="section-14">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h2">
                 <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h2>Define LinkedJson Object</h2>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>LinkedJson is an abstraction of a JSON-LD Object. This is just a placeholder for a 
 better implementation of the JSON-LD spec. Currently it is used for query results when 
@@ -254,11 +278,11 @@ the result format is a JSON-LD from Stardog.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Attributes contains the original JSON object with the map of 
 all the attributes.</p>
@@ -271,11 +295,11 @@ all the attributes.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Gets a property from the LinkedJson object.</p>
 
@@ -288,11 +312,11 @@ all the attributes.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Sets a property in the LinkedJson object.</p>
 
@@ -305,11 +329,11 @@ all the attributes.</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Get the raw JSON object of the LinkedJson object.</p>
 
@@ -322,11 +346,11 @@ all the attributes.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Returns a String representation of the LinkedJson object.</p>
 
@@ -339,11 +363,11 @@ all the attributes.</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <hr>
 
@@ -352,11 +376,11 @@ all the attributes.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <h2>Stardog Connection</h2>
 <p>Defines the HTTP connection to Stardog as well as all the API calls 
@@ -370,11 +394,11 @@ referenced in <a href="http://stardog.com/docs/network/">Stardog Network documen
         </li>
         
         
-        <li id="section-22">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>By default (for testing)</p>
 
@@ -386,11 +410,11 @@ referenced in <a href="http://stardog.com/docs/network/">Stardog Network documen
         </li>
         
         
-        <li id="section-23">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Set the Stardog HTTP endpoint, usually running in port <code>5822</code>.</p>
 
@@ -407,11 +431,11 @@ referenced in <a href="http://stardog.com/docs/network/">Stardog Network documen
         </li>
         
         
-        <li id="section-24">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Retrieve the configured Stardog HTTP endpoint.</p>
 
@@ -424,11 +448,11 @@ referenced in <a href="http://stardog.com/docs/network/">Stardog Network documen
         </li>
         
         
-        <li id="section-25">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Set the Stardog Credentials - <code>username</code> and <code>password</code>.</p>
 
@@ -443,11 +467,11 @@ referenced in <a href="http://stardog.com/docs/network/">Stardog Network documen
         </li>
         
         
-        <li id="section-26">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Retrieve the configured Stardog Credentials. Credentials are returned in a JSON 
 containing <code>{ &quot;username&quot;: &quot;...&quot;, &quot;password&quot;: &quot;...&quot; }</code></p>
@@ -461,11 +485,11 @@ containing <code>{ &quot;username&quot;: &quot;...&quot;, &quot;password&quot;: 
         </li>
         
         
-        <li id="section-27">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Sets the reasoning level of the connection when performing SPARQL queries &amp;
 function calls involving reasoning. Allowed values are documented in 
@@ -480,11 +504,11 @@ function calls involving reasoning. Allowed values are documented in
         </li>
         
         
-        <li id="section-28">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Retrieves the configured reasoning level for the Stardog Connection.</p>
 
@@ -497,11 +521,11 @@ function calls involving reasoning. Allowed values are documented in
         </li>
         
         
-        <li id="section-29">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Check if we&#39;re in node or in the browser.
 Execute a query to the endpoint provided with the 
@@ -516,21 +540,35 @@ JSONLD object.</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <p>Node.js implementation of the HTTP request using <code>request</code> npm module.</p>
+              <p>Node.js implementation of the HTTP request using <code>request</code> npm module.
+<strong>Parameters</strong>:<br><code>options</code>: an object with the following attributes: 
+            <code>httpMethod</code>: the name of the database;
+            <code>resource</code>: the resource;
+            <code>acceptHeader</code>: the accept header;
+            <code>params</code>: any other parameters to pass to the SPARQL endpoint;
+            <code>msgBody</code>: the message body;
+            <code>isJsonBody</code>: whether the body is a JSON object;
+            <code>contentType</code>: the content type;
+            <code>multipart</code>: the multipart;
+<code>callback</code>: the callback to execute once the request is done. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		Connection.prototype._httpRequest = <span class="keyword">function</span>(theMethod, 
-			resource, acceptH, params, callback, msgBody, isJsonBody, contentType, multipart) {
-
-			<span class="keyword">var</span> req_url = <span class="keyword">this</span>.endpoint + resource,
-				strParams = qs.stringify(params);
+            <div class="content"><div class='highlight'><pre>		Connection.prototype._httpRequest = <span class="keyword">function</span>(options, callback) {
+			<span class="keyword">var</span> theMethod = options.httpMethod,
+				req_url = <span class="keyword">this</span>.endpoint + options.resource,
+				strParams = qs.stringify(options.params),
+				msgBody = options.msgBody,
+				acceptH = options.acceptHeader,
+				isJsonBody = options.isJsonBody,
+				contentType = options.contentType,
+				multipart = options.multipart;
 
 			<span class="keyword">if</span> (strParams &amp;&amp; strParams.length &gt; <span class="number">0</span>)
 				req_url += <span class="string">"?"</span> + strParams;
@@ -542,11 +580,11 @@ JSONLD object.</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Try to parse response to JSON, which is expected in most 
 cases</p>
@@ -561,11 +599,11 @@ cases</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>console.log(jsonData);</p>
 
@@ -577,11 +615,11 @@ cases</p>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Check if the JSON object is JSON-LD</p>
 
@@ -596,36 +634,12 @@ cases</p>
 							jsonData = arrLinkedJson;
 						}
 						<span class="keyword">else</span> <span class="keyword">if</span> (jsonData.hasOwnProperty(<span class="string">'@id'</span>) ||
-                            jsonData.hasOwnProperty(<span class="string">'@context'</span>)) {
+							jsonData.hasOwnProperty(<span class="string">'@context'</span>)) {
                             
-                            jsonData = <span class="keyword">new</span> LinkedJson(jsonData);
+							jsonData = <span class="keyword">new</span> LinkedJson(jsonData);
 						}
 					}
 					<span class="keyword">catch</span> (err) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p>If parsing throws an error just leave it as is.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>                        jsonData = body;
-					}
-
-					callback(jsonData, response);
-				}
-				<span class="keyword">else</span> {
-					console.log(<span class="string">'Error found!'</span>);
-					console.log(error);
-				}
-			};</pre></div></div>
             
         </li>
         
@@ -635,6 +649,45 @@ cases</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>If parsing throws an error just leave it as is.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						jsonData = body;
+					}
+
+					callback(jsonData, response);
+				}
+				<span class="keyword">else</span> {
+					console.log(<span class="string">'Error found!'</span>);
+					console.log(error);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>TODO: maybe wrap the error with stardog specific info</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					callback(body, response, error); 
+				}
+			};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>build request object</p>
 
@@ -648,7 +701,7 @@ cases</p>
 				}
 			};
 
-			<span class="keyword">if</span> (msgBody &amp;&amp; msgBody != <span class="literal">null</span>) {
+			<span class="keyword">if</span> (msgBody) {
 				<span class="keyword">if</span> (isJsonBody) {
 					reqJSON[<span class="string">"json"</span>] = msgBody;
 				}
@@ -683,11 +736,11 @@ cases</p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Browser implementation using jQuery&#39;s AJAX
 In case of cross-domain requests, a pre-flight OPTIONS http request is sent by the browser and
@@ -713,24 +766,42 @@ provide this extension and are reported to work.</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p>Low level HTTP request method to use in the Browser, using an AJAX implementation.</p>
+              <p>Low level HTTP request method to use in the Browser, using an AJAX implementation.
+<strong>Parameters</strong>:<br><code>options</code>: an object with the following attributes:
+                <code>httpMethod</code>: the name of the database;
+            <code>resource</code>: the resource;
+            <code>acceptHeader</code>: the accept header;
+            <code>params</code>: any other parameters to pass to the SPARQL endpoint;
+            <code>msgBody</code>: the message body;
+            <code>isJsonBody</code>: whether the body is a JSON object;
+            <code>contentType</code>: the content type;
+            <code>multipart</code>: the multipart;
+<code>callback</code>: the callback to execute once the request is done. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		Connection.prototype._httpRequest = <span class="keyword">function</span>(theMethod, resource, acceptH, params, callback) {
-			<span class="keyword">var</span> req_url = <span class="keyword">this</span>.endpoint + resource,
+            <div class="content"><div class='highlight'><pre>		Connection.prototype._httpRequest = <span class="keyword">function</span>(options, callback) {
+			<span class="keyword">var</span> theMethod = options.httpMethod,
+				acceptH = options.acceptHeader,
+				req_url = <span class="keyword">this</span>.endpoint + options.resource,
+				params = options.params ? (<span class="string">"?"</span> + $.param(options.params)) : <span class="string">''</span>,
+				contentType = options.contentType,
+				body = options.msgBody ? options.msgBody : <span class="literal">null</span>,
+				isJsonBody = options.isJsonBody,
+				multipart = options.multipart,
 				headers = {},
 				username, password;
 
 			<span class="keyword">if</span> (<span class="keyword">this</span>.reasoning &amp;&amp; <span class="keyword">this</span>.reasoning != <span class="literal">null</span>) {
 				headers[<span class="string">'SD-Connection-String'</span>] = <span class="string">'reasoning='</span> + <span class="keyword">this</span>.reasoning;
 			}
+
 			headers[<span class="string">'Accept'</span>] = acceptH || <span class="string">"application/sparql-results+json"</span>;
 
 			<span class="keyword">if</span> (<span class="keyword">this</span>.credentials) {
@@ -745,44 +816,55 @@ provide this extension and are reported to work.</p>
 				headers[<span class="string">"Authorization"</span>] = <span class="string">"Basic "</span>.concat(userPassBase64);
 			}
 
+			<span class="keyword">if</span> (isJsonBody) {
+				headers[<span class="string">'Content-Type'</span>] = <span class="string">'application/json'</span>;
+			} <span class="keyword">else</span> <span class="keyword">if</span> (contentType) {
+				headers[<span class="string">'Content-Type'</span>] = contentType;
+			}
+
 			$.ajax({
 				type: theMethod,
-				url: req_url,
-				dataType: <span class="string">'json'</span>,
-				data: params,
-				headers: headers,
-
-				success: <span class="keyword">function</span>(data) {
-					<span class="keyword">var</span> return_obj;</pre></div></div>
+				url: req_url + params,
+				processData: <span class="literal">false</span>,
+				dataType: acceptH.match(<span class="regexp">/json/gi</span>) ? <span class="string">'json'</span> : <span class="string">'text'</span>,
+				data:  isJsonBody ? JSON.stringify(body) : body,
+				headers: headers
+			}).done(<span class="keyword">function</span>(data, status, jqXHR) {
+				<span class="keyword">var</span> return_obj;</pre></div></div>
             
         </li>
         
         
-        <li id="section-38">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>check if the returned object is a JSONLD object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="keyword">if</span> (data.hasOwnProperty(<span class="string">'@id'</span>) || data.hasOwnProperty(<span class="string">'@context'</span>)) {
-						return_obj = Connection._convertToLinkedJson(data);
-					}
-					<span class="keyword">else</span> {
-						return_obj = data;
-					}
-
-					callback(return_obj);
-				},
-				error: <span class="keyword">function</span>(jqXHR, textStatus, errorThrown) {
-					callback({
-						<span class="string">'status'</span>: jqXHR.status,
-						<span class="string">'statusText'</span> : jqXHR.statusCode,
-						<span class="string">'error'</span>: jqXHR.responseText});
+            <div class="content"><div class='highlight'><pre>				<span class="keyword">if</span> (data &amp;&amp; (data.hasOwnProperty(<span class="string">'@id'</span>) || data.hasOwnProperty(<span class="string">'@context'</span>))) {
+					return_obj = Connection._convertToLinkedJson(data);
+				} <span class="keyword">else</span> {
+					return_obj = data;
 				}
+				callback(return_obj, {
+					responseText: jqXHR.responseText,
+					statusCode: jqXHR.status,
+					statusText: jqXHR.statusText
+				});
+			}).fail(<span class="keyword">function</span>(jqXHR, textStatus, errorThrown) {
+				callback(
+					jqXHR.responseText,
+					{
+						responseText: jqXHR.responseText,
+						statusCode: jqXHR.status,
+						statusText: jqXHR.statusText
+					},
+					errorThrown
+				);
 			});
 		};
 	}</pre></div></div>
@@ -790,24 +872,33 @@ provide this extension and are reported to work.</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p><code>Connection.getProperty</code> retrieves the values for a specific property of a URI individual in a 
 Stardog DB. This function is a direct access to provide easy out-of-the-box functionality
-for retrieving common properties such as rdfs:label, etc</p>
+for retrieving common properties such as rdfs:label, etc
+<strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>uri</code>: the individual URI;
+            <code>property</code>: the specific property.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.getProperty = <span class="keyword">function</span>(database, uri, property, callback) {
-		<span class="keyword">var</span> strQuery = <span class="string">'select ?val where { '</span>+ uri +<span class="string">' '</span>+ property +<span class="string">' ?val }'</span> ;
-		<span class="keyword">var</span> val = uri;
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getProperty = <span class="keyword">function</span>(options, callback) {
+		<span class="keyword">var</span> val = options.uri,
+			reqOptions = { 
+				database: options.database,
+				query:  <span class="string">'select ?val where { '</span>+ options.uri +<span class="string">' '</span>+ options.property +<span class="string">' ?val }'</span>,
+				params: options.params
+			};
 
-		<span class="keyword">this</span>.query(database, strQuery, <span class="function"><span class="keyword">function</span> <span class="params">(jsonRes)</span> {</span>
-
+		<span class="keyword">this</span>.query(reqOptions, <span class="function"><span class="keyword">function</span> <span class="params">(jsonRes)</span> {</span>
 			<span class="keyword">if</span> (jsonRes.results &amp;&amp; jsonRes.results.bindings.length &gt; <span class="number">0</span>) {
 				val = jsonRes.results.bindings[<span class="number">0</span>].val.value;
 			}
@@ -819,73 +910,30 @@ for retrieving common properties such as rdfs:label, etc</p>
         </li>
         
         
-        <li id="section-40">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
-              </div>
-              <p>Performs a GET to the root endpoint of the DB <code>database</code></p>
-<p><strong>Parameters</strong>:<br><code>database</code>: the name of the database verify its size.
-<code>callback</code>: the callback to execute once the request is done.  </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.getDB = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database, <span class="string">"*/*"</span>, <span class="string">""</span>, callback);
-	};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-41">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
-              </div>
-              <p>Retrieve the DB size.
-Returns a single numeric value representing the number of triples in the database.</p>
-<p><strong>Parameters</strong>:<br><code>database</code>: the name of the database verify its size.
-<code>callback</code>: the callback to execute once the request is done.  </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.getDBSize = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/size"</span>, <span class="string">"*/*"</span>, <span class="string">""</span>, callback);
-	};</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
-for the Accept header. This method is designed for <code>select</code> &amp; <code>ask</code> queries, where the result type will 
-be a set of bindings.</p>
+              <p>Performs a GET to the root endpoint of the DB <code>database</code></p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+                <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.query = <span class="keyword">function</span>(database, query, baseURI, limit, offset, callback, acceptMIME) {
-		<span class="keyword">var</span> acceptH = (acceptMIME) ? acceptMIME : <span class="string">'application/sparql-results+json'</span>;
-		<span class="keyword">var</span> options = {
-			<span class="string">"query"</span> : query
-		};
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getDB = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				resource : options.database,
+				acceptHeader: <span class="string">"*/*"</span>,
+				httpMethod: <span class="string">"GET"</span>,
+				params: options.params ? options.params : <span class="string">""</span>
+			 };
 
-		<span class="keyword">if</span> (baseURI &amp;&amp; baseURI != <span class="literal">null</span>)
-			options[<span class="string">"baseURI"</span>] = baseURI;
-
-		<span class="keyword">if</span> (limit &amp;&amp; limit != <span class="literal">null</span>)
-			options[<span class="string">"limit"</span>] = limit;
-
-		<span class="keyword">if</span> (offset &amp;&amp; offset != <span class="literal">null</span>)
-			options[<span class="string">"offset"</span>] = offset;
-
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/query"</span>, acceptH, options, callback);
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -897,28 +945,24 @@ be a set of bindings.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
-for the Accept header. This method is designed for <code>describe</code> &amp; <code>construct</code> queries, where the result type will 
-be a set of triples.</p>
+              <p>Retrieve the DB size.
+Returns a single numeric value representing the number of triples in the database.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database to verify its size;
+                <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.queryGraph = <span class="function"><span class="keyword">function</span> <span class="params">(database, query, baseURI, limit, offset, callback, acceptMIME)</span> {</span>
-		<span class="keyword">var</span> acceptH = (acceptMIME) ? acceptMIME : <span class="string">'application/ld+json'</span>;
-		<span class="keyword">var</span> options = {
-			<span class="string">"query"</span> : query
-		};
-
-		<span class="keyword">if</span> (baseURI &amp;&amp; baseURI != <span class="literal">null</span>)
-			options[<span class="string">"baseURI"</span>] = baseURI;
-
-		<span class="keyword">if</span> (limit &amp;&amp; limit != <span class="literal">null</span>)
-			options[<span class="string">"limit"</span>] = limit;
-
-		<span class="keyword">if</span> (offset &amp;&amp; offset != <span class="literal">null</span>)
-			options[<span class="string">"offset"</span>] = offset;
-
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/query"</span>, acceptH, options, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getDBSize = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				resource: options.database + <span class="string">"/size"</span>,
+				httpMethod: <span class="string">"GET"</span>,
+				acceptHeader: <span class="string">"*/*"</span>,
+				params: options.params ? options.params : <span class="string">""</span>
+			};
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -930,19 +974,42 @@ be a set of triples.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>Returns the query plan generated by Stardog given a SPARQL query.</p>
+              <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
+for the Accept header. This method is designed for <code>select</code> &amp; <code>ask</code> queries, where the result type will 
+be a set of bindings.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>query</code>: the query;
+            <code>baseURI</code>: the base URI;
+            <code>limit</code>: the limit;
+            <code>offset</code>: the offset;
+            <code>mimetype</code>: the mimetype;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.queryExplain = <span class="function"><span class="keyword">function</span> <span class="params">(database, query, baseURI, callback)</span> {</span>
-		<span class="keyword">var</span> options = {
-			<span class="string">"query"</span> : query
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.query = <span class="keyword">function</span>(options, callback) {
+		<span class="keyword">var</span> reqOptions = {
+				acceptHeader : options.mimetype ? options.mimetype : <span class="string">'application/sparql-results+json'</span>,
+				resource: options.database + <span class="string">"/query"</span>,
+				httpMethod: <span class="string">"GET"</span>,
+				params : _.extend({ <span class="string">"query"</span> : options.query }, options.params)
+			};
+
+		<span class="keyword">if</span> (options.baseURI &amp;&amp; options.baseURI != <span class="literal">null</span>) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"baseURI"</span>] = options.baseURI;
 		}
 
-		<span class="keyword">if</span> (baseURI)
-			options[<span class="string">"baseURI"</span>] = baseURI;
+		<span class="keyword">if</span> (options.limit &amp;&amp; options.limit != <span class="literal">null</span>) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"limit"</span>] = options.limit;
+		}
 
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/explain"</span>, <span class="string">"text/plain"</span>, options, callback);
+		<span class="keyword">if</span> (options.offset &amp;&amp; options.offset != <span class="literal">null</span>) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"offset"</span>] = options.offset;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -954,12 +1021,42 @@ be a set of triples.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
-              <p>Start a new transaction in the database.</p>
+              <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
+for the Accept header. This method is designed for <code>describe</code> &amp; <code>construct</code> queries, where the result type will 
+be a set of triples.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>query</code>: the query;
+            <code>baseURI</code>: the base URI;
+            <code>limit</code>: the limit;
+            <code>offset</code>: the offset;
+            <code>mimetype</code>: the mimetype;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.begin = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/transaction/begin"</span>, <span class="string">"text/plain"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.queryGraph = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				acceptHeader : options.mimetype ? options.mimetype : <span class="string">'application/ld+json'</span>,
+				resource: options.database + <span class="string">"/query"</span>,
+				httpMethod: <span class="string">"GET"</span>,
+				params : _.extend({ <span class="string">"query"</span> : options.query }, options.params)
+			};
+
+		<span class="keyword">if</span> (options.baseURI &amp;&amp; options.baseURI != <span class="literal">null</span>) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"baseURI"</span>] = options.baseURI;
+		}
+
+		<span class="keyword">if</span> (options.limit &amp;&amp; options.limit != <span class="literal">null</span>) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"limit"</span>] = options.limit;
+		}
+
+		<span class="keyword">if</span> (options.offset &amp;&amp; options.offset != <span class="literal">null</span>) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"offset"</span>] = options.offset;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -971,14 +1068,29 @@ be a set of triples.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
-              <p>Commit the transaction <code>txId</code> in the database. This will remove the transaction and the <code>txId</code> will not 
-be valid anymore. All function calls using a transaction to mutate the contents of a database must call this 
-function in order to make the changes permanent.</p>
+              <p>Returns the query plan generated by Stardog given a SPARQL query.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>query</code>: the query;
+            <code>baseURI</code>: (optional) the base URI;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.commit = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/transaction/commit/"</span> + txId, <span class="string">"text/plain"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.queryExplain = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				resource: options.database + <span class="string">"/explain"</span>,
+				httpMethod: <span class="string">"GET"</span>,
+				acceptHeader: <span class="string">"text/plain"</span>,
+				params : _.extend({ <span class="string">"query"</span> : options.query }, options.params)
+			};
+
+		<span class="keyword">if</span> (options.baseURI) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"baseURI"</span>] = options.baseURI;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -990,12 +1102,23 @@ function in order to make the changes permanent.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
-              <p>Perform a rollback given within a trasaction, providing the transaction id <code>txId</code>.</p>
+              <p>Start a new transaction in the database.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.rollback = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/transaction/rollback/"</span>+ txId, <span class="string">"text/plain"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.begin = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: options.database + <span class="string">"/transaction/begin"</span>,
+				acceptHeader: <span class="string">"text/plain"</span>,
+				params: options.params
+			};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1007,27 +1130,26 @@ function in order to make the changes permanent.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
-              <p>Evaluate a SPARQL query using a transaction <code>txId</code>.</p>
+              <p>Commit the transaction <code>txId</code> in the database. This will remove the transaction and the <code>txId</code> will not 
+be valid anymore. All function calls using a transaction to mutate the contents of a database must call this 
+function in order to make the changes permanent.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>txId</code>: the transaction id;
+                <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.queryInTransaction = 
-		<span class="function"><span class="keyword">function</span> <span class="params">(database, txId, query, baseURI, limit, offset, callback, acceptMIME)</span> {</span>
-		<span class="keyword">var</span> acceptH = (acceptMIME) ? acceptMIME : <span class="string">'application/sparql-results+json'</span>;
-		<span class="keyword">var</span> options = {
-			<span class="string">"query"</span> : query
-		};
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.commit = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource:  options.database + <span class="string">"/transaction/commit/"</span> + options.txId,
+				acceptHeader: <span class="string">"text/plain"</span>,
+				params: options.params
+			};
 
-		<span class="keyword">if</span> (baseURI &amp;&amp; baseURI != <span class="literal">null</span>)
-			options[<span class="string">"baseURI"</span>] = baseURI;
-
-		<span class="keyword">if</span> (limit &amp;&amp; limit != <span class="literal">null</span>)
-			options[<span class="string">"limit"</span>] = limit;
-
-		<span class="keyword">if</span> (offset &amp;&amp; offset != <span class="literal">null</span>)
-			options[<span class="string">"offset"</span>] = offset;
-
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/"</span> + txId +<span class="string">"/query"</span>, acceptH, options,	callback);
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1039,20 +1161,24 @@ function in order to make the changes permanent.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
-              <p>Add a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function 
-to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
+              <p>Perform a rollback given within a trasaction, providing the transaction id <code>txId</code>.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>txId</code>: the transaction id;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.addInTransaction = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, body, callback, contentType, graph_uri)</span> {</span>
-		<span class="keyword">var</span> options;
-		<span class="keyword">if</span> (graph_uri &amp;&amp; graph_uri != <span class="literal">null</span>) {
-			options = {
-				<span class="string">"graph-uri"</span> : graph_uri
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.rollback = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource:  options.database + <span class="string">"/transaction/rollback/"</span> + options.txId,
+				acceptHeader: <span class="string">"text/plain"</span>,
+				params: options.params
 			};
-		}
 
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/"</span> + txId + <span class="string">"/add"</span>, <span class="string">"*/*"</span>, options, callback, body, <span class="literal">false</span>, contentType, <span class="literal">null</span>);
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1064,21 +1190,21 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
-              <p>Remove a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function 
-to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
+              <p>Evaluate a SPARQL query using a transaction <code>txId</code>.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>query</code>: the query;
+            <code>txId</code>: the transaction id;
+            <code>baseURI</code>: the base URI;
+            <code>limit</code>: the limit;
+            <code>offset</code>: the offset;
+            <code>mimetype</code>: the mimetype;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.removeInTransaction = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, body, callback, contentType, graph_uri)</span> {</span>
-		<span class="keyword">var</span> options;
-		<span class="keyword">if</span> (graph_uri) {
-			options = {
-				<span class="string">"graph-uri"</span> : graph_uri
-			};
-		}
-
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/"</span> + txId + <span class="string">"/remove"</span>, <span class="string">"text/plain"</span>, options, callback, body, <span class="literal">false</span>, contentType, <span class="literal">null</span>);
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.queryInTransaction = <span class="keyword">function</span>(options, callback) {</pre></div></div>
             
         </li>
         
@@ -1089,19 +1215,30 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
-              <p>Clears the content of the DB.</p>
+              <p>function (database, txId, query, baseURI, limit, offset, callback, acceptMIME) {</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.clearDB = <span class="function"><span class="keyword">function</span> <span class="params">(database, txId, callback, graph_uri)</span> {</span>
-		<span class="keyword">var</span> options;
-		<span class="keyword">if</span> (graph_uri) {
-			options = {
-				<span class="string">"graph-uri"</span> : graph_uri
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">var</span> reqOptions = {
+				acceptHeader : options.mimetype ? options.mimetype : <span class="string">'application/sparql-results+json'</span>,
+				resource: options.database + <span class="string">"/"</span> + options.txId +<span class="string">"/query"</span>,
+				httpMethod: <span class="string">"GET"</span>,
+				params : _.extend({ <span class="string">"query"</span> : options.query }, options.params)
 			};
+
+		<span class="keyword">if</span> (options.baseURI &amp;&amp; options.baseURI != <span class="literal">null</span>) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"baseURI"</span>] = options.baseURI;
 		}
 
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/"</span> + txId + <span class="string">"/clear"</span>, <span class="string">"text/plain"</span>, options, callback);
+		<span class="keyword">if</span> (options.limit &amp;&amp; options.limit != <span class="literal">null</span>) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"limit"</span>] = options.limit;
+		}
+
+		<span class="keyword">if</span> (options.offset &amp;&amp; options.offset != <span class="literal">null</span>) {
+			reqOptions[<span class="string">"params"</span>][<span class="string">"offset"</span>] = options.offset;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1110,13 +1247,40 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         <li id="section-52">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
-              <h2>Reasoning API</h2>
-<hr>
+              <p>Add a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function 
+to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>txId</code>: the transaction id;
+            <code>body</code>: the request body;
+            <code>contentType</code>: the request content type;
+            <code>graphUri</code>: (optional) the graph URI;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.addInTransaction = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: options.database + <span class="string">"/"</span> + options.txId + <span class="string">"/add"</span>,
+				acceptHeader: <span class="string">"*/*"</span>,
+				params: options.params || { },
+				msgBody: options.body,
+				contentType: options.contentType,
+				isJsonBody: <span class="literal">false</span>,
+				multipart: <span class="literal">null</span>
+			};
+
+		<span class="keyword">if</span> (options.graphUri &amp;&amp; options.graphUri != <span class="literal">null</span>) {
+			reqOptions.params[<span class="string">"graph-uri"</span>] =  options.graphUri;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
+	};</pre></div></div>
             
         </li>
         
@@ -1127,8 +1291,37 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
-              
+              <p>Remove a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function 
+to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>txId</code>: the transaction id;
+            <code>body</code>: the request body;
+            <code>contentType</code>: the request content type;
+            <code>graphUri</code>: the graph URI;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
+
             </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.removeInTransaction = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: options.database + <span class="string">"/"</span> + options.txId + <span class="string">"/remove"</span>,
+				acceptHeader: <span class="string">"text/plain"</span>,
+				params: options.params || { },
+				msgBody: options.body,
+				contentType: options.contentType,
+				isJsonBody: <span class="literal">false</span>,
+				multipart: <span class="literal">null</span>
+			};
+
+		<span class="keyword">if</span> (options.graphUri &amp;&amp; options.graphUri != <span class="literal">null</span>) {
+			reqOptions.params[<span class="string">"graph-uri"</span>] =  options.graphUri;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
+	};</pre></div></div>
             
         </li>
         
@@ -1139,17 +1332,30 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
-              <p>API call to get explanation of the inferences in <code>axioms</code> using a transaction <code>txId</code> with the content type 
-<code>contentType</code> of the axioms.</p>
+              <p>Clears the content of the DB.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>txId</code>: the transaction id;
+            <code>graphUri</code>: the graph URI;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.reasoningExplain = <span class="function"><span class="keyword">function</span> <span class="params">(database, axioms, callback, contentType, txId)</span> {</span>
-		<span class="keyword">var</span> url = database + <span class="string">"/reasoning"</span>;
-		<span class="keyword">if</span> (txId &amp;&amp; txId != <span class="literal">null</span>) {
-			url = url + <span class="string">"/"</span> + txId;
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.clearDB = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: options.database + <span class="string">"/"</span> + options.txId + <span class="string">"/clear"</span>,
+				acceptHeader: <span class="string">"text/plain"</span>,
+				params: options.params || {}
+			};
+
+		<span class="keyword">if</span> (options.graphUri &amp;&amp; options.graphUri != <span class="literal">null</span>) {
+			reqOptions.params[<span class="string">"graph-uri"</span>] =  options.graphUri;
 		}
-		url + url + <span class="string">"/explain"</span>;</pre></div></div>
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
+	};</pre></div></div>
             
         </li>
         
@@ -1157,19 +1363,13 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         <li id="section-55">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h2">
                 <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
-              <p>set default content-type to &quot;text/plain&quot; (N-Triples)</p>
+              <h2>Reasoning API</h2>
+<hr>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="keyword">if</span> (!contentType || contentType === <span class="literal">null</span>) {
-			contentType = <span class="string">"text/plain"</span>;
-		}
-
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, url, <span class="string">"application/x-turtle"</span>, <span class="literal">null</span>, callback, axioms, <span class="literal">false</span>, contentType);
-	};</pre></div></div>
             
         </li>
         
@@ -1180,22 +1380,8 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
-              <p>Checks the logical consistency of database. If using a named graph provide the <code>graph_uri</code> parameter.
-Returns a boolean response as <code>true</code> if the database is consistent. 
-See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-reasoning consistency</a></p>
-
+              
             </div>
-            
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.isConsistent = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback, graph_uri)</span> {</span>
-		<span class="keyword">var</span> options;
-		<span class="keyword">if</span> (graph_uri) {
-			options = {
-				<span class="string">"graph-uri"</span> : graph_uri
-			};
-		}
-
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/reasoning/consistency"</span>, <span class="string">"text/boolean"</span>, options, callback);
-	}</pre></div></div>
             
         </li>
         
@@ -1203,17 +1389,34 @@ See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-rea
         <li id="section-57">
             <div class="annotation">
               
-              <div class="pilwrap for-h3">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
-              <h3>Integrity Constraint Validation</h3>
-<p>Listing the Integrity Constraints. Returns the integrity constraints for the specified database serialized in any supported RDF format.</p>
+              <p>API call to get explanation of the inferences in <code>axioms</code> using a transaction <code>txId</code> with the content type 
+<code>contentType</code> of the axioms.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>txId</code>: the transaction;
+            <code>axioms</code>: the axioms;
+            <code>contentType</code>: the content-type;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.getICV = <span class="function"><span class="keyword">function</span> <span class="params">(database, acceptH, callback)</span> {</span>
-		<span class="keyword">var</span> acceptH = (acceptMIME) ? acceptMIME : <span class="string">'text/plain'</span>;
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, database + <span class="string">"/icv"</span>, acceptH, <span class="literal">null</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.reasoningExplain = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: options.database + <span class="string">"/reasoning/"</span> 
+							+ (options.txId &amp;&amp; options.txId != <span class="literal">null</span> ? <span class="string">"/"</span> + options.txId : <span class="string">""</span>),
+				acceptHeader: <span class="string">"application/x-turtle"</span>,
+				params: options.params || <span class="literal">null</span>,
+				msgBody: options.axioms,
+				isJsonBody: <span class="literal">false</span>,
+				contentType: options.contentType || <span class="string">"text/plain"</span>
+			};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1225,12 +1428,31 @@ See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-rea
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
-              <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and adds them to the database in an atomic action. 
-200 return code indicates the constraints were added successfully, 500 indicates that the constraints were not valid or unable to be added.</p>
+              <p>Checks the logical consistency of database. If using a named graph provide the <code>graph_uri</code> parameter.
+Returns a boolean response as <code>true</code> if the database is consistent. 
+See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-reasoning consistency</a></p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>graphUri</code>: the graph URI;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.setICV = <span class="function"><span class="keyword">function</span> <span class="params">(database, icv_axioms, callback, contentType)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.isConsistent = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"GET"</span>,
+				resource: options.database + <span class="string">"/reasoning/consistency"</span>,
+				acceptHeader: <span class="string">"text/boolean"</span>,
+				params: options.params || {}
+			};
+
+		<span class="keyword">if</span> (options.graphUri &amp;&amp; options.graphUri != <span class="literal">null</span>) {
+			reqOptions.params[<span class="string">"graph-uri"</span>] =  options.graphUri;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
+	};</pre></div></div>
             
         </li>
         
@@ -1238,18 +1460,29 @@ See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-rea
         <li id="section-59">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h3">
                 <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
-              <p>set default content-type to &quot;text/plain&quot; (N-Triples)</p>
+              <h3>Integrity Constraint Validation</h3>
+<p>Listing the Integrity Constraints. Returns the integrity constraints for the specified database serialized in any supported RDF format.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>acceptMime</code>: the MIME type;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="keyword">if</span> (!contentType || contentType === <span class="literal">null</span>) {
-			contentType = <span class="string">"text/plain"</span>;
-		}
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getICV = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"GET"</span>,
+				resource: options.database + <span class="string">"/icv"</span>,
+				acceptHeader: options.acceptMime || <span class="string">'text/plain'</span>,
+				params: options.params || <span class="literal">null</span>,
+				contentType: options.contentType || <span class="string">"text/plain"</span>
+			};
 
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/icv/add"</span>, <span class="string">"text/boolean"</span>, <span class="literal">null</span>, callback, icv_axioms, <span class="literal">false</span>, contentType);
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1261,12 +1494,18 @@ See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-rea
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
-              <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and removes them from the database in a single atomic action. 
-200 indicates the constraints were successfully remove; 500 indicates an error.</p>
+              <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and adds them to the database in an atomic action. 
+200 return code indicates the constraints were added successfully, 500 indicates that the constraints were not valid or unable to be added.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>icvAxioms</code>: the ICV axioms;
+            <code>contentType</code>: the content-type;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.removeICV = <span class="function"><span class="keyword">function</span> <span class="params">(database, icv_axioms, callback, contentType)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.setICV = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span></pre></div></div>
             
         </li>
         
@@ -1281,11 +1520,17 @@ See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-rea
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="keyword">if</span> (!contentType || contentType === <span class="literal">null</span>) {
-			contentType = <span class="string">"text/plain"</span>;
-		}
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: options.database + <span class="string">"/icv/add"</span>,
+				acceptHeader: <span class="string">"text/boolean"</span>,
+				params: options.params || <span class="literal">null</span>,
+				contentType: options.contentType || <span class="string">"text/plain"</span>,
+				msgBody: options.icvAxioms,
+				isJsonBody: <span class="literal">false</span>
+			};
 
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/icv/remove"</span>, <span class="string">"text/boolean"</span>, <span class="literal">null</span>, callback, icv_axioms, <span class="literal">false</span>, contentType);
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1297,13 +1542,18 @@ See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-rea
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
-              <p>Drops ALL integrity constraints for a database. 200 indicates all constraints were successfully dropped; 500 indicates an error.</p>
+              <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and removes them from the database in a single atomic action. 
+200 indicates the constraints were successfully remove; 500 indicates an error.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>icvAxioms</code>: the ICV axioms;
+            <code>contentType</code>: the content-type;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.clearICV = <span class="function"><span class="keyword">function</span> <span class="params">(database, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/icv/clear"</span>, <span class="string">"text/boolean"</span>, <span class="literal">null</span>, callback);
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.removeICV = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span></pre></div></div>
             
         </li>
         
@@ -1314,19 +1564,22 @@ See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-rea
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
-              <p>Only works for one constraint, if more than 1 are provided returns 400 code status. The body of the POST is a single Integrity Constraint, 
-serialized in any supported RDF format, with Content-type set appropriately. Returns either a text/plain result containing a single SPARQL query; 
-or it returns 400 if more than one constraint was included in the input.</p>
+              <p>set default content-type to &quot;text/plain&quot; (N-Triples)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.fromICVtoSPARQL = <span class="function"><span class="keyword">function</span> <span class="params">(database, icv_axiom, callback, contentType, graph_uri)</span> {</span>
-		<span class="keyword">var</span> options;
-		<span class="keyword">if</span> (graph_uri) {
-			options = {
-				<span class="string">"graph-uri"</span> : graph_uri
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: options.database + <span class="string">"/icv/remove"</span>,
+				acceptHeader: <span class="string">"text/boolean"</span>,
+				params: options.params || <span class="literal">null</span>,
+				contentType: options.contentType || <span class="string">"text/plain"</span>,
+				msgBody: options.icvAxioms,
+				isJsonBody: <span class="literal">false</span>
 			};
-		}</pre></div></div>
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
+	};</pre></div></div>
             
         </li>
         
@@ -1337,15 +1590,23 @@ or it returns 400 if more than one constraint was included in the input.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
-              <p>set default content-type to &quot;text/plain&quot; (N-Triples)</p>
+              <p>Drops ALL integrity constraints for a database. 200 indicates all constraints were successfully dropped; 500 indicates an error.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="keyword">if</span> (!contentType || contentType === <span class="literal">null</span>) {
-			contentType = <span class="string">"text/plain"</span>;
-		}
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.clearICV = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: options.database + <span class="string">"/icv/clear"</span>,
+				acceptHeader: <span class="string">"text/boolean"</span>,
+				params: options.params || <span class="literal">null</span>
+			};
 
-		<span class="keyword">this</span>._httpRequest(<span class="string">"POST"</span>, database + <span class="string">"/icv/convert"</span>, <span class="string">"text/plain"</span>, options, callback, icv_axiom, <span class="literal">false</span>, contentType);
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1357,9 +1618,20 @@ or it returns 400 if more than one constraint was included in the input.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
-              <hr>
+              <p>Only works for one constraint, if more than 1 are provided returns 400 code status. The body of the POST is a single Integrity Constraint, 
+serialized in any supported RDF format, with Content-type set appropriately. Returns either a text/plain result containing a single SPARQL query; 
+or it returns 400 if more than one constraint was included in the input.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
+            <code>database</code>: the name of the database;
+            <code>icvAxiom</code>: the ICV axiom;
+            <code>contentType</code>: the content-type;
+            <code>graphUri</code>: the graph URI;
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.fromICVtoSPARQL = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span></pre></div></div>
             
         </li>
         
@@ -1370,6 +1642,49 @@ or it returns 400 if more than one constraint was included in the input.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
+              <p>set default content-type to &quot;text/plain&quot; (N-Triples)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: options.database + <span class="string">"/icv/convert"</span>,
+				acceptHeader: <span class="string">"text/plain"</span>,
+				params: options.params || {},
+				msgBody: icvAxiom,
+				isJsonBody: <span class="literal">false</span>,
+				contentType: options.contentType || <span class="string">"text/plain"</span>
+			};
+
+		<span class="keyword">if</span> (options.graphUri &amp;&amp; options.graphUri != <span class="literal">null</span>) {
+			reqOptions.params[<span class="string">"graph-uri"</span>] =  options.graphUri;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
               <p>Returns a mapping of common prefix-namespace values. In the future this function will be replaced by a function call to the DB service.</p>
 
             </div>
@@ -1379,7 +1694,7 @@ or it returns 400 if more than one constraint was included in the input.</p>
 			<span class="string">'http://www.w3.org/2002/07/owl#'</span> : <span class="string">'owl'</span>,
 			<span class="string">'http://www.w3.org/2000/01/rdf-schema#'</span> : <span class="string">'rdfs'</span>,
 			<span class="string">'http://www.w3.org/1999/02/22-rdf-syntax-ns#'</span> : <span class="string">'rdf'</span>,
-			<span class="string">'http://www.w3.org/2001/XMLSchema#'</span> : <span class="string">'xsd'</span>,
+			<span class="string">'http://www.w3.org/2001/xmlnschema#'</span> : <span class="string">'xsd'</span>,
 			<span class="string">'http://www.w3.org/2004/02/skos/core#'</span> : <span class="string">'skos'</span>,
 			<span class="string">'http://purl.org/dc/elements/1.1/'</span> : <span class="string">'dc'</span>,
 			<span class="string">'http://xmlns.com/foaf/0.1/'</span> : <span class="string">'foaf'</span>,
@@ -1395,11 +1710,11 @@ or it returns 400 if more than one constraint was included in the input.</p>
         </li>
         
         
-        <li id="section-67">
+        <li id="section-69">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-67">&#182;</a>
+                <a class="pilcrow" href="#section-69">&#182;</a>
               </div>
               <h2>Stardog Administrative API</h2>
 <hr>
@@ -1409,11 +1724,11 @@ or it returns 400 if more than one constraint was included in the input.</p>
         </li>
         
         
-        <li id="section-68">
+        <li id="section-70">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
+                <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
               <p><a href="http://stardog.com/docs/network/#extended-http">Extended HTTP Protocol</a></p>
 <h3>Database operations.</h3>
@@ -1423,54 +1738,24 @@ Note that there&#39;s one administrative call missing for creating DBs, this is 
 on the HTTP multi-part libraries, but support for this is coming soon.</p>
 <h4>List databases (GET)</h4>
 <p>Get a List of the existing databases in the system.</p>
-<p><strong>Parameters</strong>:<br><code>callback</code>: the callback to execute once the request is done. </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.listDBs = <span class="function"><span class="keyword">function</span> <span class="params">(callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/databases"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
-	};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-69">
-            <div class="annotation">
-              
-              <div class="pilwrap for-h4">
-                <a class="pilcrow" href="#section-69">&#182;</a>
-              </div>
-              <h4>Copy database (PUT)</h4>
-<p>Copy an existing database.</p>
-<p><strong>Parameters</strong>:<br><code>dbsource</code>: the name of the database to copy.<br><code>dbtarget</code>: the name of the new copied database.<br><code>callback</code>: the callback to execute once the request is done.  </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.copyDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbsource, dbtarget, callback)</span> {</span>
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listDBs = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"GET"</span>,
+				resource: <span class="string">"admin/databases"</span>,
+				acceptHeader: <span class="string">"application/json"</span>,
+				params: (options &amp;&amp; <span class="keyword">typeof</span> options !== <span class="string">'function'</span>) ? options.params : <span class="string">""</span>
+			};
 		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbsource + <span class="string">"/copy"</span>, <span class="string">"application/json"</span>, { <span class="string">"to"</span> : dbtarget }, callback
-		);
-	};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-70">
-            <div class="annotation">
-              
-              <div class="pilwrap for-h4">
-                <a class="pilcrow" href="#section-70">&#182;</a>
-              </div>
-              <h4>Drop an existing database.</h4>
-<p>Drops an existing database <code>dbname</code> and all the information that it contains.</p>
-<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to drop.<br><code>callback</code>: the callback to execute once the request is done.  </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.dropDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"DELETE"</span>, <span class="string">"admin/databases/"</span>+ dbname, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
-		);
+			reqOptions,
+			<span class="keyword">typeof</span> options === <span class="string">'function'</span> ? options <span class="comment">/* no options passed, so this is the callback */</span> 
+					: callback <span class="comment">/* options is an object, callback might be a function */</span>);
 	};</pre></div></div>
             
         </li>
@@ -1482,17 +1767,24 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
-              <h4>Migrate an existing database.</h4>
-<p>Migrates the existing content of a legacy database to new format.</p>
-<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to migrate.
+              <h4>Copy database (PUT)</h4>
+<p>Copy an existing database.</p>
+<p><strong>Parameters</strong>: 
+<code>options</code>: an object with one the following attributes: 
+                <code>dbsource</code>: the name of the database to copy.<br>                <code>dbtarget</code>: the name of the new copied database.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.migrateDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/migrate"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.copyDB = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"PUT"</span>,
+				resource: <span class="string">"admin/databases/"</span> + options.dbsource + <span class="string">"/copy"</span>,
+				acceptHeader: <span class="string">"application/json"</span>,
+				params: _.extend({ <span class="string">"to"</span> : options.dbtarget }, options.params)
+			};
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1504,16 +1796,25 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
-              <h4>Optimize an existing database.</h4>
-<p>Optimize an existing database.</p>
-<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to optimize.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Drop an existing database.</h4>
+<p>Drops an existing database <code>dbname</code> and all the information that it contains.</p>
+<p><strong>Parameters</strong>: 
+<code>options</code>: an object with one the following attributes: 
+                <code>database</code>: the name of the database to drop.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.optimizeDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/optimize"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.dropDB = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"DELETE"</span>,
+				resource: <span class="string">"admin/databases/"</span> + options.database,
+				acceptHeader: <span class="string">"application/json"</span>,
+				params: options.params || <span class="string">""</span>
+			};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1525,16 +1826,25 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
-              <h4>Set database on-line.</h4>
-<p>Request message to set an existing database <code>dbname</code> on-line.</p>
-<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to set on-line.<br><code>strategyOp</code>: the strategy options, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Migrate an existing database.</h4>
+<p>Migrates the existing content of a legacy database to new format.</p>
+<p><strong>Parameters</strong>: 
+<code>options</code>: an object with one the following attributes: 
+                <code>database</code>: the name of the database to migrate.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.onlineDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, strategyOp, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/online"</span>, <span class="string">"application/json"</span>, { <span class="string">"strategy"</span> : strategyOp }, callback
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.migrateDB = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"PUT"</span>,
+				resource: <span class="string">"admin/databases/"</span> + options.database + <span class="string">"/migrate"</span>,
+				acceptHeader: <span class="string">"application/json"</span>,
+				params: options.params || <span class="string">""</span>
+			};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1546,22 +1856,25 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
-              <h4>Set database off-line.</h4>
-<p>Request message to set an existing database off-line; 
-receives optionally a JSON input to specify a timeout for the off-line operation. 
-When not specified, defaults to 3 minutes as the timeout; 
-the timeout should be provided in milliseconds. 
-The timeout is the amount of time the database will wait for existing connections to complete before going off-line. 
-This will allow open transaction to commit/rollback, open queries to complete, etc. 
-After the timeout has expired, all remaining open connections are closed and the database goes off-line.</p>
-<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to set off-line.<br><code>strategyOp</code>: the strategy options, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>timeoutMS</code>: timeout in milliseconds.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Optimize an existing database.</h4>
+<p>Optimize an existing database.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+                <code>database</code>: the name of the database to optimize.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.offlineDB = <span class="function"><span class="keyword">function</span> <span class="params">(dbname, strategyOp, timeoutMS, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/offline"</span>, <span class="string">"application/json"</span>, { <span class="string">"strategy"</span> : strategyOp }, callback
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.optimizeDB = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"PUT"</span>,
+				resource: <span class="string">"admin/databases/"</span> + options.database +<span class="string">"/optimize"</span>,
+				acceptHeader: <span class="string">"application/json"</span>,
+				params: options.params || <span class="string">""</span>
+			};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1573,17 +1886,23 @@ After the timeout has expired, all remaining open connections are closed and the
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
-              <h4>Set option values to an existing database.</h4>
-<p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values. 
-Database options can be found <a href="http://stardog.com/docs/admin/#admin-db">here</a>.</p>
-<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the database to set the options.<br><code>optionsObj</code>: the options JSON object, indicating the options and values to set, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.</p>
+              <h4>Set database on-line.</h4>
+<p>Request message to set an existing database <code>dbname</code> on-line.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>database</code>: the name of the database to set on-line.<br>                <code>strategyOp</code>: the strategy options, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.setDBOptions = <span class="keyword">function</span>(dbname, optionsObj, callback) {
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"POST"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/options"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, optionsObj, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.onlineDB = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"PUT"</span>,
+				resource: <span class="string">"admin/databases/"</span> + options.database +<span class="string">"/online"</span>,
+				acceptHeader: <span class="string">"application/json"</span>,
+				params: _.extend({ <span class="string">"strategy"</span>: options.strategyOp }, options.params)
+			};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1595,18 +1914,36 @@ Database options can be found <a href="http://stardog.com/docs/admin/#admin-db">
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
-              <h4>Get option values from an existing database.</h4>
-<p>Retrieves a set of options passed through a JSON object specification. 
-The JSON input has empty values for each key, but will be filled with the option 
-values in the database when the call returns.</p>
-<p><strong>Parameters</strong>:<br><code>dbname</code>: the name of the db to retrieve the option values.<br><code>optionsObj</code>: the options JSON object seed, indicating the options to retrieve, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Set database off-line.</h4>
+<p>Request message to set an existing database off-line; 
+receives optionally a JSON input to specify a timeout for the off-line operation. 
+When not specified, defaults to 3 minutes as the timeout; 
+the timeout should be provided in milliseconds. 
+The timeout is the amount of time the database will wait for existing connections to complete before going off-line. 
+This will allow open transaction to commit/rollback, open queries to complete, etc. 
+After the timeout has expired, all remaining open connections are closed and the database goes off-line.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+                <code>database</code>: the name of the database to set off-line.<br>            <code>strategyOp</code>: the strategy options, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br>            <code>timeout</code>: timeout in milliseconds.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.getDBOptions = <span class="keyword">function</span>(dbname, optionsObj, callback) {
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/databases/"</span>+ dbname +<span class="string">"/options"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, optionsObj, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.offlineDB = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"PUT"</span>,
+				resource: <span class="string">"admin/databases/"</span> + options.database +<span class="string">"/offline"</span>,
+				acceptHeader: <span class="string">"application/json"</span>,
+				params: _.extend({ <span class="string">"strategy"</span>: options.strategyOp }, options.params)
+			};
+
+		<span class="keyword">if</span> (options.timeoutMS) {
+			reqOptions.msgBody = { timeout: options.timeout };
+			reqOptions.isJsonBody = <span class="literal">true</span>;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1615,32 +1952,30 @@ values in the database when the call returns.</p>
         <li id="section-77">
             <div class="annotation">
               
-              <div class="pilwrap for-h3">
+              <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
-              <h3>User operations.</h3>
-<p>Administrative API calls for managing user accounts in Stardog, e.g. creating/modifying/removing 
-user accounts.</p>
-<h4>Create new user</h4>
-<p>Adds a new user to the system; allows a configuration option for superuser as a JSON object. 
-Superuser configuration is set as default to false. The password <strong>must</strong> be provided for the user.</p>
-<p><strong>Parameters</strong>:<br><code>username</code>: the username of the user to create.<br><code>password</code>: the initial password of the newly created user.<br><code>superuser</code>: boolean flag indicating if the created user will have super-user privileges.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Set option values to an existing database.</h4>
+<p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values. 
+Database options can be found <a href="http://stardog.com/docs/admin/#admin-db">here</a>.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>database</code>: the name of the database to set the options.<br>                <code>optionsObj</code>: the options JSON object, indicating the options and values to set, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.createUser = <span class="function"><span class="keyword">function</span> <span class="params">(username, password, superuser, callback)</span> {</span>
-		<span class="keyword">var</span> options = {
-			<span class="string">"username"</span> : username,
-			<span class="string">"password"</span> : password.split(<span class="string">''</span>)
-		}
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.setDBOptions = <span class="keyword">function</span>(options, callback) {
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"POST"</span>,
+				resource: <span class="string">"admin/databases/"</span> + options.database +<span class="string">"/options"</span>,
+				acceptHeader: <span class="string">"application/json"</span>,
+				params: options.params,
+				msgBody: options.optionsObj,
+				isJsonBody: <span class="literal">true</span>
+			};
 
-		<span class="keyword">if</span> (superuser &amp;&amp; superuser != <span class="literal">null</span>) {
-			options[<span class="string">"superuser"</span>] = superuser;
-		}
-
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"POST"</span>, <span class="string">"admin/users"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, options, <span class="literal">true</span>
-		);
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1652,16 +1987,27 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
-              <h4>Change user&#39;s password</h4>
-<p>Changes <code>user</code> password in the system. Receives input of new password as a JSON Object.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the user to change the password.<br><code>newPwd</code>: the new password of <code>user</code>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Get option values from an existing database.</h4>
+<p>Retrieves a set of options passed through a JSON object specification. 
+The JSON input has empty values for each key, but will be filled with the option 
+values in the database when the call returns.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>database</code>: the name of the db to retrieve the option values.<br>                <code>optionsObj</code>: the options JSON object seed, indicating the options to retrieve, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.changePwd = <span class="function"><span class="keyword">function</span> <span class="params">(user, newPwd, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/pwd"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, { <span class="string">"password"</span> : newPwd }, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.getDBOptions = <span class="keyword">function</span>(options, callback) {
+		<span class="keyword">var</span> reqOptions = {
+				httpMethod: <span class="string">"PUT"</span>,
+				resource: <span class="string">"admin/databases/"</span> + options.database +<span class="string">"/options"</span>,
+				acceptHeader: <span class="string">"application/json"</span>,
+				params: options.params || <span class="string">""</span>,
+				msgBody: options.optionsObj,
+				isJsonBody: <span class="literal">true</span>
+			};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1670,17 +2016,39 @@ Superuser configuration is set as default to false. The password <strong>must</s
         <li id="section-79">
             <div class="annotation">
               
-              <div class="pilwrap for-h4">
+              <div class="pilwrap for-h3">
                 <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
-              <h4>Check if user is enabled.</h4>
-<p>Verifies if user is enabled in the system.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the user name to verify if enabled.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h3>User operations.</h3>
+<p>Administrative API calls for managing user accounts in Stardog, e.g. creating/modifying/removing 
+user accounts.</p>
+<h4>Create new user</h4>
+<p>Adds a new user to the system; allows a configuration option for superuser as a JSON object. 
+Superuser configuration is set as default to false. The password <strong>must</strong> be provided for the user.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+                <code>username</code>: the username of the user to create.<br>                <code>password</code>: the initial password of the newly created user.<br>                <code>superuser</code>: boolean flag indicating if the created user will have super-user privileges.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.isUserEnabled = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/enabled"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.createUser = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"POST"</span>,
+			resource: <span class="string">"admin/users"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			msgBody: { <span class="string">"username"</span> : options.username, <span class="string">"password"</span> : options.password.split(<span class="string">''</span>) },
+			isJsonBody: <span class="literal">true</span>,
+			params: options.params || <span class="string">""</span>
+
+		};
+
+		<span class="keyword">if</span> (options.superuser &amp;&amp; options.superuser != <span class="literal">null</span>) {
+			reqOptions.msgBody.superuser = options.superuser;
+		}
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1692,14 +2060,26 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
-              <h4>Check if user is superuser.</h4>
-<p>Verifies if the user is a superuser.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the user to verify if is superuser.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Change user&#39;s password</h4>
+<p>Changes <code>user</code> password in the system. Receives input of new password as a JSON Object.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the user to change the password.<br>                <code>newPwd</code>: the new password of <code>user</code>.
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.isSuperUser = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/superuser"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.changePwd = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"PUT"</span>,
+			resource: <span class="string">"admin/users/"</span> + options.user + <span class="string">"/pwd"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			msgBody: { <span class="string">"password"</span> : options.newPwd },
+			isJsonBody: <span class="literal">true</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1711,14 +2091,23 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
-              <h4>List user roles.</h4>
-<p>Retrieves the list of the roles assigned to user.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the user used to list roles.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Check if user is enabled.</h4>
+<p>Verifies if user is enabled in the system.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the user name to verify if enabled.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUserRoles = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/roles"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.isUserEnabled = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"GET"</span>,
+			resource: <span class="string">"admin/users/"</span> + options.user + <span class="string">"/enabled"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1730,14 +2119,23 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
-              <h4>List users (GET)</h4>
-<p>Retrieves a list of users available in the system.</p>
-<p><strong>Parameters</strong>:<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Check if user is superuser.</h4>
+<p>Verifies if the user is a superuser.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the user to verify if is superuser.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUsers = <span class="function"><span class="keyword">function</span> <span class="params">(callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/users"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.isSuperUser = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"GET"</span>,
+			resource: <span class="string">"admin/users/"</span> + options.user + <span class="string">"/superuser"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1749,13 +2147,23 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
-              <h4>Delete user</h4>
-<p><strong>Parameters</strong>:<br><code>user</code>: the name of the user to delete from the system.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>List user roles.</h4>
+<p>Retrieves the list of the roles assigned to user.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the user used to list roles.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.deleteUser = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"DELETE"</span>, <span class="string">"admin/users/"</span>+ user, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUserRoles = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"GET"</span>,
+			resource: <span class="string">"admin/users/"</span> + options.user + <span class="string">"/roles"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1767,16 +2175,23 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
-              <h4>Enable users.</h4>
-<p>Enables/Disables an existing user in the system.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the name of the user to set enable.<br><code>enableFlag</code>: boolean flag, if <code>true</code> user is enabled; <code>false</code> to disable it.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>List users (GET)</h4>
+<p>Retrieves a list of users available in the system.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: (optional) an object with one the following attributes: 
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.userEnabled = <span class="function"><span class="keyword">function</span> <span class="params">(user, enableFlag, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/enabled"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, { <span class="string">"enabled"</span> : enableFlag }, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUsers = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"GET"</span>,
+			resource: <span class="string">"admin/users"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, <span class="keyword">typeof</span> options === <span class="string">'function'</span> ? options : callback);
 	};</pre></div></div>
             
         </li>
@@ -1788,16 +2203,21 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
-              <h4>Setting user roles.</h4>
-<p>Sets roles for a given user.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the name of the user to set the roles.<br><code>rolesArray</code>: an array containing the roles to assign to the user, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Delete user</h4>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the name of the user to delete from the system.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.setUserRoles = <span class="function"><span class="keyword">function</span> <span class="params">(user, rolesArray, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/users/"</span>+ user +<span class="string">"/roles"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, { <span class="string">"roles"</span> : rolesArray }, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.deleteUser = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"DELETE"</span>,
+			resource: <span class="string">"admin/users/"</span> + options.user,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1806,12 +2226,30 @@ Superuser configuration is set as default to false. The password <strong>must</s
         <li id="section-86">
             <div class="annotation">
               
-              <div class="pilwrap for-h3">
+              <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
-              <h3>Role operations.</h3>
+              <h4>Enable users.</h4>
+<p>Enables/Disables an existing user in the system.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the name of the user to set enable.
+                <code>enableFlag</code>: boolean flag, if <code>true</code> user is enabled; <code>false</code> to disable it.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.userEnabled = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"PUT"</span>,
+			resource: <span class="string">"admin/users/"</span> + options.user + <span class="string">"/enabled"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>,
+			msgBody: { <span class="string">"enabled"</span> : options.enableFlag},
+			isJsonBody: <span class="literal">true</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
+	};</pre></div></div>
             
         </li>
         
@@ -1819,20 +2257,27 @@ Superuser configuration is set as default to false. The password <strong>must</s
         <li id="section-87">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
-              <p>Administrative API calls for managing roles in Stardog, which are part of the security model, e.g. creating/modifying/removing 
-roles.</p>
-<h4>Create a new role</h4>
-<p><strong>Parameters</strong>:<br><code>rolename</code>: the name of the role to create.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Setting user roles.</h4>
+<p>Sets roles for a given user.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the name of the user to set the roles.<br>                <code>roles</code>: an array containing the roles to assign to the user, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.createRole = <span class="keyword">function</span>(rolename, callback) {
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"POST"</span>, <span class="string">"admin/roles"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, { <span class="string">"rolename"</span> : rolename }, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.setUserRoles = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"PUT"</span>,
+			resource: <span class="string">"admin/users/"</span> + options.user + <span class="string">"/roles"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>,
+			msgBody: { <span class="string">"roles"</span> : options.roles },
+			isJsonBody: <span class="literal">true</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1841,18 +2286,12 @@ roles.</p>
         <li id="section-88">
             <div class="annotation">
               
-              <div class="pilwrap for-h4">
+              <div class="pilwrap for-h3">
                 <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
-              <h4>List roles (GET)</h4>
-<p>Retrieves the list of roles registered in the system.</p>
-<p><strong>Parameters</strong>:<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h3>Role operations.</h3>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.listRoles = <span class="function"><span class="keyword">function</span> <span class="params">(callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/roles"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
-	};</pre></div></div>
             
         </li>
         
@@ -1860,17 +2299,28 @@ roles.</p>
         <li id="section-89">
             <div class="annotation">
               
-              <div class="pilwrap for-h4">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
-              <h4>List users with a specified role.</h4>
-<p>Retrieves users that have the role assigned.</p>
-<p><strong>Parameters</strong>:<br><code>role</code>: the role to look for in the set of users defined in Stardog.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <p>Administrative API calls for managing roles in Stardog, which are part of the security model, e.g. creating/modifying/removing 
+roles.</p>
+<h4>Create a new role</h4>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>rolename</code>: the name of the role to create.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.listRoleUsers = <span class="function"><span class="keyword">function</span> <span class="params">(role, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"GET"</span>, <span class="string">"admin/roles/"</span>+ role +<span class="string">"/users"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.createRole = <span class="keyword">function</span>(options, callback) {
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"POST"</span>,
+			resource: <span class="string">"admin/roles"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>,
+			msgBody: { <span class="string">"rolename"</span> : options.rolename },
+			isJsonBody: <span class="literal">true</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1882,16 +2332,23 @@ roles.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
-              <h4>Delete role</h4>
-<p>Deletes an existing role from the system; the force parameter is a boolean 
-flag which indicates if the delete call for the role must be forced, 
-<a href="http://stardog.com/docs/network/#extended-http">more info</a></p>
-<p><strong>Parameters</strong>:<br><code>role</code>: the role to delete.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>List roles (GET)</h4>
+<p>Retrieves the list of roles registered in the system.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.deleteRole = <span class="function"><span class="keyword">function</span> <span class="params">(role, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(<span class="string">"DELETE"</span>, <span class="string">"admin/roles/"</span>+ role, <span class="string">"application/json"</span>, <span class="string">""</span>, callback);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listRoles = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"GET"</span>,
+			resource: <span class="string">"admin/roles"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, (<span class="keyword">typeof</span> options === <span class="string">'function'</span>) ? options : callback);
 	};</pre></div></div>
             
         </li>
@@ -1900,23 +2357,26 @@ flag which indicates if the delete call for the role must be forced,
         <li id="section-91">
             <div class="annotation">
               
-              <div class="pilwrap for-h3">
+              <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
-              <h3>Permissions operations.</h3>
-<p>Administrative API calls for managing permissions for users &amp; roles in Stardog, 
-which are also part of the security model, e.g. creating/modifying/removing 
-permissions.</p>
-<h4>Assign permission to role.</h4>
-<p>Creates a new permission for a given role over a specified resource.</p>
-<p><strong>Parameters</strong>:<br><code>role</code>: the role to whom the permission will be assigned.<br><code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>List users with a specified role.</h4>
+<p>Retrieves users that have the role assigned.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+                <code>role</code>: the role to look for in the set of users defined in Stardog.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.assignPermissionToRole = <span class="function"><span class="keyword">function</span> <span class="params">(role, permissionObj, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/permissions/role/"</span>+ role, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, permissionObj, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listRoleUsers = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"GET"</span>,
+			resource: <span class="string">"admin/roles/"</span> + options.role + <span class="string">"/users"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1928,16 +2388,26 @@ permissions.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
-              <h4>Assign permission to user.</h4>
-<p>Creates a new permission for a given user over a specified resource.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the user to whom the permission will be assigned.<br><code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Delete role</h4>
+<p>Deletes an existing role from the system; the force parameter is a boolean 
+flag which indicates if the delete call for the role must be forced, 
+<a href="http://stardog.com/docs/network/#extended-http">more info</a></p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+                <code>role</code>: the role to delete.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.assignPermissionToUser = <span class="function"><span class="keyword">function</span> <span class="params">(user, permissionObj, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"PUT"</span>, <span class="string">"admin/permissions/user/"</span>+ user, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, permissionObj, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.deleteRole = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"DELETE"</span>,
+			resource: <span class="string">"admin/roles/"</span> + options.role,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1946,19 +2416,32 @@ permissions.</p>
         <li id="section-93">
             <div class="annotation">
               
-              <div class="pilwrap for-h4">
+              <div class="pilwrap for-h3">
                 <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
-              <h4>Delete permission from role.</h4>
-<p>Deletes a permission for a given role over a specified resource.</p>
-<p><strong>Parameters</strong>:<br><code>role</code>: the role to whom the permission will be removed.<br><code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h3>Permissions operations.</h3>
+<p>Administrative API calls for managing permissions for users &amp; roles in Stardog, 
+which are also part of the security model, e.g. creating/modifying/removing 
+permissions.</p>
+<h4>Assign permission to role.</h4>
+<p>Creates a new permission for a given role over a specified resource.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>role</code>: the role to whom the permission will be assigned.<br>                <code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.deletePermissionFromRole = <span class="function"><span class="keyword">function</span> <span class="params">(role, permissionObj, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"POST"</span>, <span class="string">"admin/permissions/role/"</span>+ role + <span class="string">"/delete"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, permissionObj, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.assignPermissionToRole = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"PUT"</span>,
+			resource: <span class="string">"admin/permissions/role/"</span> + options.role,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>,
+			msgBody: options.permissionObj,
+			isJsonBody: <span class="literal">true</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1970,16 +2453,26 @@ permissions.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
-              <h4>Delete permission from user.</h4>
-<p>Deletes a permission for a given user over a specified resource.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the user to whom the permission will be removed.<br><code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Assign permission to user.</h4>
+<p>Creates a new permission for a given user over a specified resource.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the user to whom the permission will be assigned.<br>                <code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.deletePermissionFromUser = <span class="function"><span class="keyword">function</span> <span class="params">(user, permissionObj, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"POST"</span>, <span class="string">"admin/permissions/user/"</span>+ user + <span class="string">"/delete"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback, permissionObj, <span class="literal">true</span>
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.assignPermissionToUser = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"PUT"</span>,
+			resource: <span class="string">"admin/permissions/user/"</span> + options.user,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>,
+			msgBody: options.permissionObj,
+			isJsonBody: <span class="literal">true</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -1991,16 +2484,26 @@ permissions.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
-              <h4>List role permissions.</h4>
-<p>Retrieves permissions assigned to the role.</p>
-<p><strong>Parameters</strong>:<br><code>role</code>: the role to check for its permissions.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Delete permission from role.</h4>
+<p>Deletes a permission for a given role over a specified resource.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes: 
+                <code>role</code>: the role to whom the permission will be removed.<br>                <code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.listRolePermissions = <span class="function"><span class="keyword">function</span> <span class="params">(role, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"GET"</span>, <span class="string">"admin/permissions/role/"</span>+ role, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.deletePermissionFromRole = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"POST"</span>,
+			resource: <span class="string">"admin/permissions/role/"</span> + options.role + <span class="string">"/delete"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>,
+			msgBody: options.permissionObj,
+			isJsonBody: <span class="literal">true</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -2012,16 +2515,26 @@ permissions.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-96">&#182;</a>
               </div>
-              <h4>List user permissions.</h4>
-<p>Retrieves permissions assigned to the user.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the user to check for its permissions.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>Delete permission from user.</h4>
+<p>Deletes a permission for a given user over a specified resource.</p>
+<p><strong>Parameters</strong>: 
+<code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the user to whom the permission will be removed.<br>                <code>permissionObj</code>: the permission descriptor object, <a href="http://stardog.com/docs/network/#extended-http">more info</a>.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUserPermissions = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"GET"</span>, <span class="string">"admin/permissions/user/"</span>+ user, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
-		);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.deletePermissionFromUser = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"POST"</span>,
+			resource: <span class="string">"admin/permissions/user/"</span> + options.user + <span class="string">"/delete"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>,
+			msgBody: options.permissionObj,
+			isJsonBody: <span class="literal">true</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -2033,16 +2546,23 @@ permissions.</p>
               <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-97">&#182;</a>
               </div>
-              <h4>List user effective permissions.</h4>
-<p>Retrieves effective permissions assigned to the user.</p>
-<p><strong>Parameters</strong>:<br><code>user</code>: the user to check for its effective permissions.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+              <h4>List role permissions.</h4>
+<p>Retrieves permissions assigned to the role.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>role</code>: the role to check for its permissions.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUserEffPermissions = <span class="function"><span class="keyword">function</span> <span class="params">(user, callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"GET"</span>, <span class="string">"admin/permissions/effective/user/"</span>+ user, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
-			);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listRolePermissions = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"GET"</span>,
+			resource: <span class="string">"admin/permissions/role/"</span> + options.role,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
 	};</pre></div></div>
             
         </li>
@@ -2051,23 +2571,87 @@ permissions.</p>
         <li id="section-98">
             <div class="annotation">
               
-              <div class="pilwrap for-h3">
+              <div class="pilwrap for-h4">
                 <a class="pilcrow" href="#section-98">&#182;</a>
+              </div>
+              <h4>List user permissions.</h4>
+<p>Retrieves permissions assigned to the user.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the user to check for its permissions.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUserPermissions = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"GET"</span>,
+			resource: <span class="string">"admin/permissions/user/"</span> + options.user,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-99">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h4">
+                <a class="pilcrow" href="#section-99">&#182;</a>
+              </div>
+              <h4>List user effective permissions.</h4>
+<p>Retrieves effective permissions assigned to the user.</p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+                <code>user</code>: the user to check for its effective permissions.<br>            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.listUserEffPermissions = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"GET"</span>,
+			resource: <span class="string">"admin/permissions/effective/user/"</span> + options.user,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, callback);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-100">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-100">&#182;</a>
               </div>
               <h3>Shutdown server.</h3>
 <p>Shuts down the Stardog Server. If successful, returns a 202 to indicate that the 
 request was received and that the server will be shut down shortly.</p>
-<p><strong>Parameters</strong>:<br><code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
+            <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint. 
+<code>callback</code>: the callback to execute once the request is done.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	Connection.prototype.shutdownServer = <span class="function"><span class="keyword">function</span> <span class="params">(callback)</span> {</span>
-		<span class="keyword">this</span>._httpRequest(
-			<span class="string">"POST"</span>, <span class="string">"admin/shutdown"</span>, <span class="string">"application/json"</span>, <span class="string">""</span>, callback
-			);
+            <div class="content"><div class='highlight'><pre>	Connection.prototype.shutdownServer = <span class="function"><span class="keyword">function</span> <span class="params">(options, callback)</span> {</span>
+		<span class="keyword">var</span> reqOptions = {
+			httpMethod: <span class="string">"POST"</span>,
+			resource: <span class="string">"admin/shutdown"</span>,
+			acceptHeader: <span class="string">"application/json"</span>,
+			params: options.params || <span class="string">""</span>
+		};
+
+		<span class="keyword">this</span>._httpRequest(reqOptions, (<span class="keyword">typeof</span> options === <span class="string">'function'</span>) ? options : callback);
 	};
 
-}).call(<span class="keyword">this</span>);</pre></div></div>
+	<span class="keyword">return</span> Stardog;
+});</pre></div></div>
             
         </li>
         
