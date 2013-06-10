@@ -1,36 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>stardog.js by clarkparsia</title>
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>stardog.js by clarkparsia</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
+    <div class="wrapper">
+      <header>
         <h1>stardog.js</h1>
-        <h2>stardog.js JavaScript Framework for Node.js to develop apps with the Stardog RDF Database.</h2>
-        <a href="https://github.com/clarkparsia/stardog.js" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+        <p>Stardog JavaScript Framework for node.js and the browser - Develop apps using the Stardog RDF Database &amp; JS. — Read more</p>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>Stardog.js</h1>
+        <p class="view"><a href="https://github.com/clarkparsia/stardog.js">View the Project on GitHub <small>clarkparsia/stardog.js</small></a></p>
 
-<p>Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a><br><em>Current Version <strong>0.0.4</strong></em> </p>
+
+        <ul>
+          <li><a href="https://github.com/clarkparsia/stardog.js/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/clarkparsia/stardog.js/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/clarkparsia/stardog.js">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="stardogjs" class="anchor" href="#stardogjs"><span class="octicon octicon-link"></span></a>Stardog.js</h1>
+
+<p>Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a><br><em>Current Version <strong>0.0.5</strong></em> </p>
 
 <p>Stardog.js JavaScript Framework for Node.js to develop apps with the <a href="http://stardog.com">Stardog RDF Database</a>.  </p>
 
@@ -38,7 +39,8 @@
 
 <p>For detailed documentation, see the <a href="http://clarkparsia.github.io/stardog.js/docs/stardog.html">annotated source</a>.</p>
 
-<h2>What is it?</h2>
+<h2>
+<a name="what-is-it" class="anchor" href="#what-is-it"><span class="octicon octicon-link"></span></a>What is it?</h2>
 
 <p>This framework wraps all the functionality of a client for the Stardog DBMS, and provides access to a full set of functions such as executing SPARQL Queries, administration tasks on Stardog, and the use of the Reasoning API.</p>
 
@@ -47,7 +49,8 @@
 <p>The framework is currently targeted to Node.js (the latest version) and it has not been fully tested in the browser, but future versions will be have browser compatibility.
 You'll also need <a href="https://npmjs.org">npm</a> to run the test cases and install the dependencies.</p>
 
-<h2>Installation</h2>
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>To install stardog.js locally from the npm registry simply execute:</p>
 
@@ -56,30 +59,57 @@ You'll also need <a href="https://npmjs.org">npm</a> to run the test cases and i
 
 <p>That will fetch the latest version of stardog.js in the npm registry, <a href="https://npmjs.org/package/stardog">more details</a>.</p>
 
-<h2>Development</h2>
+<h2>
+<a name="development" class="anchor" href="#development"><span class="octicon octicon-link"></span></a>Development</h2>
 
 <p>To get started, just clone the project. You'll need a local copy of Stardog to be able to run the tests. For more information on starting the Stardog DB service and how it works, go to <a href="http://stardog.com/docs/">Stardog's documentation</a>, where you'll find everything you need to get up and running with Stardog.</p>
 
-<p>Go to <a href="http://stardog.com">http://stardog.com</a>, download and install the database and load the data provided in <code>data/</code> using the script in the repository. Having the Stardog service running load the data with the following command:</p>
+<p>Go to <a href="http://stardog.com">http://stardog.com</a>, download and install the database and load the data provided in <code>data/</code> using the script in the repository. Start Stardog with the <code>http</code> port on <code>5823</code> with the following command:</p>
+
+<pre><code>$ stardog-admin server start --http 5823
+</code></pre>
+
+<p>Once you have Stardog running, execute the following command:</p>
+
+<pre><code>$ npm install
+$ bower install
+</code></pre>
+
+<p>This will install all the dependencies using npm (for node) and bower (for browser), once this is done, run the test cases.</p>
+
+<p>All tests should pass.</p>
+
+<h3>
+<a name="running-tests" class="anchor" href="#running-tests"><span class="octicon octicon-link"></span></a>Running Tests</h3>
+
+<p>Run all the test cases in <code>test/spec</code>. Having the Stardog server running, execute the following commands:</p>
+
+<p>1. Load the test data using the provided script:</p>
 
 <pre><code>$ ./load_test_data.sh
 </code></pre>
 
-<p>Once you have the testing database in your Stardog copy, run the following command:</p>
+<p>2. Start the proxy via:</p>
 
-<pre><code>$ npm install
+<pre><code>$ node test/testCORS.js
 </code></pre>
 
-<p>This will install all the dependencies using npm, once this is done, run the test cases:</p>
+<p>3.\ Run the test suite:</p>
 
-<pre><code>$ npm test
+<h4>
+<a name="in-the-browser" class="anchor" href="#in-the-browser"><span class="octicon octicon-link"></span></a>In the Browser</h4>
+
+<pre><code>open test/index.html
 </code></pre>
 
-<p>That will run all the test cases in <code>spec/</code></p>
+<h4>
+<a name="in-nodejs" class="anchor" href="#in-nodejs"><span class="octicon octicon-link"></span></a>In node.js</h4>
 
-<p>All tests should pass.</p>
+<pre><code>$ npm test    
+</code></pre>
 
-<h2>Version details</h2>
+<h2>
+<a name="version-details" class="anchor" href="#version-details"><span class="octicon octicon-link"></span></a>Version details</h2>
 
 <p>Stardog.js depends of the Stardog HTTP API, and any change in this API will be supported by Stardog.js. Here's a list of version compatibility between <strong>Stardog</strong> and  <strong>Stardog.js</strong>:</p>
 
@@ -94,11 +124,13 @@ You'll also need <a href="https://npmjs.org">npm</a> to run the test cases and i
 </tr>
 <tr>
 <td>1.2</td>
-<td>0.0.4</td>
+<td>&gt;= 0.0.4</td>
 </tr>
-</table><h2>Quick Example</h2>
+</table><h2>
+<a name="quick-example" class="anchor" href="#quick-example"><span class="octicon octicon-link"></span></a>Quick Example</h2>
 
-<h3>Node.js</h3>
+<h3>
+<a name="nodejs" class="anchor" href="#nodejs"><span class="octicon octicon-link"></span></a>Node.js</h3>
 
 <pre><code>var stardog = require("stardog");
 
@@ -107,14 +139,21 @@ var conn = new stardog.Connection();
 conn.setEndpoint("http://myserver:myport/");
 conn.setCredentials("username", "password");
 
-conn.query("db-name", "select distinct * where { ?s ?p ?o } limit 5", null, 5, 0, function (data) {
-    console.log(data.results.bindings);
-})
+conn.query({ 
+        database: "myDB", 
+        query: "select distinct ?s where { ?s ?p ?o }",  
+        limit: 10, 
+        offset: 0 
+    },
+    function (data) {
+        console.log(data.results.bindings);
+});
 </code></pre>
 
-<h3>Browser</h3>
+<h3>
+<a name="browser" class="anchor" href="#browser"><span class="octicon octicon-link"></span></a>Browser</h3>
 
-<p><strong>NOTE</strong>: the Endpoint is a proxy to the Stardog HTTP interface in order to avoid CORS issues.</p>
+<p><strong>NOTE</strong>: the Endpoint is a proxy to the Stardog HTTP interface in order to avoid CORS issues (an example can be fount in <code>test/testCORS.js</code>.</p>
 
 <pre><code>&lt;script src="js/stardog.js" type="text/javascript"&gt;&lt;/script&gt;
 …
@@ -126,28 +165,17 @@ conn.query("db-name", "select distinct * where { ?s ?p ?o } limit 5", null, 5, 0
 &lt;/script&gt;
 </code></pre>
 
-<h2>NOTE</h2>
+<h2>
+<a name="note" class="anchor" href="#note"><span class="octicon octicon-link"></span></a>NOTE</h2>
 
 <p>This framework is in continuous development, please check the <a href="https://github.com/clarkparsia/stardog.js/issues">issues</a> page. You're welcome to contribute.</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/clarkparsia/stardog.js/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/clarkparsia/stardog.js/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/clarkparsia/stardog.js"></a> is maintained by <a href="https://github.com/clarkparsia">clarkparsia</a>.</p>
-
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/clarkparsia">clarkparsia</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-
-  
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
