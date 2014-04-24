@@ -5,7 +5,7 @@ Stardog.js
 ==========
 
 Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)  
-_Current Version **0.1.0**_ 
+_Current Version **0.1.1**_ 
 
 Stardog.js JavaScript Framework for node.js to develop apps with the [Stardog RDF Database](http://stardog.com).  
 
@@ -42,40 +42,50 @@ That will fetch the latest version of stardog.js in the bower registry, [more de
 
 To get started, just clone the project. You'll need a local copy of Stardog to be able to run the tests. For more information on starting the Stardog DB service and how it works, go to [Stardog's documentation](http://stardog.com/docs/), where you'll find everything you need to get up and running with Stardog.
 
-Go to [http://stardog.com](http://stardog.com), download and install the database and load the data provided in `data/` using the script in the repository. Start Stardog with the port on `5823` using the following command:
+Go to [http://stardog.com](http://stardog.com), download and install the database and load the data provided in `data/` using the script in the repository. 
 
-    $ stardog-admin server start --port 5823
+1. Start the Stardog server
 
-Once you have Stardog running, execute the following command:
+    * Stardog > `2.1.1`
 
-    $ npm install
-    $ bower install
+            $ stardog-admin server start
+            
+    * Stardog <= `2.1.1`
+    
+            $ stardog-admin server start --port 5823                
+
+2. Install `stardog.js` dependencies:
+
+        $ npm install
+        $ bower install
 
 This will install all the dependencies using npm (for node.js) and bower (for browser), once this is done, run the test cases.
 
-All tests should pass.
-
 ### Running Tests
 
-Run all the test cases in `test/spec`. Having the Stardog server running, execute the following commands:
+Run all the test cases in `test/spec`, all test cases must pass. Having the Stardog server running, execute the following commands:
 
-1\. Load the test data using the provided script:
+* In the browser
 
-    $ ./load_test_data.sh
+    1. Load the test data using the provided script:
 
-2\. Start the proxy via:
+            $ ./load_test_data.sh
+            
+    2. Run the test cases
+        
+        * Stardog > `2.1.1`
 
-    $ node test/testCORS.js
+                $ open test/index.html
+                        
+        * Stardog <= `2.1.1`
+    
+                $ node test/testCORS.js
+                $ open test/index.html       
 
-3\. Run the test suite:
+* In node.js
 
-#### In the browser
-
-    open test/index.html
-
-#### In node.js
-
-    $ npm test    
+        $ npm test   
+    
 
 
 ## Version details ##
@@ -93,36 +103,45 @@ Stardog.js depends of the Stardog HTTP API, and any change in this API will be s
 
 ### node.js
 
-    var stardog = require("stardog");
-     
-    var conn = new stardog.Connection();
-     
-    conn.setEndpoint("http://myserver:myport/");
-    conn.setCredentials("username", "password");
-     
-    conn.query({ 
-            database: "myDB", 
-            query: "select distinct ?s where { ?s ?p ?o }",  
-            limit: 10, 
-            offset: 0 
-        },
-        function (data) {
-            console.log(data.results.bindings);
-    });
+```javascript
+var stardog = require("stardog");
+ 
+var conn = new stardog.Connection();
+ 
+conn.setEndpoint("http://myserver:myport/");
+conn.setCredentials("username", "password");
+ 
+conn.query({ 
+        database: "myDB", 
+        query: "select distinct ?s where { ?s ?p ?o }",  
+        limit: 10, 
+        offset: 0 
+    },
+    function (data) {
+        console.log(data.results.bindings);
+});
+```
     
 ### Browser
 
 __NOTE__: the Endpoint is a proxy to the Stardog HTTP interface in order to avoid CORS issues (an example can be fount in `test/testCORS.js`.
 
-    <script src="js/stardog.js" type="text/javascript"></script>
-    …
-    <script type="text/javascript">
-        var conn = new Stardog.Connection();
-        conn.setEndpoint("/stardog");
-        conn.setReasoning("QL");
-        conn.setCredentials("browser", "secret");
-    </script>
+```html
+<script src="js/stardog.js" type="text/javascript"></script>
+…
+<script type="text/javascript">
+    var conn = new Stardog.Connection();
+    conn.setEndpoint("/stardog");
+    conn.setReasoning("QL");
+    conn.setCredentials("browser", "secret");
+</script>
+```
 
 ## NOTE ##
 
 This framework is in continuous development, please check the [issues](https://github.com/clarkparsia/stardog.js/issues) page. You're welcome to contribute.
+
+&nbsp;
+&nbsp;
+
+<img src="http://docs.stardog.com/img/cp.png" style="width: 200px;" />
