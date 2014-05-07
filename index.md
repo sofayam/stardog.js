@@ -5,7 +5,7 @@ Stardog.js
 ==========
 
 Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)  
-_Current Version **0.1.1**_ 
+_Current Version **0.1.2**_ 
 
 Stardog.js JavaScript Framework for node.js to develop apps with the [Stardog RDF Database](http://stardog.com).  
 
@@ -36,7 +36,7 @@ That will fetch the latest version of stardog.js in the npm registry, [more deta
 
     bower install stardog
     
-That will fetch the latest version of stardog.js in the bower registry, [more details](http://sindresorhus.com/bower-components/).
+That will fetch the latest version of stardog.js in the bower registry, [more details](http://bower.io/search/?q=stardog).
 
 ## Development ##
 
