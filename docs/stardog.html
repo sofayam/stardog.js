@@ -321,7 +321,7 @@ jQuery is only required when using the library in the browser.</p>
               <h2 id="stardog-connection">Stardog Connection</h2>
 <p>Defines the HTTP connection to Stardog as well as all the API calls 
 available to this protocol. The API calls defined in this element are
-referenced in <a href="http://stardog.com/docs/network/">Stardog Network documentation</a>.</p>
+referenced in <a href="http://docs.stardog.com/http/">Stardog HTTP Programming documentation</a>.</p>
 
             </div>
             
@@ -446,7 +446,7 @@ containing <code>{ &quot;username&quot;: &quot;...&quot;, &quot;password&quot;: 
               </div>
               <p>Sets the reasoning level of the connection when performing SPARQL queries &amp;
 function calls involving reasoning. Allowed values are documented in 
-<a href="http://stardog.com/docs/owl2/">Stardog Reasoning docs</a></p>
+<a href="http://docs.stardog.com/owl2/">Stardog Reasoning docs</a></p>
 
             </div>
             
@@ -1473,7 +1473,7 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
               </div>
               <p>Checks the logical consistency of database. If using a named graph provide the <code>graph_uri</code> parameter.
 Returns a boolean response as <code>true</code> if the database is consistent. 
-See <a href="http://stardog.com/docs/man/reasoning-consistency.html">stardog-reasoning consistency</a></p>
+See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog reasoning consistency</a></p>
 <p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes: 
              <code>database</code>: the name of the database;
              <code>graphUri</code>: the graph URI;
@@ -1965,7 +1965,7 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
-              <p><a href="http://stardog.com/docs/network/#extended-http">Extended HTTP Protocol</a></p>
+              <p><a href="http://docs.stardog.com/http/#sd-Admin-Resources">Admin Resources</a></p>
 
             </div>
             
@@ -2069,7 +2069,7 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
               </div>
               <h4 id="create-a-new-database-post-">Create a new database (POST)</h4>
 <p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values. 
-Database options can be found <a href="http://stardog.com/docs/admin/#admin-db">here</a>.</p>
+Database options can be found <a href="http://docs.stardog.com/admin/#sd-Database-Admin">here</a>.</p>
 <p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
              <code>database</code>: the name of the database to set the options.<br>             <code>options</code>: the options JSON object, indicating the options and values to set, <a href="http://docs.stardog.com/http/">more info</a>.
              <code>files</code>: the array of file names to bulk load into the new database
@@ -2281,7 +2281,7 @@ After the timeout has expired, all remaining open connections are closed and the
               </div>
               <h4 id="set-option-values-to-an-existing-database-">Set option values to an existing database.</h4>
 <p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values. 
-Database options can be found <a href="http://stardog.com/docs/admin/#admin-db">here</a>.</p>
+Database options can be found <a href="http://docs.stardog.com/admin/#sd-Database-Admin">here</a>.</p>
 <p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes: 
              <code>database</code>: the name of the database to set the options.<br>             <code>optionsObj</code>: the options JSON object, indicating the options and values to set, <a href="http://docs.stardog.com/http/">more info</a>.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
