@@ -28,7 +28,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <pre><code>Stardog.js <span class="hljs-number">0.1</span><span class="hljs-number">.4</span>
+              <pre><code>Stardog.js <span class="hljs-number">0.1</span><span class="hljs-number">.5</span>
 </code></pre><p>Copyright 2012 Clark &amp; Parsia LLC</p>
 
             </div>
@@ -215,7 +215,7 @@ for Closure Compiler “advanced” mode.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    Stardog.VERSION = <span class="hljs-string">"0.1.4"</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Stardog.VERSION = <span class="hljs-string">"0.1.5"</span>;</pre></div></div>
             
         </li>
         
@@ -1755,7 +1755,7 @@ See: Section <strong>Namespace Prefix Bindings</strong> in
             database: options.database,
             optionsObj: { <span class="hljs-string">"database.namespaces"</span>: <span class="hljs-string">""</span> }
         }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, response)</span> {</span>
-            <span class="hljs-keyword">var</span> namespaces = data[<span class="hljs-string">"database.namespaces"</span>].split(<span class="hljs-string">"\u0002"</span>) || {};
+            <span class="hljs-keyword">var</span> namespaces = data[<span class="hljs-string">"database.namespaces"</span>] || [];
             <span class="hljs-keyword">var</span> nsMap = {};
 
             _.each(namespaces, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(namespace)</span> {</span>
