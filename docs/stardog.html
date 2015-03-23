@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>stardog.js by Clark &amp; Parsia, LLC</title>
+  <title>stardog.js by Complexible Inc</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -29,7 +29,7 @@
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <pre><code>Stardog.js <span class="hljs-number">0.1</span><span class="hljs-number">.6</span>
-</code></pre><p>Copyright 2012 Clark &amp; Parsia LLC</p>
+</code></pre><p>Copyright 2015 Complexible Inc</p>
 
             </div>
 
@@ -341,7 +341,7 @@ referenced in <a href="http://docs.stardog.com/http/">Stardog HTTP Programming d
             </div>
 
             <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">this</span>.endpoint = <span class="hljs-string">"http://localhost:5820/nodeDB/"</span>;
-        <span class="hljs-keyword">this</span>.reasoning = <span class="hljs-literal">undefined</span>;
+        <span class="hljs-keyword">this</span>.reasoning = <span class="hljs-literal">false</span>;
     };</pre></div></div>
 
         </li>
@@ -444,14 +444,15 @@ containing <code>{ &quot;username&quot;: &quot;...&quot;, &quot;password&quot;: 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>Sets the reasoning level of the connection when performing SPARQL queries &amp;
-function calls involving reasoning. Allowed values are documented in
-<a href="http://docs.stardog.com/owl2/">Stardog Reasoning docs</a></p>
+              <p>Sets the reasoning enabled flag of the connection when performing SPARQL queries &amp;
+function calls involving reasoning.
+Boolean parameter <code>true</code> to enable reasoning, <code>false</code> to disable it.
+<a href="http://docs.stardog.com/#_owl_rule_reasoning">Stardog Reasoning docs</a></p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.setReasoning = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(reasoning)</span> </span>{
-        <span class="hljs-keyword">this</span>.reasoning = reasoning;
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.setReasoning = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(reasoningFlag)</span> </span>{
+        <span class="hljs-keyword">this</span>.reasoning = reasoningFlag;
     };</pre></div></div>
 
         </li>
@@ -463,11 +464,11 @@ function calls involving reasoning. Allowed values are documented in
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>Retrieves the configured reasoning level for the Stardog Connection.</p>
+              <p>Gets reasoning enabled flag for the Stardog Connection.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.getReasoning = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.isReasoningEnabled = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.reasoning;
     };</pre></div></div>
 
@@ -479,23 +480,6 @@ function calls involving reasoning. Allowed values are documented in
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
-              </div>
-              <p>Get the sd-connetion-string as expected by Stardog</p>
-
-            </div>
-
-            <div class="content"><div class='highlight'><pre>    Connection.prototype._getSdConnectionString = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(reasoningProfile)</span> </span>{
-        <span class="hljs-keyword">return</span> <span class="hljs-string">"reasoning="</span> + reasoningProfile;
-    };</pre></div></div>
-
-        </li>
-
-
-        <li id="section-29">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Check if we’re in node or in the browser.
 Execute a query to the endpoint provided with the
@@ -510,14 +494,15 @@ JSONLD object.</p>
         </li>
 
 
-        <li id="section-30">
+        <li id="section-29">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Node.js implementation of the HTTP request using <code>request</code> npm module.
-<strong>Parameters</strong>:<br><code>options</code>: an object with the following attributes:
+<strong>Parameters</strong>:
+<code>options</code>: an object with the following attributes:
              <code>httpMethod</code>: the name of the database;
              <code>resource</code>: the resource;
              <code>acceptHeader</code>: the accept header;
@@ -526,7 +511,7 @@ JSONLD object.</p>
              <code>isJsonBody</code>: whether the body is a JSON object;
              <code>contentType</code>: the content type;
              <code>multipart</code>: the multipart;
-<code>callback</code>: the callback to execute once the request is done. </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -545,11 +530,11 @@ JSONLD object.</p>
         </li>
 
 
-        <li id="section-31">
+        <li id="section-30">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Set the Accept header by default to “application/sparql-results+json”</p>
 
@@ -565,11 +550,11 @@ JSONLD object.</p>
         </li>
 
 
-        <li id="section-32">
+        <li id="section-31">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Try to parse response to JSON, which is expected in most
 cases</p>
@@ -588,11 +573,11 @@ cases</p>
         </li>
 
 
-        <li id="section-33">
+        <li id="section-32">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>If parsing throws an error just leave it as is.</p>
 
@@ -610,11 +595,11 @@ cases</p>
         </li>
 
 
-        <li id="section-34">
+        <li id="section-33">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>TODO: maybe wrap the error with stardog specific info</p>
 
@@ -636,11 +621,11 @@ cases</p>
         </li>
 
 
-        <li id="section-35">
+        <li id="section-34">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>build request object</p>
 
@@ -661,11 +646,11 @@ cases</p>
         </li>
 
 
-        <li id="section-36">
+        <li id="section-35">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>var fs = require(“fs”);</p>
 
@@ -689,11 +674,11 @@ cases</p>
         </li>
 
 
-        <li id="section-37">
+        <li id="section-36">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Browser implementation using jQuery’s AJAX
 In case of cross-domain requests, a pre-flight OPTIONS http request is sent by the browser and
@@ -712,11 +697,11 @@ to work for Chrome, Safari, Firefox(*)</p>
         </li>
 
 
-        <li id="section-38">
+        <li id="section-37">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>(*) Only if the pre-flight request succeeds.</p>
 
@@ -725,11 +710,11 @@ to work for Chrome, Safari, Firefox(*)</p>
         </li>
 
 
-        <li id="section-39">
+        <li id="section-38">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>IE7-9 does not provide a native btoa (Base64 encoding) function
 One can fall back to a JS implementation, e.g. <a href="http://www.webtoolkit.info/javascript-base64.html">http://www.webtoolkit.info/javascript-base64.html</a>
@@ -743,14 +728,15 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-40">
+        <li id="section-39">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>Low level HTTP request method to use in the Browser, using an AJAX implementation.
-<strong>Parameters</strong>:<br><code>options</code>: an object with the following attributes:
+<strong>Parameters</strong>:
+<code>options</code>: an object with the following attributes:
              <code>httpMethod</code>: the name of the database;
              <code>resource</code>: the resource;
              <code>acceptHeader</code>: the accept header;
@@ -759,7 +745,7 @@ provide this extension and are reported to work.</p>
              <code>isJsonBody</code>: whether the body is a JSON object;
              <code>contentType</code>: the content type;
              <code>multipart</code>: the multipart;
-<code>callback</code>: the callback to execute once the request is done. </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -794,11 +780,11 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-41">
+        <li id="section-40">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>if there are params, append them to the req_url</p>
 
@@ -825,11 +811,11 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-42">
+        <li id="section-41">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>prevents jquery from overwriting the proper content-type header</p>
 
@@ -844,11 +830,11 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-43">
+        <li id="section-42">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>check if the returned object is a JSONLD object</p>
 
@@ -881,21 +867,22 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-44">
+        <li id="section-43">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p><code>Connection.getProperty</code> retrieves the values for a specific property of a URI individual in a
 Stardog DB. This function is a direct access to provide easy out-of-the-box functionality
 for retrieving common properties such as rdfs:label, etc
-<strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>uri</code>: the individual URI;
              <code>property</code>: the specific property.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -919,18 +906,18 @@ for retrieving common properties such as rdfs:label, etc
         </li>
 
 
-        <li id="section-45">
+        <li id="section-44">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Performs a GET to the root endpoint of the DB <code>database</code></p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -948,11 +935,11 @@ for retrieving common properties such as rdfs:label, etc
         </li>
 
 
-        <li id="section-46">
+        <li id="section-45">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>Retrieve the DB size.
 Returns a single numeric value representing the number of triples in the database.</p>
@@ -960,7 +947,7 @@ Returns a single numeric value representing the number of triples in the databas
 <code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database to verify its size;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -968,7 +955,7 @@ Returns a single numeric value representing the number of triples in the databas
         <span class="hljs-keyword">var</span> reqOptions = {
                 resource: options.database + <span class="hljs-string">"/size"</span>,
                 httpMethod: <span class="hljs-string">"GET"</span>,
-                acceptHeader: <span class="hljs-string">"*/*"</span>,
+                acceptHeader: <span class="hljs-string">"text/plain"</span>,
                 params: options.params || <span class="hljs-string">""</span>
             };
         <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
@@ -977,16 +964,17 @@ Returns a single numeric value representing the number of triples in the databas
         </li>
 
 
-        <li id="section-47">
+        <li id="section-46">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
 for the Accept header. This method is designed for <code>select</code> &amp; <code>ask</code> queries, where the result type will
 be a set of bindings.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>query</code>: the query;
              <code>baseURI</code>: the base URI;
@@ -994,7 +982,7 @@ be a set of bindings.</p>
              <code>offset</code>: the offset;
              <code>mimetype</code>: the mimetype;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -1041,16 +1029,17 @@ be a set of bindings.</p>
         </li>
 
 
-        <li id="section-48">
+        <li id="section-47">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
 for the Accept header. This method is designed for <code>describe</code> &amp; <code>construct</code> queries, where the result type will
 be a set of triples.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>query</code>: the query;
              <code>baseURI</code>: the base URI;
@@ -1058,7 +1047,7 @@ be a set of triples.</p>
              <code>offset</code>: the offset;
              <code>mimetype</code>: the mimetype;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -1105,19 +1094,20 @@ be a set of triples.</p>
         </li>
 
 
-        <li id="section-49">
+        <li id="section-48">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Returns the query plan generated by Stardog given a SPARQL query.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>query</code>: the query;
              <code>baseURI</code>: (optional) the base URI;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -1139,17 +1129,18 @@ be a set of triples.</p>
         </li>
 
 
-        <li id="section-50">
+        <li id="section-49">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>Start a new transaction in the database.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done. </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -1167,20 +1158,21 @@ be a set of triples.</p>
         </li>
 
 
-        <li id="section-51">
+        <li id="section-50">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>Commit the transaction <code>txId</code> in the database. This will remove the transaction and the <code>txId</code> will not
 be valid anymore. All function calls using a transaction to mutate the contents of a database must call this
 function in order to make the changes permanent.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>txId</code>: the transaction id;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done. </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -1198,14 +1190,15 @@ function in order to make the changes permanent.</p>
         </li>
 
 
-        <li id="section-52">
+        <li id="section-51">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>Perform a rollback given within a trasaction, providing the transaction id <code>txId</code>.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>txId</code>: the transaction id;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
@@ -1227,14 +1220,15 @@ function in order to make the changes permanent.</p>
         </li>
 
 
-        <li id="section-53">
+        <li id="section-52">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>Evaluate a SPARQL query using a transaction <code>txId</code>.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>query</code>: the query;
              <code>txId</code>: the transaction id;
@@ -1243,7 +1237,7 @@ function in order to make the changes permanent.</p>
              <code>offset</code>: the offset;
              <code>mimetype</code>: the mimetype;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -1252,11 +1246,11 @@ function in order to make the changes permanent.</p>
         </li>
 
 
-        <li id="section-54">
+        <li id="section-53">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>function (database, txId, query, baseURI, limit, offset, callback, acceptMIME) {</p>
 
@@ -1287,15 +1281,16 @@ function in order to make the changes permanent.</p>
         </li>
 
 
-        <li id="section-55">
+        <li id="section-54">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>Add a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function
 to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>txId</code>: the transaction id;
              <code>body</code>: the request body;
@@ -1328,15 +1323,16 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-56">
+        <li id="section-55">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>Remove a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function
 to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>txId</code>: the transaction id;
              <code>body</code>: the request body;
@@ -1369,14 +1365,15 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-57">
+        <li id="section-56">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>Clears the content of the DB.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>txId</code>: the transaction id;
              <code>graphUri</code>: the graph URI;
@@ -1403,14 +1400,26 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
+        <li id="section-57">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <h2 id="reasoning-api">Reasoning API</h2>
+<hr>
+
+            </div>
+
+        </li>
+
+
         <li id="section-58">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
-              <h2 id="reasoning-api">Reasoning API</h2>
-<hr>
 
             </div>
 
@@ -1423,21 +1432,10 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
-
-            </div>
-
-        </li>
-
-
-        <li id="section-60">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
-              </div>
               <p>API call to get explanation of the inferences in <code>axioms</code> using a transaction <code>txId</code> with the content type
 <code>contentType</code> of the axioms.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>txId</code>: the transaction;
              <code>axioms</code>: the axioms;
@@ -1465,16 +1463,17 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-61">
+        <li id="section-60">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>Checks the logical consistency of database. If using a named graph provide the <code>graph_uri</code> parameter.
 Returns a boolean response as <code>true</code> if the database is consistent.
 See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog reasoning consistency</a></p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>graphUri</code>: the graph URI;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
@@ -1500,15 +1499,16 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-62">
+        <li id="section-61">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <h3 id="integrity-constraint-validation">Integrity Constraint Validation</h3>
 <p>Listing the Integrity Constraints. Returns the integrity constraints for the specified database serialized in any supported RDF format.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>acceptMime</code>: the MIME type;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
@@ -1531,15 +1531,16 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-63">
+        <li id="section-62">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and adds them to the database in an atomic action.
 200 return code indicates the constraints were added successfully, 500 indicates that the constraints were not valid or unable to be added.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>icvAxioms</code>: the ICV axioms;
              <code>contentType</code>: the content-type;
@@ -1553,11 +1554,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-64">
+        <li id="section-63">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <p>set default content-type to “text/plain” (N-Triples)</p>
 
@@ -1579,15 +1580,16 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-65">
+        <li id="section-64">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and removes them from the database in a single atomic action.
 200 indicates the constraints were successfully remove; 500 indicates an error.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>icvAxioms</code>: the ICV axioms;
              <code>contentType</code>: the content-type;
@@ -1601,11 +1603,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-66">
+        <li id="section-65">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <p>set default content-type to “text/plain” (N-Triples)</p>
 
@@ -1627,14 +1629,15 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-67">
+        <li id="section-66">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
+                <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <p>Drops ALL integrity constraints for a database. 200 indicates all constraints were successfully dropped; 500 indicates an error.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
@@ -1655,16 +1658,17 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-68">
+        <li id="section-67">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
+                <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
               <p>Only works for one constraint, if more than 1 are provided returns 400 code status. The body of the POST is a single Integrity Constraint,
 serialized in any supported RDF format, with Content-type set appropriately. Returns either a text/plain result containing a single SPARQL query;
 or it returns 400 if more than one constraint was included in the input.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with at least the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
              <code>database</code>: the name of the database;
              <code>icvAxiom</code>: the ICV axiom;
              <code>contentType</code>: the content-type;
@@ -1679,11 +1683,11 @@ or it returns 400 if more than one constraint was included in the input.</p>
         </li>
 
 
-        <li id="section-69">
+        <li id="section-68">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
+                <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
               <p>set default content-type to “text/plain” (N-Triples)</p>
 
@@ -1709,13 +1713,25 @@ or it returns 400 if more than one constraint was included in the input.</p>
         </li>
 
 
+        <li id="section-69">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+
+        </li>
+
+
         <li id="section-70">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
-              <hr>
 
             </div>
 
@@ -1727,18 +1743,6 @@ or it returns 400 if more than one constraint was included in the input.</p>
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-71">&#182;</a>
-              </div>
-
-            </div>
-
-        </li>
-
-
-        <li id="section-72">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
               <p>Returns a mapping of the namespaces being used in a database.
 See: Section <strong>Namespace Prefix Bindings</strong> in
@@ -1778,11 +1782,11 @@ See: Section <strong>Namespace Prefix Bindings</strong> in
         </li>
 
 
-        <li id="section-73">
+        <li id="section-72">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
+                <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
               <p>Error propagation</p>
 
@@ -1795,11 +1799,11 @@ See: Section <strong>Namespace Prefix Bindings</strong> in
         </li>
 
 
-        <li id="section-74">
+        <li id="section-73">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
+                <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
               <h2 id="query-management-api">Query Management API</h2>
 <hr>
@@ -1809,11 +1813,11 @@ See: Section <strong>Namespace Prefix Bindings</strong> in
         </li>
 
 
-        <li id="section-75">
+        <li id="section-74">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
+                <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
               <p><a href="http://docs.stardog.com/admin/#manage-queries">Stardog Query Management</a>
 Stardog includes the capability to manage running queries according to configurable
@@ -1830,18 +1834,18 @@ policies set at run-time; this capability includes support for:</p>
         </li>
 
 
-        <li id="section-76">
+        <li id="section-75">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
+                <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <h3 id="list-running-queries">List running queries</h3>
 <p>Get a list of the currently running queries.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
              <code>params</code>: (optional) currently not used.
-<code>callback</code>: the callback to execute once the request is done. </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -1859,11 +1863,11 @@ policies set at run-time; this capability includes support for:</p>
         </li>
 
 
-        <li id="section-77">
+        <li id="section-76">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
+                <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
               <h3 id="get-query-information">Get query information</h3>
 <p>Get the information related to the query running such as: a query ID, the database on which the
@@ -1872,7 +1876,7 @@ query is running, the user that executed the query, the elapsed time among other
 <code>options</code>: an object with the following attributes:
              <code>queryId</code>: the ID of the query;
              <code>params</code>: (optional) currently not used.
-<code>callback</code>: the callback to execute once the request is done. </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -1890,11 +1894,11 @@ query is running, the user that executed the query, the elapsed time among other
         </li>
 
 
-        <li id="section-78">
+        <li id="section-77">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-78">&#182;</a>
+                <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
               <h3 id="kill-a-running-query">Kill a running query</h3>
 <p>Kill a currently running query using a query ID.</p>
@@ -1902,7 +1906,7 @@ query is running, the user that executed the query, the elapsed time among other
 <code>options</code>: an object with the following attributes:
              <code>queryId</code>: the ID of the query;
              <code>params</code>: (optional) currently not used.
-<code>callback</code>: the callback to execute once the request is done. </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -1920,13 +1924,25 @@ query is running, the user that executed the query, the elapsed time among other
         </li>
 
 
+        <li id="section-78">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-78">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+
+        </li>
+
+
         <li id="section-79">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
-              <hr>
 
             </div>
 
@@ -1939,6 +1955,8 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
+              <h2 id="stardog-administrative-api">Stardog Administrative API</h2>
+<hr>
 
             </div>
 
@@ -1951,8 +1969,7 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
-              <h2 id="stardog-administrative-api">Stardog Administrative API</h2>
-<hr>
+              <p><a href="http://docs.stardog.com/http/#sd-Admin-Resources">Admin Resources</a></p>
 
             </div>
 
@@ -1965,7 +1982,7 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
-              <p><a href="http://docs.stardog.com/http/#sd-Admin-Resources">Admin Resources</a></p>
+              <h3 id="database-operations-">Database operations.</h3>
 
             </div>
 
@@ -1978,7 +1995,10 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
-              <h3 id="database-operations-">Database operations.</h3>
+              <p>These API calls are related to the DBMS core functions for administrating resources in the
+Stardog Database System, such as: getting a list of databases, add/copy/delete databases.
+Note that there’s one administrative call missing for creating DBs, this is to limitations
+on the HTTP multi-part libraries, but support for this is coming soon.</p>
 
             </div>
 
@@ -1991,28 +2011,12 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
-              <p>These API calls are related to the DBMS core functions for administrating resources in the
-Stardog Database System, such as: getting a list of databases, add/copy/delete databases.
-Note that there’s one administrative call missing for creating DBs, this is to limitations
-on the HTTP multi-part libraries, but support for this is coming soon.</p>
-
-            </div>
-
-        </li>
-
-
-        <li id="section-85">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
-              </div>
               <h4 id="list-databases-get-">List databases (GET)</h4>
 <p>Get a list of the existing databases in the system.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done. </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2032,19 +2036,20 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
         </li>
 
 
-        <li id="section-86">
+        <li id="section-85">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
+                <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
               <h4 id="copy-database-put-">Copy database (PUT)</h4>
 <p>Copy an existing database.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>dbsource</code>: the name of the database to copy.<br>             <code>dbtarget</code>: the name of the new copied database.
+             <code>dbsource</code>: the name of the database to copy.
+             <code>dbtarget</code>: the name of the new copied database.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2061,17 +2066,19 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
         </li>
 
 
-        <li id="section-87">
+        <li id="section-86">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
+                <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
               <h4 id="create-a-new-database-post-">Create a new database (POST)</h4>
 <p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values.
 Database options can be found <a href="http://docs.stardog.com/admin/#sd-Database-Admin">here</a>.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the database to set the options.<br>             <code>options</code>: the options JSON object, indicating the options and values to set, <a href="http://docs.stardog.com/http/">more info</a>.
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>database</code>: the name of the database to set the options.
+             <code>options</code>: the options JSON object, indicating the options and values to set, <a href="http://docs.stardog.com/http/">more info</a>.
              <code>files</code>: the array of file names to bulk load into the new database
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
@@ -2114,11 +2121,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-88">
+        <li id="section-87">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
+                <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
               <h4 id="drop-an-existing-database-">Drop an existing database.</h4>
 <p>Drops an existing database <code>dbname</code> and all the information that it contains.</p>
@@ -2126,7 +2133,7 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
 <code>options</code>: an object with one the following attributes:
              <code>database</code>: the name of the database to drop.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2144,11 +2151,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-89">
+        <li id="section-88">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
+                <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
               <h4 id="migrate-an-existing-database-">Migrate an existing database.</h4>
 <p>Migrates the existing content of a legacy database to new format.</p>
@@ -2156,7 +2163,7 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
 <code>options</code>: an object with one the following attributes:
              <code>database</code>: the name of the database to migrate.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2174,11 +2181,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-90">
+        <li id="section-89">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
+                <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
               <h4 id="optimize-an-existing-database-">Optimize an existing database.</h4>
 <p>Optimize an existing database.</p>
@@ -2186,7 +2193,7 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
 <code>options</code>: an object with one the following attributes:
              <code>database</code>: the name of the database to optimize.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2204,17 +2211,20 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-91">
+        <li id="section-90">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
+                <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
               <h4 id="set-database-on-line-">Set database on-line.</h4>
 <p>Request message to set an existing database <code>dbname</code> on-line.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the database to set on-line.<br>             <code>strategyOp</code>: the strategy options, <a href="http://docs.stardog.com/http/">more info</a>.
-             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>database</code>: the name of the database to set on-line.
+             <code>strategyOp</code>: the strategy options, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2232,11 +2242,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-92">
+        <li id="section-91">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
+                <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
               <h4 id="set-database-off-line-">Set database off-line.</h4>
 <p>Request message to set an existing database off-line;
@@ -2248,9 +2258,11 @@ This will allow open transaction to commit/rollback, open queries to complete, e
 After the timeout has expired, all remaining open connections are closed and the database goes off-line.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the database to set off-line.<br>             <code>strategyOp</code>: the strategy options, <a href="http://docs.stardog.com/http/">more info</a>.<br>             <code>timeout</code>: timeout in milliseconds.
+             <code>database</code>: the name of the database to set off-line.
+             <code>strategyOp</code>: the strategy options, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>timeout</code>: timeout in milliseconds.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2273,17 +2285,19 @@ After the timeout has expired, all remaining open connections are closed and the
         </li>
 
 
-        <li id="section-93">
+        <li id="section-92">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-93">&#182;</a>
+                <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
               <h4 id="set-option-values-to-an-existing-database-">Set option values to an existing database.</h4>
 <p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values.
 Database options can be found <a href="http://docs.stardog.com/admin/#sd-Database-Admin">here</a>.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the database to set the options.<br>             <code>optionsObj</code>: the options JSON object, indicating the options and values to set, <a href="http://docs.stardog.com/http/">more info</a>.
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>database</code>: the name of the database to set the options.
+             <code>optionsObj</code>: the options JSON object, indicating the options and values to set, <a href="http://docs.stardog.com/http/">more info</a>.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
@@ -2305,19 +2319,22 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-94">
+        <li id="section-93">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-94">&#182;</a>
+                <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
               <h4 id="get-option-values-from-an-existing-database-">Get option values from an existing database.</h4>
 <p>Retrieves a set of options passed through a JSON object specification.
 The JSON input has empty values for each key, but will be filled with the option
 values in the database when the call returns.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the db to retrieve the option values.<br>             <code>optionsObj</code>: the options JSON object seed, indicating the options to retrieve, <a href="http://docs.stardog.com/http/">more info</a>.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>database</code>: the name of the db to retrieve the option values.
+             <code>optionsObj</code>: the options JSON object seed, indicating the options to retrieve, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2337,13 +2354,27 @@ values in the database when the call returns.</p>
         </li>
 
 
+        <li id="section-94">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-94">&#182;</a>
+              </div>
+              <h3 id="user-operations-">User operations.</h3>
+
+            </div>
+
+        </li>
+
+
         <li id="section-95">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
-              <h3 id="user-operations-">User operations.</h3>
+              <p>Administrative API calls for managing user accounts in Stardog, e.g. creating/modifying/removing
+user accounts.</p>
 
             </div>
 
@@ -2356,28 +2387,16 @@ values in the database when the call returns.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-96">&#182;</a>
               </div>
-              <p>Administrative API calls for managing user accounts in Stardog, e.g. creating/modifying/removing
-user accounts.</p>
-
-            </div>
-
-        </li>
-
-
-        <li id="section-97">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-97">&#182;</a>
-              </div>
               <h4 id="create-new-user">Create new user</h4>
 <p>Adds a new user to the system; allows a configuration option for superuser as a JSON object.
 Superuser configuration is set as default to false. The password <strong>must</strong> be provided for the user.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>username</code>: the username of the user to create.<br>             <code>password</code>: the initial password of the newly created user.<br>             <code>superuser</code>: boolean flag indicating if the created user will have super-user privileges.
+             <code>username</code>: the username of the user to create.
+             <code>password</code>: the initial password of the newly created user.
+             <code>superuser</code>: boolean flag indicating if the created user will have super-user privileges.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2402,18 +2421,20 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-98">
+        <li id="section-97">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-98">&#182;</a>
+                <a class="pilcrow" href="#section-97">&#182;</a>
               </div>
               <h4 id="change-user-s-password">Change user’s password</h4>
 <p>Changes <code>user</code> password in the system. Receives input of new password as a JSON Object.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to change the password.<br>             <code>newPwd</code>: the new password of <code>user</code>.
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the user to change the password.
+             <code>newPwd</code>: the new password of <code>user</code>.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2433,17 +2454,19 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-99">
+        <li id="section-98">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-99">&#182;</a>
+                <a class="pilcrow" href="#section-98">&#182;</a>
               </div>
               <h4 id="check-if-user-is-enabled-">Check if user is enabled.</h4>
 <p>Verifies if user is enabled in the system.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user name to verify if enabled.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the user name to verify if enabled.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2461,17 +2484,19 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-100">
+        <li id="section-99">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-100">&#182;</a>
+                <a class="pilcrow" href="#section-99">&#182;</a>
               </div>
               <h4 id="check-if-user-is-superuser-">Check if user is superuser.</h4>
 <p>Verifies if the user is a superuser.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to verify if is superuser.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the user to verify if is superuser.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2489,17 +2514,19 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-101">
+        <li id="section-100">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-101">&#182;</a>
+                <a class="pilcrow" href="#section-100">&#182;</a>
               </div>
               <h4 id="list-user-roles-">List user roles.</h4>
 <p>Retrieves the list of the roles assigned to user.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user used to list roles.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the user used to list roles.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2517,17 +2544,18 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-102">
+        <li id="section-101">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-102">&#182;</a>
+                <a class="pilcrow" href="#section-101">&#182;</a>
               </div>
               <h4 id="list-users-get-">List users (GET)</h4>
 <p>Retrieves a list of users available in the system.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: (optional) an object with one the following attributes:
-             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2545,15 +2573,18 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-103">
+        <li id="section-102">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-103">&#182;</a>
+                <a class="pilcrow" href="#section-102">&#182;</a>
               </div>
               <h4 id="delete-user">Delete user</h4>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>user</code>: the name of the user to delete from the system.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the name of the user to delete from the system.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2571,18 +2602,20 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-104">
+        <li id="section-103">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-104">&#182;</a>
+                <a class="pilcrow" href="#section-103">&#182;</a>
               </div>
               <h4 id="enable-users-">Enable users.</h4>
 <p>Enables/Disables an existing user in the system.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
              <code>user</code>: the name of the user to set enable.
-             <code>enableFlag</code>: boolean flag, if <code>true</code> user is enabled; <code>false</code> to disable it.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+             <code>enableFlag</code>: boolean flag, if <code>true</code> user is enabled; <code>false</code> to disable it.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2602,16 +2635,20 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-105">
+        <li id="section-104">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-105">&#182;</a>
+                <a class="pilcrow" href="#section-104">&#182;</a>
               </div>
               <h4 id="setting-user-roles-">Setting user roles.</h4>
 <p>Sets roles for a given user.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>user</code>: the name of the user to set the roles.<br>             <code>roles</code>: an array containing the roles to assign to the user, <a href="http://docs.stardog.com/http/">more info</a>.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the name of the user to set the roles.
+             <code>roles</code>: an array containing the roles to assign to the user, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2631,13 +2668,27 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
+        <li id="section-105">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-105">&#182;</a>
+              </div>
+              <h3 id="role-operations-">Role operations.</h3>
+
+            </div>
+
+        </li>
+
+
         <li id="section-106">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-106">&#182;</a>
               </div>
-              <h3 id="role-operations-">Role operations.</h3>
+              <p>Administrative API calls for managing roles in Stardog, which are part of the security model, e.g. creating/modifying/removing
+roles.</p>
 
             </div>
 
@@ -2650,23 +2701,12 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-107">&#182;</a>
               </div>
-              <p>Administrative API calls for managing roles in Stardog, which are part of the security model, e.g. creating/modifying/removing
-roles.</p>
-
-            </div>
-
-        </li>
-
-
-        <li id="section-108">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-108">&#182;</a>
-              </div>
               <h4 id="create-a-new-role">Create a new role</h4>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>rolename</code>: the name of the role to create.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>rolename</code>: the name of the role to create.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2686,17 +2726,18 @@ roles.</p>
         </li>
 
 
-        <li id="section-109">
+        <li id="section-108">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-109">&#182;</a>
+                <a class="pilcrow" href="#section-108">&#182;</a>
               </div>
               <h4 id="list-roles-get-">List roles (GET)</h4>
 <p>Retrieves the list of roles registered in the system.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2714,17 +2755,19 @@ roles.</p>
         </li>
 
 
-        <li id="section-110">
+        <li id="section-109">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-110">&#182;</a>
+                <a class="pilcrow" href="#section-109">&#182;</a>
               </div>
               <h4 id="list-users-with-a-specified-role-">List users with a specified role.</h4>
 <p>Retrieves users that have the role assigned.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>role</code>: the role to look for in the set of users defined in Stardog.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.<br><code>callback</code>: the callback to execute once the request is done.  </p>
+             <code>role</code>: the role to look for in the set of users defined in Stardog.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2742,11 +2785,11 @@ roles.</p>
         </li>
 
 
-        <li id="section-111">
+        <li id="section-110">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-111">&#182;</a>
+                <a class="pilcrow" href="#section-110">&#182;</a>
               </div>
               <h4 id="delete-role">Delete role</h4>
 <p>Deletes an existing role from the system; the force parameter is a boolean
@@ -2754,8 +2797,9 @@ flag which indicates if the delete call for the role must be forced,
 <a href="http://docs.stardog.com/http/">more info</a></p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>role</code>: the role to delete.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+             <code>role</code>: the role to delete.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2773,13 +2817,28 @@ flag which indicates if the delete call for the role must be forced,
         </li>
 
 
+        <li id="section-111">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-111">&#182;</a>
+              </div>
+              <h3 id="permissions-operations-">Permissions operations.</h3>
+
+            </div>
+
+        </li>
+
+
         <li id="section-112">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-112">&#182;</a>
               </div>
-              <h3 id="permissions-operations-">Permissions operations.</h3>
+              <p>Administrative API calls for managing permissions for users &amp; roles in Stardog,
+which are also part of the security model, e.g. creating/modifying/removing
+permissions.</p>
 
             </div>
 
@@ -2792,26 +2851,14 @@ flag which indicates if the delete call for the role must be forced,
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-113">&#182;</a>
               </div>
-              <p>Administrative API calls for managing permissions for users &amp; roles in Stardog,
-which are also part of the security model, e.g. creating/modifying/removing
-permissions.</p>
-
-            </div>
-
-        </li>
-
-
-        <li id="section-114">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-114">&#182;</a>
-              </div>
               <h4 id="assign-permission-to-role-">Assign permission to role.</h4>
 <p>Creates a new permission for a given role over a specified resource.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>role</code>: the role to whom the permission will be assigned.<br>             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>role</code>: the role to whom the permission will be assigned.
+             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2831,18 +2878,20 @@ permissions.</p>
         </li>
 
 
-        <li id="section-115">
+        <li id="section-114">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-115">&#182;</a>
+                <a class="pilcrow" href="#section-114">&#182;</a>
               </div>
               <h4 id="assign-permission-to-user-">Assign permission to user.</h4>
 <p>Creates a new permission for a given user over a specified resource.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to whom the permission will be assigned.<br>             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+             <code>user</code>: the user to whom the permission will be assigned.
+             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2862,18 +2911,20 @@ permissions.</p>
         </li>
 
 
-        <li id="section-116">
+        <li id="section-115">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-116">&#182;</a>
+                <a class="pilcrow" href="#section-115">&#182;</a>
               </div>
               <h4 id="delete-permission-from-role-">Delete permission from role.</h4>
 <p>Deletes a permission for a given role over a specified resource.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>role</code>: the role to whom the permission will be removed.<br>             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+             <code>role</code>: the role to whom the permission will be removed.
+             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2893,18 +2944,20 @@ permissions.</p>
         </li>
 
 
-        <li id="section-117">
+        <li id="section-116">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-117">&#182;</a>
+                <a class="pilcrow" href="#section-116">&#182;</a>
               </div>
               <h4 id="delete-permission-from-user-">Delete permission from user.</h4>
 <p>Deletes a permission for a given user over a specified resource.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to whom the permission will be removed.<br>             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+             <code>user</code>: the user to whom the permission will be removed.
+             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2924,17 +2977,19 @@ permissions.</p>
         </li>
 
 
-        <li id="section-118">
+        <li id="section-117">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-118">&#182;</a>
+                <a class="pilcrow" href="#section-117">&#182;</a>
               </div>
               <h4 id="list-role-permissions-">List role permissions.</h4>
 <p>Retrieves permissions assigned to the role.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>role</code>: the role to check for its permissions.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>role</code>: the role to check for its permissions.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2952,17 +3007,19 @@ permissions.</p>
         </li>
 
 
-        <li id="section-119">
+        <li id="section-118">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-119">&#182;</a>
+                <a class="pilcrow" href="#section-118">&#182;</a>
               </div>
               <h4 id="list-user-permissions-">List user permissions.</h4>
 <p>Retrieves permissions assigned to the user.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to check for its permissions.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the user to check for its permissions.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -2980,17 +3037,19 @@ permissions.</p>
         </li>
 
 
-        <li id="section-120">
+        <li id="section-119">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-120">&#182;</a>
+                <a class="pilcrow" href="#section-119">&#182;</a>
               </div>
               <h4 id="list-user-effective-permissions-">List user effective permissions.</h4>
 <p>Retrieves effective permissions assigned to the user.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to check for its effective permissions.<br>             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the user to check for its effective permissions.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
@@ -3008,23 +3067,22 @@ permissions.</p>
         </li>
 
 
-        <li id="section-121">
+        <li id="section-120">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-121">&#182;</a>
+                <a class="pilcrow" href="#section-120">&#182;</a>
               </div>
               <h3 id="shutdown-server-">Shutdown server.</h3>
 <p>Shuts down the Stardog Server. If successful, returns a 202 to indicate that the
 request was received and that the server will be shut down shortly.</p>
-<p><strong>Parameters</strong>:<br><code>options</code>: an object with one the following attributes:
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.  </p>
-
-              <br>
+<code>callback</code>: the callback to execute once the request is done.</p>
 
               <footer>
-                <img src="http://clarkparsia.github.io/stardog.js/images/cp.png" style="width: 200px;" />
+                <img src="http://complexible.com/img/l-b.png" width="120px" />
               </footer>
 
             </div>
