@@ -28,8 +28,8 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <pre><code>Stardog.js <span class="hljs-number">0.2</span><span class="hljs-number">.0</span>
-</code></pre><p>Copyright 2015 Clark & Parsia, LLC</p>
+              <pre><code>Stardog.js <span class="hljs-number">0.3.0</span>
+</code></pre><p>Copyright 2015 Clark &amp; Parsia, LLC</p>
 
             </div>
 
@@ -79,7 +79,7 @@ limitations under the License.</p>
             </div>
 
             <div class="content"><div class='highlight'><pre>
-(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(factory)</span> </span>{
+(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">factory</span>) </span>{
 <span class="hljs-pi">
     "use strict"</span>;</pre></div></div>
 
@@ -147,7 +147,7 @@ for Closure Compiler “advanced” mode.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        define(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
 
         </li>
 
@@ -183,7 +183,7 @@ for Closure Compiler “advanced” mode.</p>
 
             <div class="content"><div class='highlight'><pre>        root.Stardog = factory(root);
     }
-}).call(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(root)</span> </span>{
+}).call(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">root</span>) </span>{
 <span class="hljs-pi">
     "use strict"</span>;</pre></div></div>
 
@@ -215,7 +215,7 @@ for Closure Compiler “advanced” mode.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Stardog.VERSION = <span class="hljs-string">"0.2.0"</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Stardog.VERSION = <span class="hljs-string">"0.3.0"</span>;</pre></div></div>
 
         </li>
 
@@ -325,7 +325,7 @@ referenced in <a href="http://docs.stardog.com/http/">Stardog HTTP Programming d
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> Connection = Stardog.Connection = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span>   </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> Connection = Stardog.Connection = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)   </span>{</pre></div></div>
 
         </li>
 
@@ -357,7 +357,7 @@ referenced in <a href="http://docs.stardog.com/http/">Stardog HTTP Programming d
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.setEndpoint = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.setEndpoint = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">url</span>) </span>{
         <span class="hljs-keyword">var</span> i = url.length -<span class="hljs-number">1</span>;</pre></div></div>
 
         </li>
@@ -394,7 +394,7 @@ referenced in <a href="http://docs.stardog.com/http/">Stardog HTTP Programming d
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.getEndpoint = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.getEndpoint = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.endpoint;
     };</pre></div></div>
 
@@ -411,7 +411,7 @@ referenced in <a href="http://docs.stardog.com/http/">Stardog HTTP Programming d
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.setCredentials = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(username, password)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.setCredentials = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">username, password</span>) </span>{
         <span class="hljs-keyword">this</span>.credentials = {};
         <span class="hljs-keyword">this</span>.credentials.username = username;
         <span class="hljs-keyword">this</span>.credentials.password = password;
@@ -431,7 +431,7 @@ containing <code>{ &quot;username&quot;: &quot;...&quot;, &quot;password&quot;: 
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.getCredentials = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.getCredentials = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.credentials;
     };</pre></div></div>
 
@@ -451,7 +451,7 @@ Boolean parameter <code>true</code> to enable reasoning, <code>false</code> to d
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.setReasoning = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(reasoningFlag)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.setReasoning = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reasoningFlag</span>) </span>{
         <span class="hljs-keyword">this</span>.reasoning = reasoningFlag;
     };</pre></div></div>
 
@@ -468,7 +468,7 @@ Boolean parameter <code>true</code> to enable reasoning, <code>false</code> to d
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.isReasoningEnabled = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.isReasoningEnabled = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.reasoning;
     };</pre></div></div>
 
@@ -515,7 +515,7 @@ JSONLD object.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        Connection.prototype._httpRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>        Connection.prototype._httpRequest = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
             <span class="hljs-keyword">var</span> theMethod = options.httpMethod,
                 req_url = <span class="hljs-keyword">this</span>.endpoint + options.resource,
                 params = options.params || {},
@@ -542,7 +542,7 @@ JSONLD object.</p>
 
             <div class="content"><div class='highlight'><pre>            headers.Accept = acceptH || <span class="hljs-string">"text/plain"</span>;
 
-            <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fnResponseHandler</span><span class="hljs-params">(body, response)</span> </span>{
+            <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fnResponseHandler</span>(<span class="hljs-params">body, response</span>) </span>{
                 <span class="hljs-keyword">var</span> jsonData;
 
                 <span class="hljs-keyword">if</span> (!(body <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Error</span>)) {</pre></div></div>
@@ -723,7 +723,7 @@ provide this extension and are reported to work.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        Connection.prototype._base64Encode = <span class="hljs-keyword">typeof</span>(btoa) == <span class="hljs-string">"function"</span> ? <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x)</span></span>{<span class="hljs-keyword">return</span> btoa(x);} : <span class="hljs-literal">null</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        Connection.prototype._base64Encode = <span class="hljs-keyword">typeof</span>(btoa) == <span class="hljs-string">"function"</span> ? <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x</span>)</span>{<span class="hljs-keyword">return</span> btoa(x);} : <span class="hljs-literal">null</span>;</pre></div></div>
 
         </li>
 
@@ -749,7 +749,7 @@ provide this extension and are reported to work.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        Connection.prototype._httpRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>        Connection.prototype._httpRequest = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
             <span class="hljs-keyword">var</span> theMethod = options.httpMethod,
                 acceptH = options.acceptHeader,
                 req_url = <span class="hljs-keyword">this</span>.endpoint + options.resource,
@@ -824,7 +824,7 @@ provide this extension and are reported to work.</p>
             <div class="content"><div class='highlight'><pre>                ajaxSettings.contentType = <span class="hljs-literal">false</span>;
             }
 
-            $.ajax(ajaxSettings).done(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data, status, jqXHR)</span> </span>{
+            $.ajax(ajaxSettings).done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data, status, jqXHR</span>) </span>{
                 <span class="hljs-keyword">var</span> return_obj;</pre></div></div>
 
         </li>
@@ -850,7 +850,7 @@ provide this extension and are reported to work.</p>
                     statusCode: jqXHR.status,
                     statusText: jqXHR.statusText
                 });
-            }).fail(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(jqXHR, textStatus, errorThrown)</span> </span>{
+            }).fail(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">jqXHR, textStatus, errorThrown</span>) </span>{
                 callback(
                     jqXHR.responseText,
                     {
@@ -886,7 +886,7 @@ for retrieving common properties such as rdfs:label, etc
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.getProperty = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.getProperty = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> val = options.uri,
             reqOptions = {
                 database: options.database,
@@ -894,7 +894,7 @@ for retrieving common properties such as rdfs:label, etc
                 params: options.params
             };
 
-        <span class="hljs-keyword">this</span>.query(reqOptions, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jsonRes)</span> </span>{
+        <span class="hljs-keyword">this</span>.query(reqOptions, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jsonRes</span>) </span>{
             <span class="hljs-keyword">if</span> (jsonRes.results &amp;&amp; jsonRes.results.bindings.length &gt; <span class="hljs-number">0</span>) {
                 val = jsonRes.results.bindings[<span class="hljs-number">0</span>].val.value;
             }
@@ -921,7 +921,7 @@ for retrieving common properties such as rdfs:label, etc
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.getDB = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.getDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 resource : options.database,
                 acceptHeader: <span class="hljs-string">"*/*"</span>,
@@ -951,7 +951,7 @@ Returns a single numeric value representing the number of triples in the databas
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.getDBSize = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.getDBSize = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 resource: options.database + <span class="hljs-string">"/size"</span>,
                 httpMethod: <span class="hljs-string">"GET"</span>,
@@ -986,7 +986,7 @@ be a set of bindings.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.query = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.query = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             acceptHeader : options.mimetype || <span class="hljs-string">"application/sparql-results+json"</span>,
             resource: options.database + <span class="hljs-string">"/query"</span>,
@@ -1013,7 +1013,7 @@ be a set of bindings.</p>
         }
 
         <span class="hljs-keyword">if</span> (!isNode) {
-            <span class="hljs-keyword">var</span> postData = _.map(_.pairs(queryParams), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(pairArr)</span> </span>{
+            <span class="hljs-keyword">var</span> postData = _.map(_.pairs(queryParams), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">pairArr</span>) </span>{
                 <span class="hljs-keyword">return</span> pairArr[<span class="hljs-number">0</span>] +<span class="hljs-string">"="</span>+ pairArr[<span class="hljs-number">1</span>];
             });
 
@@ -1051,7 +1051,7 @@ be a set of triples.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryGraph = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryGraph = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             acceptHeader : options.mimetype || <span class="hljs-string">"application/ld+json"</span>,
             resource: options.database + <span class="hljs-string">"/query"</span>,
@@ -1078,7 +1078,7 @@ be a set of triples.</p>
         }
 
         <span class="hljs-keyword">if</span> (!isNode) {
-            <span class="hljs-keyword">var</span> postData = _.map(_.pairs(queryParams), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(pairArr)</span> </span>{
+            <span class="hljs-keyword">var</span> postData = _.map(_.pairs(queryParams), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">pairArr</span>) </span>{
                 <span class="hljs-keyword">return</span> pairArr[<span class="hljs-number">0</span>] +<span class="hljs-string">"="</span>+ pairArr[<span class="hljs-number">1</span>];
             });
 
@@ -1111,7 +1111,7 @@ be a set of triples.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryExplain = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryExplain = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 resource: options.database + <span class="hljs-string">"/explain"</span>,
                 httpMethod: <span class="hljs-string">"GET"</span>,
@@ -1144,7 +1144,7 @@ be a set of triples.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.begin = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.begin = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"POST"</span>,
                 resource: options.database + <span class="hljs-string">"/transaction/begin"</span>,
@@ -1176,7 +1176,7 @@ function in order to make the changes permanent.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.commit = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.commit = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"POST"</span>,
                 resource:  options.database + <span class="hljs-string">"/transaction/commit/"</span> + options.txId,
@@ -1206,7 +1206,7 @@ function in order to make the changes permanent.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.rollback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.rollback = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"POST"</span>,
                 resource:  options.database + <span class="hljs-string">"/transaction/rollback/"</span> + options.txId,
@@ -1241,7 +1241,7 @@ function in order to make the changes permanent.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryInTransaction = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryInTransaction = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{</pre></div></div>
 
         </li>
 
@@ -1301,7 +1301,7 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.addInTransaction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.addInTransaction = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"POST"</span>,
                 resource: options.database + <span class="hljs-string">"/"</span> + options.txId + <span class="hljs-string">"/add"</span>,
@@ -1343,7 +1343,7 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.removeInTransaction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.removeInTransaction = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"POST"</span>,
                 resource: options.database + <span class="hljs-string">"/"</span> + options.txId + <span class="hljs-string">"/remove"</span>,
@@ -1382,7 +1382,7 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.clearDB = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.clearDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"POST"</span>,
                 resource: options.database + <span class="hljs-string">"/"</span> + options.txId + <span class="hljs-string">"/clear"</span>,
@@ -1406,10 +1406,23 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
-              <h2 id="reasoning-api">Reasoning API</h2>
-<hr>
+              <p>Exports the content of the DB.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with at least the following attributes:
+             <code>database</code>: the name of the database;
+             <code>mimetype</code>: the MIME type of the RDF format for the export, default: application/ld+json
+             <code>graphUri</code>: the graph URI to export (if any);
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
+
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.exportDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
+        <span class="hljs-keyword">var</span> reqOptions = {
+            httpMethod: <span class="hljs-string">"GET"</span>,
+            resource: options.database + <span class="hljs-string">"/export"</span>,
+            acceptHeader: options.mimetype || <span class="hljs-string">"application/ld+json"</span>,
+            params: options.params || {}
+        };</pre></div></div>
 
         </li>
 
@@ -1420,8 +1433,14 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
+              <p>by default it exports the whole database in JSON-LD</p>
 
             </div>
+
+            <div class="content"><div class='highlight'><pre>        reqOptions.params[<span class="hljs-string">"graph-uri"</span>] = options.graphUri || <span class="hljs-string">"tag:stardog:api:context:all"</span>;
+
+        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
+    };</pre></div></div>
 
         </li>
 
@@ -1431,6 +1450,32 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <h2 id="reasoning-api">Reasoning API</h2>
+<hr>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-60">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-61">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>API call to get explanation of the inferences in <code>axioms</code> using a transaction <code>txId</code> with the content type
 <code>contentType</code> of the axioms.</p>
@@ -1445,7 +1490,7 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.reasoningExplain = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.reasoningExplain = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"POST"</span>,
                 resource: options.database + <span class="hljs-string">"/reasoning/"</span> +
@@ -1463,11 +1508,11 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-60">
+        <li id="section-62">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>Checks the logical consistency of database. If using a named graph provide the <code>graph_uri</code> parameter.
 Returns a boolean response as <code>true</code> if the database is consistent.
@@ -1481,7 +1526,7 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.isConsistent = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.isConsistent = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"GET"</span>,
                 resource: options.database + <span class="hljs-string">"/reasoning/consistency"</span>,
@@ -1499,11 +1544,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-61">
+        <li id="section-63">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <h3 id="integrity-constraint-validation">Integrity Constraint Validation</h3>
 <p>Listing the Integrity Constraints. Returns the integrity constraints for the specified database serialized in any supported RDF format.</p>
@@ -1516,7 +1561,7 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.getICV = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.getICV = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"GET"</span>,
                 resource: options.database + <span class="hljs-string">"/icv"</span>,
@@ -1531,11 +1576,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-62">
+        <li id="section-64">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and adds them to the database in an atomic action.
 200 return code indicates the constraints were added successfully, 500 indicates that the constraints were not valid or unable to be added.</p>
@@ -1549,16 +1594,16 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.setICV = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.setICV = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{</pre></div></div>
 
         </li>
 
 
-        <li id="section-63">
+        <li id="section-65">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <p>set default content-type to “text/plain” (N-Triples)</p>
 
@@ -1580,11 +1625,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-64">
+        <li id="section-66">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
+                <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and removes them from the database in a single atomic action.
 200 indicates the constraints were successfully remove; 500 indicates an error.</p>
@@ -1598,16 +1643,16 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.removeICV = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.removeICV = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{</pre></div></div>
 
         </li>
 
 
-        <li id="section-65">
+        <li id="section-67">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
+                <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
               <p>set default content-type to “text/plain” (N-Triples)</p>
 
@@ -1629,11 +1674,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-66">
+        <li id="section-68">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
+                <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
               <p>Drops ALL integrity constraints for a database. 200 indicates all constraints were successfully dropped; 500 indicates an error.</p>
 <p><strong>Parameters</strong>:
@@ -1644,7 +1689,7 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.clearICV = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.clearICV = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"POST"</span>,
                 resource: options.database + <span class="hljs-string">"/icv/clear"</span>,
@@ -1658,11 +1703,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-67">
+        <li id="section-69">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
+                <a class="pilcrow" href="#section-69">&#182;</a>
               </div>
               <p>Only works for one constraint, if more than 1 are provided returns 400 code status. The body of the POST is a single Integrity Constraint,
 serialized in any supported RDF format, with Content-type set appropriately. Returns either a text/plain result containing a single SPARQL query;
@@ -1678,16 +1723,16 @@ or it returns 400 if more than one constraint was included in the input.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.fromICVtoSPARQL = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.fromICVtoSPARQL = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{</pre></div></div>
 
         </li>
 
 
-        <li id="section-68">
+        <li id="section-70">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
+                <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
               <p>set default content-type to “text/plain” (N-Triples)</p>
 
@@ -1713,71 +1758,15 @@ or it returns 400 if more than one constraint was included in the input.</p>
         </li>
 
 
-        <li id="section-69">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-
-        </li>
-
-
-        <li id="section-70">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-70">&#182;</a>
-              </div>
-
-            </div>
-
-        </li>
-
-
         <li id="section-71">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
-              <p>Returns a mapping of the namespaces being used in a database.
-See: Section <strong>Namespace Prefix Bindings</strong> in
-<a href="http://docs.stardog.com/admin/#sd-Database-Admin">Stardog Administration</a></p>
+              <hr>
 
             </div>
-
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.getNamespaces = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
-        <span class="hljs-keyword">if</span> (!options || !options.database) {
-            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Option `database` is required."</span>);
-        }
-
-        <span class="hljs-keyword">this</span>.getDBOptions({
-            database: options.database,
-            optionsObj: { <span class="hljs-string">"database.namespaces"</span>: <span class="hljs-string">""</span> }
-        }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, response)</span> </span>{
-            <span class="hljs-keyword">var</span> namespaces = data[<span class="hljs-string">"database.namespaces"</span>] || [];
-            <span class="hljs-keyword">var</span> nsMap = {};
-
-            _.each(namespaces, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(namespace)</span> </span>{
-                <span class="hljs-keyword">var</span> nsTokens = namespace.split(<span class="hljs-string">"="</span>);
-                nsMap[nsTokens[<span class="hljs-number">0</span>]] = nsTokens[<span class="hljs-number">1</span>];
-            });
-
-            callback(nsMap, response);
-        });
-    };
-
-    <span class="hljs-comment">/**
-     * @deprecated Since version 0.1.2. Will be deleted in version 0.2.0. Use `getNamespaces` instead.
-     */</span>
-    Connection.prototype.getPrefixes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
-        <span class="hljs-keyword">try</span> {
-            <span class="hljs-keyword">this</span>.getNamespaces(options, callback);
-        } <span class="hljs-keyword">catch</span> (error) {</pre></div></div>
 
         </li>
 
@@ -1788,13 +1777,8 @@ See: Section <strong>Namespace Prefix Bindings</strong> in
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
-              <p>Error propagation</p>
 
             </div>
-
-            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Option `database` is required."</span>);
-        }
-    };</pre></div></div>
 
         </li>
 
@@ -1805,10 +1789,32 @@ See: Section <strong>Namespace Prefix Bindings</strong> in
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
-              <h2 id="query-management-api">Query Management API</h2>
-<hr>
+              <p>Returns a mapping of the namespaces being used in a database.
+See: Section <strong>Namespace Prefix Bindings</strong> in
+<a href="http://docs.stardog.com/admin/#sd-Database-Admin">Stardog Administration</a></p>
 
             </div>
+
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.getNamespaces = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
+        <span class="hljs-keyword">if</span> (!options || !options.database) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Option `database` is required."</span>);
+        }
+
+        <span class="hljs-keyword">this</span>.getDBOptions({
+            database: options.database,
+            optionsObj: { <span class="hljs-string">"database.namespaces"</span>: <span class="hljs-string">""</span> }
+        }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data, response</span>) </span>{
+            <span class="hljs-keyword">var</span> namespaces = data[<span class="hljs-string">"database.namespaces"</span>] || [];
+            <span class="hljs-keyword">var</span> nsMap = {};
+
+            _.each(namespaces, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">namespace</span>) </span>{
+                <span class="hljs-keyword">var</span> nsTokens = namespace.split(<span class="hljs-string">"="</span>);
+                nsMap[nsTokens[<span class="hljs-number">0</span>]] = nsTokens[<span class="hljs-number">1</span>];
+            });
+
+            callback(nsMap, response);
+        });
+    };</pre></div></div>
 
         </li>
 
@@ -1818,6 +1824,20 @@ See: Section <strong>Namespace Prefix Bindings</strong> in
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-74">&#182;</a>
+              </div>
+              <h2 id="query-management-api">Query Management API</h2>
+<hr>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-75">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <p><a href="http://docs.stardog.com/admin/#manage-queries">Stardog Query Management</a>
 Stardog includes the capability to manage running queries according to configurable
@@ -1834,11 +1854,11 @@ policies set at run-time; this capability includes support for:</p>
         </li>
 
 
-        <li id="section-75">
+        <li id="section-76">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
+                <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
               <h3 id="list-running-queries">List running queries</h3>
 <p>Get a list of the currently running queries.</p>
@@ -1849,41 +1869,10 @@ policies set at run-time; this capability includes support for:</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryList = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryList = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"GET"</span>,
             resource: <span class="hljs-string">"admin/queries"</span>,
-            acceptHeader: <span class="hljs-string">"application/json"</span>,
-            params: options.params || <span class="hljs-string">""</span>
-        };
-
-        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">"function"</span>) ? options : callback);
-    };</pre></div></div>
-
-        </li>
-
-
-        <li id="section-76">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
-              </div>
-              <h3 id="get-query-information">Get query information</h3>
-<p>Get the information related to the query running such as: a query ID, the database on which the
-query is running, the user that executed the query, the elapsed time among other metadata.</p>
-<p><strong>Parameters</strong>:
-<code>options</code>: an object with the following attributes:
-             <code>queryId</code>: the ID of the query;
-             <code>params</code>: (optional) currently not used.
-<code>callback</code>: the callback to execute once the request is done.</p>
-
-            </div>
-
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryGet = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
-        <span class="hljs-keyword">var</span> reqOptions = {
-            httpMethod: <span class="hljs-string">"GET"</span>,
-            resource: <span class="hljs-string">"admin/queries/"</span> + options.queryId,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>
         };
@@ -1900,8 +1889,9 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
-              <h3 id="kill-a-running-query">Kill a running query</h3>
-<p>Kill a currently running query using a query ID.</p>
+              <h3 id="get-query-information">Get query information</h3>
+<p>Get the information related to the query running such as: a query ID, the database on which the
+query is running, the user that executed the query, the elapsed time among other metadata.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with the following attributes:
              <code>queryId</code>: the ID of the query;
@@ -1910,9 +1900,9 @@ query is running, the user that executed the query, the elapsed time among other
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryKill = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryGet = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
-            httpMethod: <span class="hljs-string">"DELETE"</span>,
+            httpMethod: <span class="hljs-string">"GET"</span>,
             resource: <span class="hljs-string">"admin/queries/"</span> + options.queryId,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>
@@ -1930,9 +1920,26 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
-              <hr>
+              <h3 id="kill-a-running-query">Kill a running query</h3>
+<p>Kill a currently running query using a query ID.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with the following attributes:
+             <code>queryId</code>: the ID of the query;
+             <code>params</code>: (optional) currently not used.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
+
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.queryKill = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
+        <span class="hljs-keyword">var</span> reqOptions = {
+            httpMethod: <span class="hljs-string">"DELETE"</span>,
+            resource: <span class="hljs-string">"admin/queries/"</span> + options.queryId,
+            acceptHeader: <span class="hljs-string">"application/json"</span>,
+            params: options.params || <span class="hljs-string">""</span>
+        };
+
+        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">"function"</span>) ? options : callback);
+    };</pre></div></div>
 
         </li>
 
@@ -1943,6 +1950,7 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
+              <hr>
 
             </div>
 
@@ -1955,8 +1963,6 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
-              <h2 id="stardog-administrative-api">Stardog Administrative API</h2>
-<hr>
 
             </div>
 
@@ -1969,7 +1975,8 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
-              <p><a href="http://docs.stardog.com/http/#sd-Admin-Resources">Admin Resources</a></p>
+              <h2 id="stardog-administrative-api">Stardog Administrative API</h2>
+<hr>
 
             </div>
 
@@ -1982,7 +1989,7 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
-              <h3 id="database-operations-">Database operations.</h3>
+              <p><a href="http://docs.stardog.com/http/#sd-Admin-Resources">Admin Resources</a></p>
 
             </div>
 
@@ -1995,10 +2002,7 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
-              <p>These API calls are related to the DBMS core functions for administrating resources in the
-Stardog Database System, such as: getting a list of databases, add/copy/delete databases.
-Note that there’s one administrative call missing for creating DBs, this is to limitations
-on the HTTP multi-part libraries, but support for this is coming soon.</p>
+              <h3 id="database-operations-">Database operations.</h3>
 
             </div>
 
@@ -2011,6 +2015,22 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
+              <p>These API calls are related to the DBMS core functions for administrating resources in the
+Stardog Database System, such as: getting a list of databases, add/copy/delete databases.
+Note that there’s one administrative call missing for creating DBs, this is to limitations
+on the HTTP multi-part libraries, but support for this is coming soon.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-85">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-85">&#182;</a>
+              </div>
               <h4 id="list-databases-get-">List databases (GET)</h4>
 <p>Get a list of the existing databases in the system.</p>
 <p><strong>Parameters</strong>:
@@ -2020,7 +2040,7 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.listDBs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.listDBs = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"GET"</span>,
                 resource: <span class="hljs-string">"admin/databases"</span>,
@@ -2036,11 +2056,11 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
         </li>
 
 
-        <li id="section-85">
+        <li id="section-86">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
+                <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
               <h4 id="copy-database-put-">Copy database (PUT)</h4>
 <p>Copy an existing database.</p>
@@ -2053,7 +2073,7 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.copyDB = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.copyDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"PUT"</span>,
                 resource: <span class="hljs-string">"admin/databases/"</span> + options.dbsource + <span class="hljs-string">"/copy"</span>,
@@ -2066,11 +2086,11 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
         </li>
 
 
-        <li id="section-86">
+        <li id="section-87">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
+                <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
               <h4 id="create-a-new-database-post-">Create a new database (POST)</h4>
 <p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values.
@@ -2085,7 +2105,7 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.createDB = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.createDB = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> creationData, data, formData, reqOptions;
 
         creationData = {
@@ -2121,11 +2141,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-87">
+        <li id="section-88">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
+                <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
               <h4 id="drop-an-existing-database-">Drop an existing database.</h4>
 <p>Drops an existing database <code>dbname</code> and all the information that it contains.</p>
@@ -2137,40 +2157,10 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.dropDB = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.dropDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"DELETE"</span>,
                 resource: <span class="hljs-string">"admin/databases/"</span> + options.database,
-                acceptHeader: <span class="hljs-string">"application/json"</span>,
-                params: options.params || <span class="hljs-string">""</span>
-            };
-
-        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
-    };</pre></div></div>
-
-        </li>
-
-
-        <li id="section-88">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
-              </div>
-              <h4 id="migrate-an-existing-database-">Migrate an existing database.</h4>
-<p>Migrates the existing content of a legacy database to new format.</p>
-<p><strong>Parameters</strong>:
-<code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the database to migrate.
-             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.</p>
-
-            </div>
-
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.migrateDB = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
-        <span class="hljs-keyword">var</span> reqOptions = {
-                httpMethod: <span class="hljs-string">"PUT"</span>,
-                resource: <span class="hljs-string">"admin/databases/"</span> + options.database + <span class="hljs-string">"/migrate"</span>,
                 acceptHeader: <span class="hljs-string">"application/json"</span>,
                 params: options.params || <span class="hljs-string">""</span>
             };
@@ -2187,20 +2177,20 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
-              <h4 id="optimize-an-existing-database-">Optimize an existing database.</h4>
-<p>Optimize an existing database.</p>
+              <h4 id="migrate-an-existing-database-">Migrate an existing database.</h4>
+<p>Migrates the existing content of a legacy database to new format.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the database to optimize.
+             <code>database</code>: the name of the database to migrate.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.optimizeDB = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.migrateDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"PUT"</span>,
-                resource: <span class="hljs-string">"admin/databases/"</span> + options.database +<span class="hljs-string">"/optimize"</span>,
+                resource: <span class="hljs-string">"admin/databases/"</span> + options.database + <span class="hljs-string">"/migrate"</span>,
                 acceptHeader: <span class="hljs-string">"application/json"</span>,
                 params: options.params || <span class="hljs-string">""</span>
             };
@@ -2217,23 +2207,22 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
-              <h4 id="set-database-on-line-">Set database on-line.</h4>
-<p>Request message to set an existing database <code>dbname</code> on-line.</p>
+              <h4 id="optimize-an-existing-database-">Optimize an existing database.</h4>
+<p>Optimize an existing database.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the database to set on-line.
-             <code>strategyOp</code>: the strategy options, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>database</code>: the name of the database to optimize.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.onlineDB = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.optimizeDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"PUT"</span>,
-                resource: <span class="hljs-string">"admin/databases/"</span> + options.database +<span class="hljs-string">"/online"</span>,
+                resource: <span class="hljs-string">"admin/databases/"</span> + options.database +<span class="hljs-string">"/optimize"</span>,
                 acceptHeader: <span class="hljs-string">"application/json"</span>,
-                params: _.extend({ <span class="hljs-string">"strategy"</span>: options.strategyOp }, options.params)
+                params: options.params || <span class="hljs-string">""</span>
             };
 
         <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
@@ -2247,6 +2236,37 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-91">&#182;</a>
+              </div>
+              <h4 id="set-database-on-line-">Set database on-line.</h4>
+<p>Request message to set an existing database <code>dbname</code> on-line.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>database</code>: the name of the database to set on-line.
+             <code>strategyOp</code>: the strategy options, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.onlineDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
+        <span class="hljs-keyword">var</span> reqOptions = {
+                httpMethod: <span class="hljs-string">"PUT"</span>,
+                resource: <span class="hljs-string">"admin/databases/"</span> + options.database +<span class="hljs-string">"/online"</span>,
+                acceptHeader: <span class="hljs-string">"application/json"</span>,
+                params: _.extend({ <span class="hljs-string">"strategy"</span>: options.strategyOp }, options.params)
+            };
+
+        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
+    };</pre></div></div>
+
+        </li>
+
+
+        <li id="section-92">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
               <h4 id="set-database-off-line-">Set database off-line.</h4>
 <p>Request message to set an existing database off-line;
@@ -2266,7 +2286,7 @@ After the timeout has expired, all remaining open connections are closed and the
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.offlineDB = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.offlineDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"PUT"</span>,
                 resource: <span class="hljs-string">"admin/databases/"</span> + options.database +<span class="hljs-string">"/offline"</span>,
@@ -2285,11 +2305,11 @@ After the timeout has expired, all remaining open connections are closed and the
         </li>
 
 
-        <li id="section-92">
+        <li id="section-93">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
+                <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
               <h4 id="set-option-values-to-an-existing-database-">Set option values to an existing database.</h4>
 <p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values.
@@ -2303,47 +2323,12 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.setDBOptions = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.setDBOptions = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
                 httpMethod: <span class="hljs-string">"POST"</span>,
                 resource: <span class="hljs-string">"admin/databases/"</span> + options.database +<span class="hljs-string">"/options"</span>,
                 acceptHeader: <span class="hljs-string">"application/json"</span>,
                 params: options.params,
-                msgBody: options.optionsObj,
-                isJsonBody: <span class="hljs-literal">true</span>
-            };
-
-        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
-    };</pre></div></div>
-
-        </li>
-
-
-        <li id="section-93">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-93">&#182;</a>
-              </div>
-              <h4 id="get-option-values-from-an-existing-database-">Get option values from an existing database.</h4>
-<p>Retrieves a set of options passed through a JSON object specification.
-The JSON input has empty values for each key, but will be filled with the option
-values in the database when the call returns.</p>
-<p><strong>Parameters</strong>:
-<code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the db to retrieve the option values.
-             <code>optionsObj</code>: the options JSON object seed, indicating the options to retrieve, <a href="http://docs.stardog.com/http/">more info</a>.
-             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.</p>
-
-            </div>
-
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.getDBOptions = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
-        <span class="hljs-keyword">var</span> reqOptions = {
-                httpMethod: <span class="hljs-string">"PUT"</span>,
-                resource: <span class="hljs-string">"admin/databases/"</span> + options.database +<span class="hljs-string">"/options"</span>,
-                acceptHeader: <span class="hljs-string">"application/json"</span>,
-                params: options.params || <span class="hljs-string">""</span>,
                 msgBody: options.optionsObj,
                 isJsonBody: <span class="hljs-literal">true</span>
             };
@@ -2360,9 +2345,31 @@ values in the database when the call returns.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
-              <h3 id="user-operations-">User operations.</h3>
+              <h4 id="get-option-values-from-an-existing-database-">Get option values from an existing database.</h4>
+<p>Retrieves a set of options passed through a JSON object specification.
+The JSON input has empty values for each key, but will be filled with the option
+values in the database when the call returns.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>database</code>: the name of the db to retrieve the option values.
+             <code>optionsObj</code>: the options JSON object seed, indicating the options to retrieve, <a href="http://docs.stardog.com/http/">more info</a>.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
+
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.getDBOptions = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
+        <span class="hljs-keyword">var</span> reqOptions = {
+                httpMethod: <span class="hljs-string">"PUT"</span>,
+                resource: <span class="hljs-string">"admin/databases/"</span> + options.database +<span class="hljs-string">"/options"</span>,
+                acceptHeader: <span class="hljs-string">"application/json"</span>,
+                params: options.params || <span class="hljs-string">""</span>,
+                msgBody: options.optionsObj,
+                isJsonBody: <span class="hljs-literal">true</span>
+            };
+
+        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
+    };</pre></div></div>
 
         </li>
 
@@ -2373,8 +2380,7 @@ values in the database when the call returns.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
-              <p>Administrative API calls for managing user accounts in Stardog, e.g. creating/modifying/removing
-user accounts.</p>
+              <h3 id="user-operations-">User operations.</h3>
 
             </div>
 
@@ -2386,6 +2392,20 @@ user accounts.</p>
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-96">&#182;</a>
+              </div>
+              <p>Administrative API calls for managing user accounts in Stardog, e.g. creating/modifying/removing
+user accounts.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-97">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-97">&#182;</a>
               </div>
               <h4 id="create-new-user">Create new user</h4>
 <p>Adds a new user to the system; allows a configuration option for superuser as a JSON object.
@@ -2400,7 +2420,7 @@ Superuser configuration is set as default to false. The password <strong>must</s
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.createUser = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.createUser = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"POST"</span>,
             resource: <span class="hljs-string">"admin/users"</span>,
@@ -2421,11 +2441,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-97">
+        <li id="section-98">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-97">&#182;</a>
+                <a class="pilcrow" href="#section-98">&#182;</a>
               </div>
               <h4 id="change-user-s-password">Change user’s password</h4>
 <p>Changes <code>user</code> password in the system. Receives input of new password as a JSON Object.</p>
@@ -2438,7 +2458,7 @@ Superuser configuration is set as default to false. The password <strong>must</s
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.changePwd = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.changePwd = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"PUT"</span>,
             resource: <span class="hljs-string">"admin/users/"</span> + options.user + <span class="hljs-string">"/pwd"</span>,
@@ -2454,11 +2474,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-98">
+        <li id="section-99">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-98">&#182;</a>
+                <a class="pilcrow" href="#section-99">&#182;</a>
               </div>
               <h4 id="check-if-user-is-enabled-">Check if user is enabled.</h4>
 <p>Verifies if user is enabled in the system.</p>
@@ -2470,40 +2490,10 @@ Superuser configuration is set as default to false. The password <strong>must</s
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.isUserEnabled = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.isUserEnabled = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"GET"</span>,
             resource: <span class="hljs-string">"admin/users/"</span> + options.user + <span class="hljs-string">"/enabled"</span>,
-            acceptHeader: <span class="hljs-string">"application/json"</span>,
-            params: options.params || <span class="hljs-string">""</span>
-        };
-
-        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
-    };</pre></div></div>
-
-        </li>
-
-
-        <li id="section-99">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-99">&#182;</a>
-              </div>
-              <h4 id="check-if-user-is-superuser-">Check if user is superuser.</h4>
-<p>Verifies if the user is a superuser.</p>
-<p><strong>Parameters</strong>:
-<code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to verify if is superuser.
-             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.</p>
-
-            </div>
-
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.isSuperUser = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
-        <span class="hljs-keyword">var</span> reqOptions = {
-            httpMethod: <span class="hljs-string">"GET"</span>,
-            resource: <span class="hljs-string">"admin/users/"</span> + options.user + <span class="hljs-string">"/superuser"</span>,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>
         };
@@ -2520,20 +2510,20 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-100">&#182;</a>
               </div>
-              <h4 id="list-user-roles-">List user roles.</h4>
-<p>Retrieves the list of the roles assigned to user.</p>
+              <h4 id="check-if-user-is-superuser-">Check if user is superuser.</h4>
+<p>Verifies if the user is a superuser.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user used to list roles.
+             <code>user</code>: the user to verify if is superuser.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.listUserRoles = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.isSuperUser = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"GET"</span>,
-            resource: <span class="hljs-string">"admin/users/"</span> + options.user + <span class="hljs-string">"/roles"</span>,
+            resource: <span class="hljs-string">"admin/users/"</span> + options.user + <span class="hljs-string">"/superuser"</span>,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>
         };
@@ -2550,6 +2540,36 @@ Superuser configuration is set as default to false. The password <strong>must</s
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-101">&#182;</a>
               </div>
+              <h4 id="list-user-roles-">List user roles.</h4>
+<p>Retrieves the list of the roles assigned to user.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the user used to list roles.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.listUserRoles = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
+        <span class="hljs-keyword">var</span> reqOptions = {
+            httpMethod: <span class="hljs-string">"GET"</span>,
+            resource: <span class="hljs-string">"admin/users/"</span> + options.user + <span class="hljs-string">"/roles"</span>,
+            acceptHeader: <span class="hljs-string">"application/json"</span>,
+            params: options.params || <span class="hljs-string">""</span>
+        };
+
+        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
+    };</pre></div></div>
+
+        </li>
+
+
+        <li id="section-102">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-102">&#182;</a>
+              </div>
               <h4 id="list-users-get-">List users (GET)</h4>
 <p>Retrieves a list of users available in the system.</p>
 <p><strong>Parameters</strong>:
@@ -2559,7 +2579,7 @@ Superuser configuration is set as default to false. The password <strong>must</s
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.listUsers = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.listUsers = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"GET"</span>,
             resource: <span class="hljs-string">"admin/users"</span>,
@@ -2573,11 +2593,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-102">
+        <li id="section-103">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-102">&#182;</a>
+                <a class="pilcrow" href="#section-103">&#182;</a>
               </div>
               <h4 id="delete-user">Delete user</h4>
 <p><strong>Parameters</strong>:
@@ -2588,7 +2608,7 @@ Superuser configuration is set as default to false. The password <strong>must</s
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.deleteUser = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.deleteUser = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"DELETE"</span>,
             resource: <span class="hljs-string">"admin/users/"</span> + options.user,
@@ -2602,11 +2622,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-103">
+        <li id="section-104">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-103">&#182;</a>
+                <a class="pilcrow" href="#section-104">&#182;</a>
               </div>
               <h4 id="enable-users-">Enable users.</h4>
 <p>Enables/Disables an existing user in the system.</p>
@@ -2619,7 +2639,7 @@ Superuser configuration is set as default to false. The password <strong>must</s
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.userEnabled = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.userEnabled = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"PUT"</span>,
             resource: <span class="hljs-string">"admin/users/"</span> + options.user + <span class="hljs-string">"/enabled"</span>,
@@ -2635,11 +2655,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-104">
+        <li id="section-105">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-104">&#182;</a>
+                <a class="pilcrow" href="#section-105">&#182;</a>
               </div>
               <h4 id="setting-user-roles-">Setting user roles.</h4>
 <p>Sets roles for a given user.</p>
@@ -2652,7 +2672,7 @@ Superuser configuration is set as default to false. The password <strong>must</s
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.setUserRoles = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.setUserRoles = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"PUT"</span>,
             resource: <span class="hljs-string">"admin/users/"</span> + options.user + <span class="hljs-string">"/roles"</span>,
@@ -2668,27 +2688,13 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-105">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-105">&#182;</a>
-              </div>
-              <h3 id="role-operations-">Role operations.</h3>
-
-            </div>
-
-        </li>
-
-
         <li id="section-106">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-106">&#182;</a>
               </div>
-              <p>Administrative API calls for managing roles in Stardog, which are part of the security model, e.g. creating/modifying/removing
-roles.</p>
+              <h3 id="role-operations-">Role operations.</h3>
 
             </div>
 
@@ -2701,6 +2707,20 @@ roles.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-107">&#182;</a>
               </div>
+              <p>Administrative API calls for managing roles in Stardog, which are part of the security model, e.g. creating/modifying/removing
+roles.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-108">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-108">&#182;</a>
+              </div>
               <h4 id="create-a-new-role">Create a new role</h4>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
@@ -2710,7 +2730,7 @@ roles.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.createRole = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.createRole = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"POST"</span>,
             resource: <span class="hljs-string">"admin/roles"</span>,
@@ -2726,11 +2746,11 @@ roles.</p>
         </li>
 
 
-        <li id="section-108">
+        <li id="section-109">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-108">&#182;</a>
+                <a class="pilcrow" href="#section-109">&#182;</a>
               </div>
               <h4 id="list-roles-get-">List roles (GET)</h4>
 <p>Retrieves the list of roles registered in the system.</p>
@@ -2741,7 +2761,7 @@ roles.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.listRoles = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.listRoles = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"GET"</span>,
             resource: <span class="hljs-string">"admin/roles"</span>,
@@ -2755,11 +2775,11 @@ roles.</p>
         </li>
 
 
-        <li id="section-109">
+        <li id="section-110">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-109">&#182;</a>
+                <a class="pilcrow" href="#section-110">&#182;</a>
               </div>
               <h4 id="list-users-with-a-specified-role-">List users with a specified role.</h4>
 <p>Retrieves users that have the role assigned.</p>
@@ -2771,42 +2791,10 @@ roles.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.listRoleUsers = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.listRoleUsers = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"GET"</span>,
             resource: <span class="hljs-string">"admin/roles/"</span> + options.role + <span class="hljs-string">"/users"</span>,
-            acceptHeader: <span class="hljs-string">"application/json"</span>,
-            params: options.params || <span class="hljs-string">""</span>
-        };
-
-        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
-    };</pre></div></div>
-
-        </li>
-
-
-        <li id="section-110">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-110">&#182;</a>
-              </div>
-              <h4 id="delete-role">Delete role</h4>
-<p>Deletes an existing role from the system; the force parameter is a boolean
-flag which indicates if the delete call for the role must be forced,
-<a href="http://docs.stardog.com/http/">more info</a></p>
-<p><strong>Parameters</strong>:
-<code>options</code>: an object with one the following attributes:
-             <code>role</code>: the role to delete.
-             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.</p>
-
-            </div>
-
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.deleteRole = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
-        <span class="hljs-keyword">var</span> reqOptions = {
-            httpMethod: <span class="hljs-string">"DELETE"</span>,
-            resource: <span class="hljs-string">"admin/roles/"</span> + options.role,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>
         };
@@ -2823,9 +2811,28 @@ flag which indicates if the delete call for the role must be forced,
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-111">&#182;</a>
               </div>
-              <h3 id="permissions-operations-">Permissions operations.</h3>
+              <h4 id="delete-role">Delete role</h4>
+<p>Deletes an existing role from the system; the force parameter is a boolean
+flag which indicates if the delete call for the role must be forced,
+<a href="http://docs.stardog.com/http/">more info</a></p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>role</code>: the role to delete.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
+
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.deleteRole = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
+        <span class="hljs-keyword">var</span> reqOptions = {
+            httpMethod: <span class="hljs-string">"DELETE"</span>,
+            resource: <span class="hljs-string">"admin/roles/"</span> + options.role,
+            acceptHeader: <span class="hljs-string">"application/json"</span>,
+            params: options.params || <span class="hljs-string">""</span>
+        };
+
+        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
+    };</pre></div></div>
 
         </li>
 
@@ -2836,9 +2843,7 @@ flag which indicates if the delete call for the role must be forced,
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-112">&#182;</a>
               </div>
-              <p>Administrative API calls for managing permissions for users &amp; roles in Stardog,
-which are also part of the security model, e.g. creating/modifying/removing
-permissions.</p>
+              <h3 id="permissions-operations-">Permissions operations.</h3>
 
             </div>
 
@@ -2851,6 +2856,21 @@ permissions.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-113">&#182;</a>
               </div>
+              <p>Administrative API calls for managing permissions for users &amp; roles in Stardog,
+which are also part of the security model, e.g. creating/modifying/removing
+permissions.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-114">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-114">&#182;</a>
+              </div>
               <h4 id="assign-permission-to-role-">Assign permission to role.</h4>
 <p>Creates a new permission for a given role over a specified resource.</p>
 <p><strong>Parameters</strong>:
@@ -2862,43 +2882,10 @@ permissions.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.assignPermissionToRole = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.assignPermissionToRole = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"PUT"</span>,
             resource: <span class="hljs-string">"admin/permissions/role/"</span> + options.role,
-            acceptHeader: <span class="hljs-string">"application/json"</span>,
-            params: options.params || <span class="hljs-string">""</span>,
-            msgBody: options.permissionObj,
-            isJsonBody: <span class="hljs-literal">true</span>
-        };
-
-        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
-    };</pre></div></div>
-
-        </li>
-
-
-        <li id="section-114">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-114">&#182;</a>
-              </div>
-              <h4 id="assign-permission-to-user-">Assign permission to user.</h4>
-<p>Creates a new permission for a given user over a specified resource.</p>
-<p><strong>Parameters</strong>:
-<code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to whom the permission will be assigned.
-             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.
-             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.</p>
-
-            </div>
-
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.assignPermissionToUser = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
-        <span class="hljs-keyword">var</span> reqOptions = {
-            httpMethod: <span class="hljs-string">"PUT"</span>,
-            resource: <span class="hljs-string">"admin/permissions/user/"</span> + options.user,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>,
             msgBody: options.permissionObj,
@@ -2917,21 +2904,21 @@ permissions.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-115">&#182;</a>
               </div>
-              <h4 id="delete-permission-from-role-">Delete permission from role.</h4>
-<p>Deletes a permission for a given role over a specified resource.</p>
+              <h4 id="assign-permission-to-user-">Assign permission to user.</h4>
+<p>Creates a new permission for a given user over a specified resource.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>role</code>: the role to whom the permission will be removed.
+             <code>user</code>: the user to whom the permission will be assigned.
              <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.deletePermissionFromRole = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.assignPermissionToUser = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
-            httpMethod: <span class="hljs-string">"POST"</span>,
-            resource: <span class="hljs-string">"admin/permissions/role/"</span> + options.role + <span class="hljs-string">"/delete"</span>,
+            httpMethod: <span class="hljs-string">"PUT"</span>,
+            resource: <span class="hljs-string">"admin/permissions/user/"</span> + options.user,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>,
             msgBody: options.permissionObj,
@@ -2950,21 +2937,21 @@ permissions.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-116">&#182;</a>
               </div>
-              <h4 id="delete-permission-from-user-">Delete permission from user.</h4>
-<p>Deletes a permission for a given user over a specified resource.</p>
+              <h4 id="delete-permission-from-role-">Delete permission from role.</h4>
+<p>Deletes a permission for a given role over a specified resource.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to whom the permission will be removed.
+             <code>role</code>: the role to whom the permission will be removed.
              <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.deletePermissionFromUser = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.deletePermissionFromRole = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"POST"</span>,
-            resource: <span class="hljs-string">"admin/permissions/user/"</span> + options.user + <span class="hljs-string">"/delete"</span>,
+            resource: <span class="hljs-string">"admin/permissions/role/"</span> + options.role + <span class="hljs-string">"/delete"</span>,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>,
             msgBody: options.permissionObj,
@@ -2983,22 +2970,25 @@ permissions.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-117">&#182;</a>
               </div>
-              <h4 id="list-role-permissions-">List role permissions.</h4>
-<p>Retrieves permissions assigned to the role.</p>
+              <h4 id="delete-permission-from-user-">Delete permission from user.</h4>
+<p>Deletes a permission for a given user over a specified resource.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>role</code>: the role to check for its permissions.
+             <code>user</code>: the user to whom the permission will be removed.
+             <code>permissionObj</code>: the permission descriptor object, <a href="http://docs.stardog.com/http/">more info</a>.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.listRolePermissions = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.deletePermissionFromUser = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
-            httpMethod: <span class="hljs-string">"GET"</span>,
-            resource: <span class="hljs-string">"admin/permissions/role/"</span> + options.role,
+            httpMethod: <span class="hljs-string">"POST"</span>,
+            resource: <span class="hljs-string">"admin/permissions/user/"</span> + options.user + <span class="hljs-string">"/delete"</span>,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
-            params: options.params || <span class="hljs-string">""</span>
+            params: options.params || <span class="hljs-string">""</span>,
+            msgBody: options.permissionObj,
+            isJsonBody: <span class="hljs-literal">true</span>
         };
 
         <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
@@ -3013,20 +3003,20 @@ permissions.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-118">&#182;</a>
               </div>
-              <h4 id="list-user-permissions-">List user permissions.</h4>
-<p>Retrieves permissions assigned to the user.</p>
+              <h4 id="list-role-permissions-">List role permissions.</h4>
+<p>Retrieves permissions assigned to the role.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to check for its permissions.
+             <code>role</code>: the role to check for its permissions.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.listUserPermissions = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.listRolePermissions = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"GET"</span>,
-            resource: <span class="hljs-string">"admin/permissions/user/"</span> + options.user,
+            resource: <span class="hljs-string">"admin/permissions/role/"</span> + options.role,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>
         };
@@ -3043,20 +3033,20 @@ permissions.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-119">&#182;</a>
               </div>
-              <h4 id="list-user-effective-permissions-">List user effective permissions.</h4>
-<p>Retrieves effective permissions assigned to the user.</p>
+              <h4 id="list-user-permissions-">List user permissions.</h4>
+<p>Retrieves permissions assigned to the user.</p>
 <p><strong>Parameters</strong>:
 <code>options</code>: an object with one the following attributes:
-             <code>user</code>: the user to check for its effective permissions.
+             <code>user</code>: the user to check for its permissions.
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.listUserEffPermissions = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.listUserPermissions = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"GET"</span>,
-            resource: <span class="hljs-string">"admin/permissions/effective/user/"</span> + options.user,
+            resource: <span class="hljs-string">"admin/permissions/user/"</span> + options.user,
             acceptHeader: <span class="hljs-string">"application/json"</span>,
             params: options.params || <span class="hljs-string">""</span>
         };
@@ -3073,6 +3063,36 @@ permissions.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-120">&#182;</a>
               </div>
+              <h4 id="list-user-effective-permissions-">List user effective permissions.</h4>
+<p>Retrieves effective permissions assigned to the user.</p>
+<p><strong>Parameters</strong>:
+<code>options</code>: an object with one the following attributes:
+             <code>user</code>: the user to check for its effective permissions.
+             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
+<code>callback</code>: the callback to execute once the request is done.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.listUserEffPermissions = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
+        <span class="hljs-keyword">var</span> reqOptions = {
+            httpMethod: <span class="hljs-string">"GET"</span>,
+            resource: <span class="hljs-string">"admin/permissions/effective/user/"</span> + options.user,
+            acceptHeader: <span class="hljs-string">"application/json"</span>,
+            params: options.params || <span class="hljs-string">""</span>
+        };
+
+        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
+    };</pre></div></div>
+
+        </li>
+
+
+        <li id="section-121">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-121">&#182;</a>
+              </div>
               <h3 id="shutdown-server-">Shutdown server.</h3>
 <p>Shuts down the Stardog Server. If successful, returns a 202 to indicate that the
 request was received and that the server will be shut down shortly.</p>
@@ -3081,13 +3101,13 @@ request was received and that the server will be shut down shortly.</p>
              <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
 <code>callback</code>: the callback to execute once the request is done.</p>
 
-              <footer>
+            <footer>
                 <img src="http://complexible.com/img/l-b.png" width="120px" />
-              </footer>
+            </footer>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.shutdownServer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, callback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    Connection.prototype.shutdownServer = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
         <span class="hljs-keyword">var</span> reqOptions = {
             httpMethod: <span class="hljs-string">"POST"</span>,
             resource: <span class="hljs-string">"admin/shutdown"</span>,
