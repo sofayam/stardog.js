@@ -13,13 +13,12 @@
 
     <ul class="sections">
 
-          <li id="title">
-              <div class="annotation">
-                  <img src="http://stardog.com/img/stardog.png" style="width: 200px;"/>
-                  <h1>stardog.js</h1>
-              </div>
-          </li>
-
+        <li id="title">
+            <div class="annotation">
+                <img src="http://stardog.com/img/stardog.png" style="width: 200px;"/>
+                <h1>stardog.js</h1>
+            </div>
+        </li>
 
 
         <li id="section-1">
@@ -28,7 +27,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <pre><code>Stardog.js <span class="hljs-number">0.3.0</span>
+              <pre><code>Stardog.js <span class="hljs-number">0.3.1</span>
 </code></pre><p>Copyright 2015 Clark &amp; Parsia, LLC</p>
 
             </div>
@@ -215,7 +214,7 @@ for Closure Compiler “advanced” mode.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    Stardog.VERSION = <span class="hljs-string">"0.3.0"</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    Stardog.VERSION = <span class="hljs-string">"0.3.1"</span>;</pre></div></div>
 
         </li>
 
@@ -523,6 +522,7 @@ JSONLD object.</p>
                 acceptH = options.acceptHeader,
                 isJsonBody = options.isJsonBody,
                 contentType = options.contentType,
+                contentEncoding = options.contentEncoding,
                 multipart = options.multipart,
                 headers = {},
                 reqJSON, attachments;</pre></div></div>
@@ -627,6 +627,23 @@ cases</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
+              <p>Set Content-Encoding if present</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (contentEncoding) {
+              headers[<span class="hljs-string">"Content-Encoding"</span>] = contentEncoding;
+            }</pre></div></div>
+
+        </li>
+
+
+        <li id="section-35">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
               <p>build request object</p>
 
             </div>
@@ -646,11 +663,11 @@ cases</p>
         </li>
 
 
-        <li id="section-35">
+        <li id="section-36">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>var fs = require(“fs”);</p>
 
@@ -674,11 +691,11 @@ cases</p>
         </li>
 
 
-        <li id="section-36">
+        <li id="section-37">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Browser implementation using jQuery’s AJAX
 In case of cross-domain requests, a pre-flight OPTIONS http request is sent by the browser and
@@ -697,11 +714,11 @@ to work for Chrome, Safari, Firefox(*)</p>
         </li>
 
 
-        <li id="section-37">
+        <li id="section-38">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>(*) Only if the pre-flight request succeeds.</p>
 
@@ -710,11 +727,11 @@ to work for Chrome, Safari, Firefox(*)</p>
         </li>
 
 
-        <li id="section-38">
+        <li id="section-39">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>IE7-9 does not provide a native btoa (Base64 encoding) function
 One can fall back to a JS implementation, e.g. <a href="http://www.webtoolkit.info/javascript-base64.html">http://www.webtoolkit.info/javascript-base64.html</a>
@@ -728,11 +745,11 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-39">
+        <li id="section-40">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>Low level HTTP request method to use in the Browser, using an AJAX implementation.
 <strong>Parameters</strong>:
@@ -755,6 +772,7 @@ provide this extension and are reported to work.</p>
                 req_url = <span class="hljs-keyword">this</span>.endpoint + options.resource,
                 params = options.params || {},
                 contentType = options.contentType,
+                contentEncoding = options.contentEncoding,
                 body = options.msgBody || <span class="hljs-literal">null</span>,
                 isJsonBody = options.isJsonBody,
                 multipart = options.multipart,
@@ -780,11 +798,11 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-40">
+        <li id="section-41">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>if there are params, append them to the req_url</p>
 
@@ -811,17 +829,34 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-41">
+        <li id="section-42">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>prevents jquery from overwriting the proper content-type header</p>
 
             </div>
 
             <div class="content"><div class='highlight'><pre>                ajaxSettings.contentType = <span class="hljs-literal">false</span>;
+            }</pre></div></div>
+
+        </li>
+
+
+        <li id="section-43">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>Set Content-Encoding if present</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> (contentEncoding) {
+              headers[<span class="hljs-string">"Content-Encoding"</span>] = contentEncoding;
             }
 
             $.ajax(ajaxSettings).done(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data, status, jqXHR</span>) </span>{
@@ -830,11 +865,11 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-42">
+        <li id="section-44">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>check if the returned object is a JSONLD object</p>
 
@@ -867,11 +902,11 @@ provide this extension and are reported to work.</p>
         </li>
 
 
-        <li id="section-43">
+        <li id="section-45">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p><code>Connection.getProperty</code> retrieves the values for a specific property of a URI individual in a
 Stardog DB. This function is a direct access to provide easy out-of-the-box functionality
@@ -906,11 +941,11 @@ for retrieving common properties such as rdfs:label, etc
         </li>
 
 
-        <li id="section-44">
+        <li id="section-46">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>Performs a GET to the root endpoint of the DB <code>database</code></p>
 <p><strong>Parameters</strong>:
@@ -935,11 +970,11 @@ for retrieving common properties such as rdfs:label, etc
         </li>
 
 
-        <li id="section-45">
+        <li id="section-47">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>Retrieve the DB size.
 Returns a single numeric value representing the number of triples in the database.</p>
@@ -964,11 +999,11 @@ Returns a single numeric value representing the number of triples in the databas
         </li>
 
 
-        <li id="section-46">
+        <li id="section-48">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
 for the Accept header. This method is designed for <code>select</code> &amp; <code>ask</code> queries, where the result type will
@@ -1029,11 +1064,11 @@ be a set of bindings.</p>
         </li>
 
 
-        <li id="section-47">
+        <li id="section-49">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>Evaluate a SPARQL query specifying <code>database</code>, <code>query</code>, <code>baseURI</code>, <code>limit</code>, <code>offset</code> and the <code>mimetype</code>
 for the Accept header. This method is designed for <code>describe</code> &amp; <code>construct</code> queries, where the result type will
@@ -1094,11 +1129,11 @@ be a set of triples.</p>
         </li>
 
 
-        <li id="section-48">
+        <li id="section-50">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>Returns the query plan generated by Stardog given a SPARQL query.</p>
 <p><strong>Parameters</strong>:
@@ -1129,11 +1164,11 @@ be a set of triples.</p>
         </li>
 
 
-        <li id="section-49">
+        <li id="section-51">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>Start a new transaction in the database.</p>
 <p><strong>Parameters</strong>:
@@ -1158,11 +1193,11 @@ be a set of triples.</p>
         </li>
 
 
-        <li id="section-50">
+        <li id="section-52">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>Commit the transaction <code>txId</code> in the database. This will remove the transaction and the <code>txId</code> will not
 be valid anymore. All function calls using a transaction to mutate the contents of a database must call this
@@ -1190,11 +1225,11 @@ function in order to make the changes permanent.</p>
         </li>
 
 
-        <li id="section-51">
+        <li id="section-53">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>Perform a rollback given within a trasaction, providing the transaction id <code>txId</code>.</p>
 <p><strong>Parameters</strong>:
@@ -1220,11 +1255,11 @@ function in order to make the changes permanent.</p>
         </li>
 
 
-        <li id="section-52">
+        <li id="section-54">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>Evaluate a SPARQL query using a transaction <code>txId</code>.</p>
 <p><strong>Parameters</strong>:
@@ -1246,11 +1281,11 @@ function in order to make the changes permanent.</p>
         </li>
 
 
-        <li id="section-53">
+        <li id="section-55">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>function (database, txId, query, baseURI, limit, offset, callback, acceptMIME) {</p>
 
@@ -1281,11 +1316,11 @@ function in order to make the changes permanent.</p>
         </li>
 
 
-        <li id="section-54">
+        <li id="section-56">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>Add a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function
 to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
@@ -1309,6 +1344,7 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
                 params: options.params || { },
                 msgBody: options.body,
                 contentType: options.contentType,
+                contentEncoding: options.contentEncoding || <span class="hljs-literal">null</span>,
                 isJsonBody: <span class="hljs-literal">false</span>,
                 multipart: <span class="hljs-literal">null</span>
             };
@@ -1323,11 +1359,11 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-55">
+        <li id="section-57">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>Remove a set of statements included in the <code>body</code> request, using a transaction <code>txId</code>. Note that after calling this function
 to add the statements, <code>Connection.commit</code> must be performed to make the changes persistent in the DB.</p>
@@ -1351,6 +1387,7 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
                 params: options.params || { },
                 msgBody: options.body,
                 contentType: options.contentType,
+                contentEncoding: options.contentEncoding || <span class="hljs-literal">null</span>,
                 isJsonBody: <span class="hljs-literal">false</span>,
                 multipart: <span class="hljs-literal">null</span>
             };
@@ -1365,11 +1402,11 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-56">
+        <li id="section-58">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>Clears the content of the DB.</p>
 <p><strong>Parameters</strong>:
@@ -1400,11 +1437,11 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-57">
+        <li id="section-59">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>Exports the content of the DB.</p>
 <p><strong>Parameters</strong>:
@@ -1427,11 +1464,11 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-58">
+        <li id="section-60">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>by default it exports the whole database in JSON-LD</p>
 
@@ -1445,11 +1482,11 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-59">
+        <li id="section-61">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <h2 id="reasoning-api">Reasoning API</h2>
 <hr>
@@ -1459,11 +1496,11 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-60">
+        <li id="section-62">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
 
             </div>
@@ -1471,11 +1508,11 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-61">
+        <li id="section-63">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <p>API call to get explanation of the inferences in <code>axioms</code> using a transaction <code>txId</code> with the content type
 <code>contentType</code> of the axioms.</p>
@@ -1508,11 +1545,11 @@ to add the statements, <code>Connection.commit</code> must be performed to make 
         </li>
 
 
-        <li id="section-62">
+        <li id="section-64">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <p>Checks the logical consistency of database. If using a named graph provide the <code>graph_uri</code> parameter.
 Returns a boolean response as <code>true</code> if the database is consistent.
@@ -1544,11 +1581,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-63">
+        <li id="section-65">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <h3 id="integrity-constraint-validation">Integrity Constraint Validation</h3>
 <p>Listing the Integrity Constraints. Returns the integrity constraints for the specified database serialized in any supported RDF format.</p>
@@ -1576,11 +1613,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-64">
+        <li id="section-66">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
+                <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and adds them to the database in an atomic action.
 200 return code indicates the constraints were added successfully, 500 indicates that the constraints were not valid or unable to be added.</p>
@@ -1599,11 +1636,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-65">
+        <li id="section-67">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
+                <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
               <p>set default content-type to “text/plain” (N-Triples)</p>
 
@@ -1625,11 +1662,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-66">
+        <li id="section-68">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
+                <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
               <p>Accepts a set of valid Integrity constraints serialized in any RDF format supported by Stardog and removes them from the database in a single atomic action.
 200 indicates the constraints were successfully remove; 500 indicates an error.</p>
@@ -1648,11 +1685,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-67">
+        <li id="section-69">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
+                <a class="pilcrow" href="#section-69">&#182;</a>
               </div>
               <p>set default content-type to “text/plain” (N-Triples)</p>
 
@@ -1674,11 +1711,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-68">
+        <li id="section-70">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
+                <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
               <p>Drops ALL integrity constraints for a database. 200 indicates all constraints were successfully dropped; 500 indicates an error.</p>
 <p><strong>Parameters</strong>:
@@ -1703,11 +1740,11 @@ See <a href="http://docs.stardog.com/man/reasoning-consistency.html">stardog rea
         </li>
 
 
-        <li id="section-69">
+        <li id="section-71">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
+                <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
               <p>Only works for one constraint, if more than 1 are provided returns 400 code status. The body of the POST is a single Integrity Constraint,
 serialized in any supported RDF format, with Content-type set appropriately. Returns either a text/plain result containing a single SPARQL query;
@@ -1728,11 +1765,11 @@ or it returns 400 if more than one constraint was included in the input.</p>
         </li>
 
 
-        <li id="section-70">
+        <li id="section-72">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-70">&#182;</a>
+                <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
               <p>set default content-type to “text/plain” (N-Triples)</p>
 
@@ -1758,11 +1795,11 @@ or it returns 400 if more than one constraint was included in the input.</p>
         </li>
 
 
-        <li id="section-71">
+        <li id="section-73">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-71">&#182;</a>
+                <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
               <hr>
 
@@ -1771,11 +1808,11 @@ or it returns 400 if more than one constraint was included in the input.</p>
         </li>
 
 
-        <li id="section-72">
+        <li id="section-74">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
+                <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
 
             </div>
@@ -1783,11 +1820,11 @@ or it returns 400 if more than one constraint was included in the input.</p>
         </li>
 
 
-        <li id="section-73">
+        <li id="section-75">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
+                <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <p>Returns a mapping of the namespaces being used in a database.
 See: Section <strong>Namespace Prefix Bindings</strong> in
@@ -1819,11 +1856,11 @@ See: Section <strong>Namespace Prefix Bindings</strong> in
         </li>
 
 
-        <li id="section-74">
+        <li id="section-76">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
+                <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
               <h2 id="query-management-api">Query Management API</h2>
 <hr>
@@ -1833,11 +1870,11 @@ See: Section <strong>Namespace Prefix Bindings</strong> in
         </li>
 
 
-        <li id="section-75">
+        <li id="section-77">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
+                <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
               <p><a href="http://docs.stardog.com/admin/#manage-queries">Stardog Query Management</a>
 Stardog includes the capability to manage running queries according to configurable
@@ -1854,11 +1891,11 @@ policies set at run-time; this capability includes support for:</p>
         </li>
 
 
-        <li id="section-76">
+        <li id="section-78">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
+                <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
               <h3 id="list-running-queries">List running queries</h3>
 <p>Get a list of the currently running queries.</p>
@@ -1883,11 +1920,11 @@ policies set at run-time; this capability includes support for:</p>
         </li>
 
 
-        <li id="section-77">
+        <li id="section-79">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
+                <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
               <h3 id="get-query-information">Get query information</h3>
 <p>Get the information related to the query running such as: a query ID, the database on which the
@@ -1914,11 +1951,11 @@ query is running, the user that executed the query, the elapsed time among other
         </li>
 
 
-        <li id="section-78">
+        <li id="section-80">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-78">&#182;</a>
+                <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
               <h3 id="kill-a-running-query">Kill a running query</h3>
 <p>Kill a currently running query using a query ID.</p>
@@ -1944,39 +1981,13 @@ query is running, the user that executed the query, the elapsed time among other
         </li>
 
 
-        <li id="section-79">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-79">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-
-        </li>
-
-
-        <li id="section-80">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-80">&#182;</a>
-              </div>
-
-            </div>
-
-        </li>
-
-
         <li id="section-81">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-81">&#182;</a>
               </div>
-              <h2 id="stardog-administrative-api">Stardog Administrative API</h2>
-<hr>
+              <hr>
 
             </div>
 
@@ -1989,7 +2000,6 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
-              <p><a href="http://docs.stardog.com/http/#sd-Admin-Resources">Admin Resources</a></p>
 
             </div>
 
@@ -2002,7 +2012,8 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
-              <h3 id="database-operations-">Database operations.</h3>
+              <h2 id="stardog-administrative-api">Stardog Administrative API</h2>
+<hr>
 
             </div>
 
@@ -2015,10 +2026,7 @@ query is running, the user that executed the query, the elapsed time among other
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
-              <p>These API calls are related to the DBMS core functions for administrating resources in the
-Stardog Database System, such as: getting a list of databases, add/copy/delete databases.
-Note that there’s one administrative call missing for creating DBs, this is to limitations
-on the HTTP multi-part libraries, but support for this is coming soon.</p>
+              <p><a href="http://docs.stardog.com/http/#sd-Admin-Resources">Admin Resources</a></p>
 
             </div>
 
@@ -2030,6 +2038,35 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-85">&#182;</a>
+              </div>
+              <h3 id="database-operations-">Database operations.</h3>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-86">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-86">&#182;</a>
+              </div>
+              <p>These API calls are related to the DBMS core functions for administrating resources in the
+Stardog Database System, such as: getting a list of databases, add/copy/delete databases.
+Note that there’s one administrative call missing for creating DBs, this is to limitations
+on the HTTP multi-part libraries, but support for this is coming soon.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-87">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
               <h4 id="list-databases-get-">List databases (GET)</h4>
 <p>Get a list of the existing databases in the system.</p>
@@ -2056,11 +2093,11 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
         </li>
 
 
-        <li id="section-86">
+        <li id="section-88">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
+                <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
               <h4 id="copy-database-put-">Copy database (PUT)</h4>
 <p>Copy an existing database.</p>
@@ -2086,11 +2123,11 @@ on the HTTP multi-part libraries, but support for this is coming soon.</p>
         </li>
 
 
-        <li id="section-87">
+        <li id="section-89">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
+                <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
               <h4 id="create-a-new-database-post-">Create a new database (POST)</h4>
 <p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values.
@@ -2141,11 +2178,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-88">
+        <li id="section-90">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
+                <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
               <h4 id="drop-an-existing-database-">Drop an existing database.</h4>
 <p>Drops an existing database <code>dbname</code> and all the information that it contains.</p>
@@ -2171,41 +2208,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-89">
+        <li id="section-91">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
-              </div>
-              <h4 id="migrate-an-existing-database-">Migrate an existing database.</h4>
-<p>Migrates the existing content of a legacy database to new format.</p>
-<p><strong>Parameters</strong>:
-<code>options</code>: an object with one the following attributes:
-             <code>database</code>: the name of the database to migrate.
-             <code>params</code>: (optional) any other parameters to pass to the SPARQL endpoint.
-<code>callback</code>: the callback to execute once the request is done.</p>
-
-            </div>
-
-            <div class="content"><div class='highlight'><pre>    Connection.prototype.migrateDB = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, callback</span>) </span>{
-        <span class="hljs-keyword">var</span> reqOptions = {
-                httpMethod: <span class="hljs-string">"PUT"</span>,
-                resource: <span class="hljs-string">"admin/databases/"</span> + options.database + <span class="hljs-string">"/migrate"</span>,
-                acceptHeader: <span class="hljs-string">"application/json"</span>,
-                params: options.params || <span class="hljs-string">""</span>
-            };
-
-        <span class="hljs-keyword">this</span>._httpRequest(reqOptions, callback);
-    };</pre></div></div>
-
-        </li>
-
-
-        <li id="section-90">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
+                <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
               <h4 id="optimize-an-existing-database-">Optimize an existing database.</h4>
 <p>Optimize an existing database.</p>
@@ -2231,11 +2238,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-91">
+        <li id="section-92">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
+                <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
               <h4 id="set-database-on-line-">Set database on-line.</h4>
 <p>Request message to set an existing database <code>dbname</code> on-line.</p>
@@ -2262,11 +2269,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-92">
+        <li id="section-93">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
+                <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
               <h4 id="set-database-off-line-">Set database off-line.</h4>
 <p>Request message to set an existing database off-line;
@@ -2305,11 +2312,11 @@ After the timeout has expired, all remaining open connections are closed and the
         </li>
 
 
-        <li id="section-93">
+        <li id="section-94">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-93">&#182;</a>
+                <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
               <h4 id="set-option-values-to-an-existing-database-">Set option values to an existing database.</h4>
 <p>Set options in the database passed through a JSON object specification, i.e. JSON Request for option values.
@@ -2339,11 +2346,11 @@ Database options can be found <a href="http://docs.stardog.com/admin/#sd-Databas
         </li>
 
 
-        <li id="section-94">
+        <li id="section-95">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-94">&#182;</a>
+                <a class="pilcrow" href="#section-95">&#182;</a>
               </div>
               <h4 id="get-option-values-from-an-existing-database-">Get option values from an existing database.</h4>
 <p>Retrieves a set of options passed through a JSON object specification.
@@ -2374,27 +2381,13 @@ values in the database when the call returns.</p>
         </li>
 
 
-        <li id="section-95">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-95">&#182;</a>
-              </div>
-              <h3 id="user-operations-">User operations.</h3>
-
-            </div>
-
-        </li>
-
-
         <li id="section-96">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-96">&#182;</a>
               </div>
-              <p>Administrative API calls for managing user accounts in Stardog, e.g. creating/modifying/removing
-user accounts.</p>
+              <h3 id="user-operations-">User operations.</h3>
 
             </div>
 
@@ -2406,6 +2399,20 @@ user accounts.</p>
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-97">&#182;</a>
+              </div>
+              <p>Administrative API calls for managing user accounts in Stardog, e.g. creating/modifying/removing
+user accounts.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-98">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-98">&#182;</a>
               </div>
               <h4 id="create-new-user">Create new user</h4>
 <p>Adds a new user to the system; allows a configuration option for superuser as a JSON object.
@@ -2441,11 +2448,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-98">
+        <li id="section-99">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-98">&#182;</a>
+                <a class="pilcrow" href="#section-99">&#182;</a>
               </div>
               <h4 id="change-user-s-password">Change user’s password</h4>
 <p>Changes <code>user</code> password in the system. Receives input of new password as a JSON Object.</p>
@@ -2474,11 +2481,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-99">
+        <li id="section-100">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-99">&#182;</a>
+                <a class="pilcrow" href="#section-100">&#182;</a>
               </div>
               <h4 id="check-if-user-is-enabled-">Check if user is enabled.</h4>
 <p>Verifies if user is enabled in the system.</p>
@@ -2504,11 +2511,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-100">
+        <li id="section-101">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-100">&#182;</a>
+                <a class="pilcrow" href="#section-101">&#182;</a>
               </div>
               <h4 id="check-if-user-is-superuser-">Check if user is superuser.</h4>
 <p>Verifies if the user is a superuser.</p>
@@ -2534,11 +2541,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-101">
+        <li id="section-102">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-101">&#182;</a>
+                <a class="pilcrow" href="#section-102">&#182;</a>
               </div>
               <h4 id="list-user-roles-">List user roles.</h4>
 <p>Retrieves the list of the roles assigned to user.</p>
@@ -2564,11 +2571,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-102">
+        <li id="section-103">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-102">&#182;</a>
+                <a class="pilcrow" href="#section-103">&#182;</a>
               </div>
               <h4 id="list-users-get-">List users (GET)</h4>
 <p>Retrieves a list of users available in the system.</p>
@@ -2593,11 +2600,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-103">
+        <li id="section-104">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-103">&#182;</a>
+                <a class="pilcrow" href="#section-104">&#182;</a>
               </div>
               <h4 id="delete-user">Delete user</h4>
 <p><strong>Parameters</strong>:
@@ -2622,11 +2629,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-104">
+        <li id="section-105">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-104">&#182;</a>
+                <a class="pilcrow" href="#section-105">&#182;</a>
               </div>
               <h4 id="enable-users-">Enable users.</h4>
 <p>Enables/Disables an existing user in the system.</p>
@@ -2655,11 +2662,11 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-105">
+        <li id="section-106">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-105">&#182;</a>
+                <a class="pilcrow" href="#section-106">&#182;</a>
               </div>
               <h4 id="setting-user-roles-">Setting user roles.</h4>
 <p>Sets roles for a given user.</p>
@@ -2688,27 +2695,13 @@ Superuser configuration is set as default to false. The password <strong>must</s
         </li>
 
 
-        <li id="section-106">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-106">&#182;</a>
-              </div>
-              <h3 id="role-operations-">Role operations.</h3>
-
-            </div>
-
-        </li>
-
-
         <li id="section-107">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-107">&#182;</a>
               </div>
-              <p>Administrative API calls for managing roles in Stardog, which are part of the security model, e.g. creating/modifying/removing
-roles.</p>
+              <h3 id="role-operations-">Role operations.</h3>
 
             </div>
 
@@ -2720,6 +2713,20 @@ roles.</p>
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-108">&#182;</a>
+              </div>
+              <p>Administrative API calls for managing roles in Stardog, which are part of the security model, e.g. creating/modifying/removing
+roles.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-109">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-109">&#182;</a>
               </div>
               <h4 id="create-a-new-role">Create a new role</h4>
 <p><strong>Parameters</strong>:
@@ -2746,11 +2753,11 @@ roles.</p>
         </li>
 
 
-        <li id="section-109">
+        <li id="section-110">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-109">&#182;</a>
+                <a class="pilcrow" href="#section-110">&#182;</a>
               </div>
               <h4 id="list-roles-get-">List roles (GET)</h4>
 <p>Retrieves the list of roles registered in the system.</p>
@@ -2775,11 +2782,11 @@ roles.</p>
         </li>
 
 
-        <li id="section-110">
+        <li id="section-111">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-110">&#182;</a>
+                <a class="pilcrow" href="#section-111">&#182;</a>
               </div>
               <h4 id="list-users-with-a-specified-role-">List users with a specified role.</h4>
 <p>Retrieves users that have the role assigned.</p>
@@ -2805,11 +2812,11 @@ roles.</p>
         </li>
 
 
-        <li id="section-111">
+        <li id="section-112">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-111">&#182;</a>
+                <a class="pilcrow" href="#section-112">&#182;</a>
               </div>
               <h4 id="delete-role">Delete role</h4>
 <p>Deletes an existing role from the system; the force parameter is a boolean
@@ -2837,28 +2844,13 @@ flag which indicates if the delete call for the role must be forced,
         </li>
 
 
-        <li id="section-112">
-            <div class="annotation">
-
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-112">&#182;</a>
-              </div>
-              <h3 id="permissions-operations-">Permissions operations.</h3>
-
-            </div>
-
-        </li>
-
-
         <li id="section-113">
             <div class="annotation">
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-113">&#182;</a>
               </div>
-              <p>Administrative API calls for managing permissions for users &amp; roles in Stardog,
-which are also part of the security model, e.g. creating/modifying/removing
-permissions.</p>
+              <h3 id="permissions-operations-">Permissions operations.</h3>
 
             </div>
 
@@ -2870,6 +2862,21 @@ permissions.</p>
 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-114">&#182;</a>
+              </div>
+              <p>Administrative API calls for managing permissions for users &amp; roles in Stardog,
+which are also part of the security model, e.g. creating/modifying/removing
+permissions.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-115">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-115">&#182;</a>
               </div>
               <h4 id="assign-permission-to-role-">Assign permission to role.</h4>
 <p>Creates a new permission for a given role over a specified resource.</p>
@@ -2898,11 +2905,11 @@ permissions.</p>
         </li>
 
 
-        <li id="section-115">
+        <li id="section-116">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-115">&#182;</a>
+                <a class="pilcrow" href="#section-116">&#182;</a>
               </div>
               <h4 id="assign-permission-to-user-">Assign permission to user.</h4>
 <p>Creates a new permission for a given user over a specified resource.</p>
@@ -2931,11 +2938,11 @@ permissions.</p>
         </li>
 
 
-        <li id="section-116">
+        <li id="section-117">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-116">&#182;</a>
+                <a class="pilcrow" href="#section-117">&#182;</a>
               </div>
               <h4 id="delete-permission-from-role-">Delete permission from role.</h4>
 <p>Deletes a permission for a given role over a specified resource.</p>
@@ -2964,11 +2971,11 @@ permissions.</p>
         </li>
 
 
-        <li id="section-117">
+        <li id="section-118">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-117">&#182;</a>
+                <a class="pilcrow" href="#section-118">&#182;</a>
               </div>
               <h4 id="delete-permission-from-user-">Delete permission from user.</h4>
 <p>Deletes a permission for a given user over a specified resource.</p>
@@ -2997,11 +3004,11 @@ permissions.</p>
         </li>
 
 
-        <li id="section-118">
+        <li id="section-119">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-118">&#182;</a>
+                <a class="pilcrow" href="#section-119">&#182;</a>
               </div>
               <h4 id="list-role-permissions-">List role permissions.</h4>
 <p>Retrieves permissions assigned to the role.</p>
@@ -3027,11 +3034,11 @@ permissions.</p>
         </li>
 
 
-        <li id="section-119">
+        <li id="section-120">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-119">&#182;</a>
+                <a class="pilcrow" href="#section-120">&#182;</a>
               </div>
               <h4 id="list-user-permissions-">List user permissions.</h4>
 <p>Retrieves permissions assigned to the user.</p>
@@ -3057,11 +3064,11 @@ permissions.</p>
         </li>
 
 
-        <li id="section-120">
+        <li id="section-121">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-120">&#182;</a>
+                <a class="pilcrow" href="#section-121">&#182;</a>
               </div>
               <h4 id="list-user-effective-permissions-">List user effective permissions.</h4>
 <p>Retrieves effective permissions assigned to the user.</p>
@@ -3087,11 +3094,11 @@ permissions.</p>
         </li>
 
 
-        <li id="section-121">
+        <li id="section-122">
             <div class="annotation">
 
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-121">&#182;</a>
+                <a class="pilcrow" href="#section-122">&#182;</a>
               </div>
               <h3 id="shutdown-server-">Shutdown server.</h3>
 <p>Shuts down the Stardog Server. If successful, returns a 202 to indicate that the
