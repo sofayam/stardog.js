@@ -21,7 +21,7 @@ describe('icv', () => {
 
   const beginTx = transaction.begin.bind(null, conn, database);
 
-  beforeAll(seedDatabase(database));
+  beforeAll(seedDatabase(database, { icv: { enabled: true } }));
   afterAll(dropDatabase(database));
 
   it('should add integrity constraint axioms', () =>
@@ -50,8 +50,7 @@ describe('icv', () => {
       .then(res => {
         expect(res.status).toBe(200);
         expect(res.body.length).toBe(0);
-      })
-  );
+      }));
 
   it('should clear integrity constraint axioms', () =>
     icv
@@ -73,15 +72,12 @@ describe('icv', () => {
         expect(res.body.startsWith('SELECT')).toBe(true);
       }));
 
-  // Server is incorrectly returning text/plain. Once that fix is live
-  // we need to update these tests to expect the boolean
   it('should validate constraints', () =>
     icv
       .validate(conn, database, icvAxioms, { contentType: 'text/turtle' })
       .then(res => {
         expect(res.status).toBe(200);
-        // expect(res.body).toBe(false);
-        expect(res.body).toBe('false');
+        expect(res.body).toBe(false);
       }));
 
   it('should validate constraints in a transaction', () =>
@@ -94,8 +90,7 @@ describe('icv', () => {
       })
       .then(res => {
         expect(res.status).toBe(200);
-        // expect(res.body).toBe(false);
-        expect(res.body).toBe('false');
+        expect(res.body).toBe(false);
       }));
 
   it('should report violations', () =>

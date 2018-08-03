@@ -22,7 +22,7 @@ describe('query.execute()', () => {
     execute('select distinct ?s where { ?s ?p ?o }', undefined, {
       reasoning: true,
     }).then(res => {
-      expect(res.body.results.bindings).toHaveLength(23);
+      expect(res.body.results.bindings).toHaveLength(31);
     }));
 
   it('Should be able to query in a transaction', () =>
@@ -51,6 +51,7 @@ describe('query.execute()', () => {
                <http://purl.org/dc/elements/1.1/creator> ?c . 
           ?c (<http://xmlns.com/foaf/0.1/firstName> | <http://xmlns.com/foaf/0.1/lastName>)+ ?name
         }`,
+      undefined,
       {
         reasoning: true,
       }
@@ -188,21 +189,21 @@ describe('query.execute()', () => {
       expect(res.body).toBe(false);
     }));
 
-  it('returns results for a construct query', () =>
-    execute('construct where { ?s ?p ?o }').then(({ body }) => {
-      expect(body).toHaveLength(26);
-      for (let i = 0; i < body.length; i += 1) {
-        expect(body[i]['@id'].startsWith('http://')).toBe(true);
+  it('returns results for a construct query as json-ld', () =>
+    execute('construct where { ?s ?p ?o }', 'application/ld+json').then(
+      ({ body }) => {
+        expect(body).toHaveLength(33);
+        for (let i = 0; i < body.length; i += 1) {
+          expect(body[i]['@id']).not.toBeNull();
+        }
       }
-    }));
+    ));
   it('returns results for a construct query as a string blob', () =>
-    execute('construct where { ?s ?p ?o }', {
-      accept: 'text/turtle',
-    }).then(({ body }) => {
-      expect(body).toHaveLength(9321);
+    execute('construct where { ?s ?p ?o }').then(({ body }) => {
+      expect(body).toHaveLength(9843);
     }));
 
-  it('returns results as turle for descibe queries', () =>
+  it('returns results for a describe query as a string blob', () =>
     execute(
       'describe <http://localhost/publications/articles/Journal1/1940/Article1>',
       undefined,
@@ -210,9 +211,7 @@ describe('query.execute()', () => {
         limit: 1,
       }
     ).then(({ body }) => {
-      expect(body[0]['@id']).toBe(
-        'http://localhost/publications/articles/Journal1/1940/Article1'
-      );
+      expect(body).toHaveLength(1903);
     }));
 
   describe('group_concat', () => {
@@ -222,6 +221,63 @@ describe('query.execute()', () => {
       ).then(res => {
         expect(res.status).toBe(200);
         expect(res.body.results.bindings).toHaveLength(1);
+      }));
+  });
+
+  describe('paths', () => {
+    const prefixes = 'prefix : <urn:paths:> ';
+    it('should run a simple paths query', () =>
+      execute(`${prefixes} paths start ?x = :Alice end ?y via ?p`).then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.results.bindings).toHaveLength(11);
+      }));
+
+    it('should run a more specific query', () =>
+      execute(
+        `${prefixes} paths start ?x = :Alice end ?y = :David via :knows`
+      ).then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.results.bindings).toHaveLength(2);
+      }));
+
+    it('should run a complex query', () =>
+      execute(
+        `${prefixes} paths start ?x = :Alice end ?y = :David via { {?x ?p ?y} union {?y ?p ?x} }`
+      ).then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.results.bindings).toHaveLength(2);
+      }));
+
+    it('should return all paths', () =>
+      execute(
+        `${prefixes} paths all start ?x = :Alice end ?y = :David via { {?x ?p ?y} union {?y ?p ?x} }`
+      ).then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.results.bindings).toHaveLength(7);
+      }));
+
+    it('should return cyclic paths', () =>
+      execute(
+        `${prefixes} paths cyclic start ?start end ?end via :dependsOn`
+      ).then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.results.bindings).toHaveLength(17);
+      }));
+
+    it('runs queries with a limit', () =>
+      execute(`${prefixes} paths start ?x = :Alice end ?y via ?p limit 2`).then(
+        res => {
+          expect(res.status).toBe(200);
+          expect(res.body.results.bindings).toHaveLength(4);
+        }
+      ));
+
+    it('runs queries with a max length', () =>
+      execute(
+        `${prefixes} paths start ?x = :Alice end ?y via ?p max length 2`
+      ).then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.results.bindings).toHaveLength(7);
       }));
   });
 
